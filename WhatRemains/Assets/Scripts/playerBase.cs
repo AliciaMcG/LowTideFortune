@@ -6,8 +6,8 @@ using UnityEngine;
 ///   Player movement
 ///   Player vars
 ///   
-///   ad is y
-///   ws is x
+///   ad is x
+///   ws is y
 ///   
 ///   using playercontroller since game is not particularly physics based
 ///   
@@ -25,16 +25,18 @@ public class playerBase : MonoBehaviour
     public float jumpForce = 7f;
     public float gravity = -20f;
 
-    public Vector2 wasdInput;
+    public Vector3 wasdInput;
     public Vector3 velocity;
-    public Transform camOrient;
+    public bool isSprinting;
 
-    public float playerHeight;
+    public Transform camOrient;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
 
     void Start()
     {
+        velocity.z = 1;
+        isSprinting = false;
     }
 
     void Update()
@@ -49,26 +51,44 @@ public class playerBase : MonoBehaviour
     private void checkNmove()
     {
         wasdInput.x = Input.GetAxisRaw("Horizontal");
-        wasdInput.y = Input.GetAxisRaw("Vertical");
+        wasdInput.z = Input.GetAxisRaw("Vertical");
 
-        Vector3 moveVector = camOrient.forward * wasdInput.y + camOrient.right * wasdInput.x;
+        Vector3 moveVector = camOrient.forward * wasdInput.z + camOrient.right * wasdInput.x;
         moveVector = Vector3.ClampMagnitude(moveVector, 1f);
 
-        // JUMPING 
-        if (controller.isGrounded)
-        {
-            if (velocity.y < 0) { 
-                velocity.y = -1f;
+        // SPRINTING
+        if (Input.GetKey(KeyCode.LeftShift)) { isSprinting = true; }
+        else {  isSprinting = false; }
+
+        if (controller.isGrounded) {
+            if (isSprinting) {
+                velocity.z += 0.08f;
+                velocity.z = Mathf.Clamp(velocity.z, 1f, 1.7f);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            // JUMPING 
+            if (velocity.y < 0) {
+                velocity.y = -1f;
+            }
+            if (Input.GetKey(KeyCode.Space)) { 
                 velocity.y = jumpForce;
+            }
         }
 
-        velocity.y += gravity * Time.deltaTime;
-        Vector3 finalMove = moveVector * playerSpeed + Vector3.up * velocity.y;
+        //DECELERATION / Velocity reset / Only forward sprint
+        if (!isSprinting && (velocity.z > 1)) {
+            velocity.z -= 0.1f;
+        }
+        if (velocity.z < 1 || wasdInput.z < 0.5) { velocity.z = 1; }
+        // NO JUMP SPRINT FLYING
+        if (!controller.isGrounded) {
+            velocity.z = Mathf.Clamp(velocity.z, 1f, 1.3f);
+        }
+
+
+            velocity.y += gravity * Time.deltaTime;
+        Vector3 finalMove = moveVector * playerSpeed * velocity.z + Vector3.up * velocity.y;
+
         controller.Move(finalMove * Time.deltaTime);
     }
-
-
 }
