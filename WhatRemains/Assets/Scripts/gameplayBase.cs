@@ -1,19 +1,24 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Holds code for:
 /// 
-///   Global variables like the patience meter 
+///   Global variables like which rooms unlocked 
 ///   
 /// </summary>
 
 public class gameplayBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    public bool diningUnlocked;
+    public List<bool> puzzlesCompleted;
+    public int currentPuzzle;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
+        puzzlesCompleted = new List<bool> { false, false, false, false, false};
     }
 
     void Start()
