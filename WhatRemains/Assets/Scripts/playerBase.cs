@@ -82,11 +82,11 @@ public class playerBase : MonoBehaviour
         if (velocity.z < 1 || wasdInput.z < 0.5) { velocity.z = 1; }
         // NO JUMP SPRINT FLYING
         if (!controller.isGrounded) {
-            velocity.z = Mathf.Clamp(velocity.z, 1f, 1.3f);
+            velocity.z = Mathf.Clamp(velocity.z, 1f, 1.2f);
         }
 
 
-            velocity.y += gravity * Time.deltaTime;
+        velocity.y += gravity * Time.deltaTime;
         Vector3 finalMove = moveVector * playerSpeed * velocity.z + Vector3.up * velocity.y;
 
         controller.Move(finalMove * Time.deltaTime);

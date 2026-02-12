@@ -5,15 +5,25 @@ using UnityEngine;
 /// Holds code for:
 /// 
 ///   Global variables like which rooms unlocked 
+///   set current puzzle to 0 for none
+///   
+///   Placed this script on candlesFolder
+///   
+///
 ///   
 /// </summary>
 
 public class gameplayBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    [Header("Progress Tracking")]
     public bool diningUnlocked;
-    public List<bool> puzzlesCompleted;
-    public int currentPuzzle;
+    public List<bool> puzzlesCompleted; // track completion
+    public int currPuz; //current puzzle
+
+    [Header("Objects")]
+    public GameObject player;
+    public List<GameObject> candlesList;   //   !!!!!!! ----- CANDLES INDEXES ARE SHIFTED DOWN BY ONE IN LIST ----- !!!!!!
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -38,6 +48,11 @@ public class gameplayBase : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
+    public void completeRitual(int currPuzInt)    // skulls are in the correct placement
+    {
+        //active  = false
+        puzzlesCompleted[currPuzInt] = true;
+    }
 
 }
 

@@ -1,9 +1,17 @@
 using UnityEngine;
 using System;
 
+/// <summary>
+/// Holds code for:
+/// 
+///   Puzzle index 3
+///   
+/// </summary>
+
 public class Ritual4Behaviour : MonoBehaviour
 {
-    RitualsManager ritualsManager;
+    ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    gameplayBase ritualsManager;
     bool active = true;
 
     public GameObject ratSkull;
@@ -13,20 +21,26 @@ public class Ritual4Behaviour : MonoBehaviour
     public GameObject deerPodium;
     public GameObject owlPodium;
 
-    // Update is called once per frame
+    ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
+  
+    void Start()
+    {
+
+    } 
     void Update()
     {
         if (active)
         {
-            if (checkSkullOrder())
+            if (correctSkullOrder())
             {
-                completeRitual();
+                ritualsManager.completeRitual(3);
             }
         }
     }
 
-    bool checkSkullOrder()
-    {
+
+    ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
+    bool correctSkullOrder()    {
         // Check that skulls are near the correct podiums
         bool rightRatPos = Math.Abs(ratSkull.transform.position.x - ratPodium.transform.position.x) < 2
             && Math.Abs(ratSkull.transform.position.z - ratPodium.transform.position.z) < 2;
@@ -41,12 +55,5 @@ public class Ritual4Behaviour : MonoBehaviour
         }
 
         return false;
-    }
-
-    void completeRitual()
-    {
-        // skulls are in the correct placement
-        active = false;
-        ritualsManager.ritualSetComplete(4);
     }
 }

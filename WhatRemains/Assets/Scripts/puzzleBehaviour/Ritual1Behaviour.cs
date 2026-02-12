@@ -1,8 +1,16 @@
 using UnityEngine;
 
+/// <summary>
+/// Holds code for:
+/// 
+///   Puzzle index 0
+///   
+/// </summary>
+
 public class Ritual1Behaviour : MonoBehaviour
 {
-    RitualsManager ritualsManager;
+    ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    gameplayBase ritualsManager;
     bool active = true;
 
     const int totalTime = 3000;
@@ -10,7 +18,7 @@ public class Ritual1Behaviour : MonoBehaviour
     public Camera playerCam;
     public float range = 5f;
 
-    // Update is called once per frame
+    ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     void Update()
     {
         if (active && timePassed < totalTime)
@@ -44,14 +52,10 @@ public class Ritual1Behaviour : MonoBehaviour
         else if (active && timePassed >= totalTime)
         {
             // player has watched symbol for necessary time
-            completeRitual();
+            ritualsManager.completeRitual(0);
         }
     }
 
-    void completeRitual()
-    {
-        // door is unlcoekd, entity is activated
-        active = false;
-        ritualsManager.ritualSetComplete(1);
-    }
+    ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
+
 }
