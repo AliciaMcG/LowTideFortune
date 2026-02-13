@@ -1,0 +1,33 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+/// <summary>
+/// Holds code for:
+/// 
+///   ///
+///   
+/// </summary>
+
+public class vrHandAnimation : MonoBehaviour
+{
+    ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    public InputActionProperty triggerVal; //FIX (necessary?)
+    public InputActionProperty gripVal;
+
+    public Animator handAnimator;
+
+    ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
+
+    void Update()
+    {
+        float trigger = triggerVal.action.ReadValue<float>();
+        float grip = gripVal.action.ReadValue<float>();
+
+        handAnimator.SetFloat("Trigger", trigger);
+        handAnimator.SetFloat("Grip", grip);
+    }
+
+
+    ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
+    ///
+}

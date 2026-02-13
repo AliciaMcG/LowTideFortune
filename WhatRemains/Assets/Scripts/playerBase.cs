@@ -19,6 +19,7 @@ public class playerBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     public CharacterController controller;
+    public Transform camOrient;
 
     [Header("Movement")]
     public float playerSpeed;
@@ -29,10 +30,23 @@ public class playerBase : MonoBehaviour
     public Vector3 velocity;
     public bool isSprinting;
 
-    public Transform camOrient;
+
+    [Header("Head Bob")]
+    public bool headBobIsActive;
+    public float bobStrength;
+    public float bobFreq;
+
+    [Header("Pickup")]
+    public float pickupDist;
+    public float attachedDist = 0f;
+    public Transform pickedObject;
+    public GameObject candleList;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
-
+    private void Awake()
+    {
+        pickedObject = null;
+    }
     void Start()
     {
         velocity.z = 1;
@@ -43,6 +57,50 @@ public class playerBase : MonoBehaviour
     {
         checkNmove();
 
+        // pickup
+        RaycastHit hit;
+        bool cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, pickupDist);
+
+        if (Input.GetKeyDown(KeyCode.F)) {
+            if (pickedObject != null) {
+                pickedObject.SetParent(candleList.transform);
+
+                if (pickedObject.GetComponent<Rigidbody>() != null) {
+                    pickedObject.GetComponent<Rigidbody>().isKinematic = false;
+                }
+
+                if (pickedObject.GetComponent<Collider>() != null) {
+                    pickedObject.GetComponent<Collider>().enabled = true;
+                }
+
+                pickedObject = null;
+            }
+            else { 
+                if (cast) {
+                    if (hit.transform.CompareTag("pickupAble")) { 
+                        pickedObject = hit.transform;
+                        pickedObject.SetParent(controller.transform);
+
+                        if (pickedObject.GetComponent<Rigidbody>() != null)
+                        {
+                            pickedObject.GetComponent<Rigidbody>().isKinematic = true;
+                        }
+
+                        if (pickedObject.GetComponent<Collider>() != null)
+                        {
+                            pickedObject.GetComponent<Collider>().enabled = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (pickedObject != null) {
+            pickedObject.position = camOrient.position + camOrient.forward * pickupDist;
+        }
     }
 
 
@@ -63,7 +121,7 @@ public class playerBase : MonoBehaviour
         if (controller.isGrounded) {
             if (isSprinting) {
                 velocity.z += 0.08f;
-                velocity.z = Mathf.Clamp(velocity.z, 1f, 1.7f);
+                velocity.z = Mathf.Clamp(velocity.z, 1f, 1.5f);
             }
 
             // JUMPING 

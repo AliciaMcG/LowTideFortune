@@ -5,7 +5,7 @@ using UnityEngine;
 /// Holds code for:
 /// 
 ///   Global variables like which rooms unlocked 
-///   set current puzzle to 0 for none
+///   set current puzzle to 7 for none
 ///   
 ///   Placed this script on candlesFolder
 ///   
@@ -22,8 +22,7 @@ public class gameplayBase : MonoBehaviour
     public int currPuz; //current puzzle
 
     [Header("Objects")]
-    public GameObject player;
-    public List<GameObject> candlesList;   //   !!!!!!! ----- CANDLES INDEXES ARE SHIFTED DOWN BY ONE IN LIST ----- !!!!!!
+    public List<GameObject> candlesList;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -33,7 +32,9 @@ public class gameplayBase : MonoBehaviour
 
     void Start()
     {
-
+        foreach (GameObject candle  in candlesList) {
+            candle.SetActive(false);
+        }
     }
 
     void Update()
@@ -48,10 +49,12 @@ public class gameplayBase : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    public void completeRitual(int currPuzInt)    // skulls are in the correct placement
+    public void completePuzzle(int currPuzInt)    // skulls are in the correct placement
     {
-        //active  = false
         puzzlesCompleted[currPuzInt] = true;
+
+        // set active curr candle :)
+        candlesList[currPuzInt].SetActive(true);
     }
 
 }

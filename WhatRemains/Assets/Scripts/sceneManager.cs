@@ -22,17 +22,21 @@ public class sceneManager : MonoBehaviour
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     void Start()
     {
-        pauseMenuUI.SetActive(false);
+        if (SceneManager.GetActiveScene().name == "gameplayScene") { 
+            pauseMenuUI.SetActive(false);
+        }
         Time.timeScale = 1.0f;
         gameIsPaused = false;
     }
 
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (gameIsPaused) { resume(); }
-            else { pause(); }
+        if (SceneManager.GetActiveScene().name == "gameplayScene") {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                if (gameIsPaused) { resume(); }
+                else { pause(); }
+            }
         }
 
     }
