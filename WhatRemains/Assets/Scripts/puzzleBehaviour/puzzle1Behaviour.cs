@@ -14,30 +14,34 @@ public class puzzle1Behaviour : MonoBehaviour
     public gameplayBase puzzleManager;
     public Transform playerCam;
     public GameObject symbol;
+    public GameObject room1Locks;
 
     [Header("Measurements")]
     public float stareTime = 5f;
     public float maxDist = 12f;
     public float dist;
 
-    [SerializeField]private float stareTimer = 0;
+    [SerializeField] private float stareTimer = 0;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     void Start()
     {
         puzzleManager.currPuz = 0; //Have to complete this one first
+        room1Locks.SetActive(true);
     }
 
     void Update()
     {
-        if (puzzleManager.puzzlesCompleted[0] != true) { 
+        if (puzzleManager.puzzlesCompleted[0] != true)
+        {
             dist = Vector3.Distance(playerCam.position, symbol.transform.position);
-            if (dist <= maxDist) {
+            if (dist <= maxDist)
+            {
                 checkStare();
             }
             else { stareTimer = 0; }
         }
-        
+
 
     }
 
@@ -61,7 +65,9 @@ public class puzzle1Behaviour : MonoBehaviour
                 if (stareTimer >= stareTime)
                 {
                     puzzleManager.completePuzzle(0);
-                    Debug.Log("1 is done");
+                    puzzleManager.entityIsActive = true;
+                    room1Locks.SetActive(false);
+                    Debug.Log("1 is done, entity released");
                 }
             }
             else { stareTimer = 0; }
@@ -69,55 +75,5 @@ public class puzzle1Behaviour : MonoBehaviour
     }
 
 
-
-
-
-    //gameplayBase puzzleManager;
-    //bool active = true;
-
-    //const int totalTime = 3000;
-    //float timePassed = -1;
-    //public Camera playerCam;
-    //public float range = 5f;
-
-    ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
-    //void Update()
-    //{
-    //    if (active && timePassed < totalTime)
-    //    {
-    //        Ray ray = new Ray(playerCam.transform.position, playerCam.transform.forward);
-    //        RaycastHit hit;
-
-    //        if (Physics.Raycast(ray, out hit, range))
-    //        {
-    //            if (hit.collider.CompareTag("puzzle1Symbol"))
-    //            {
-    //                // player watching symbol
-    //                if (timePassed < 0)
-    //                {
-    //                    // start timer
-    //                    timePassed = 0;
-    //                }
-    //                else
-    //                {
-    //                    // increase time passed
-    //                    timePassed += Time.deltaTime;
-    //                }
-    //            }
-    //            else if (timePassed > -0.5)
-    //            {
-    //                //reset timer
-    //                timePassed = -1;
-    //            }
-    //        }
-    //    }
-    //    else if (active && timePassed >= totalTime)
-    //    {
-    //        // player has watched symbol for necessary time
-    //        puzzleManager.completePuzzle(0);
-    //    }
-    //}
-
-    ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
 
 }

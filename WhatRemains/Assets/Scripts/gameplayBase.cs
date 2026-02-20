@@ -20,9 +20,11 @@ public class gameplayBase : MonoBehaviour
     public bool diningUnlocked;
     public List<bool> puzzlesCompleted; // track completion
     public int currPuz; //current puzzle
+    public bool entityIsActive;
 
     [Header("Objects")]
     public List<GameObject> candlesList;
+    public GameObject entityObject;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -35,10 +37,13 @@ public class gameplayBase : MonoBehaviour
         foreach (GameObject candle  in candlesList) {
             candle.SetActive(false);
         }
+
+        entityIsActive = false;
     }
 
     void Update()
     {
+        checkEntityActivity();
 
     }
 
@@ -49,12 +54,19 @@ public class gameplayBase : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    public void completePuzzle(int currPuzInt)    // skulls are in the correct placement
+    public void completePuzzle(int currPuzInd)    // skulls are in the correct placement
     {
-        puzzlesCompleted[currPuzInt] = true;
+        puzzlesCompleted[currPuzInd] = true;
 
         // set active curr candle :)
-        candlesList[currPuzInt].SetActive(true);
+        candlesList[currPuzInd].SetActive(true);
+    }
+    void checkEntityActivity()
+    {
+        if (entityIsActive) {
+            entityObject.SetActive(true);
+        }
+        else { entityObject.SetActive(false); }
     }
 
 }
