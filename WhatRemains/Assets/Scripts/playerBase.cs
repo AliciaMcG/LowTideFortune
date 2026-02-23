@@ -31,10 +31,10 @@ public class playerBase : MonoBehaviour
     public bool isSprinting;
 
 
-    [Header("Head Bob")]
-    public bool headBobIsActive;
-    public float bobStrength;
-    public float bobFreq;
+    //[Header("Head Bob")]   //FIX
+    //public bool headBobIsActive;
+    //public float bobStrength;
+    //public float bobFreq;
 
     [Header("Pickup")]
     public float pickupDist;

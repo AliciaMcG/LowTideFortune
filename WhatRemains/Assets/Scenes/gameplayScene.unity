@@ -10375,10 +10375,7 @@ MonoBehaviour:
   wasdInput: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   isSprinting: 0
-  headBobIsActive: 0
-  bobStrength: 0
-  bobFreq: 0
-  pickupDist: 7
+  pickupDist: 3
   attachedDist: 3
   pickedObject: {fileID: 0}
   candleList: {fileID: 2091748432}
