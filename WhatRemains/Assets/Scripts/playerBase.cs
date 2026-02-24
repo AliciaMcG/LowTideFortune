@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Holds code for:
@@ -18,6 +19,7 @@ using UnityEngine;
 public class playerBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    [Header("Objects")]
     public CharacterController controller;
     public Transform camOrient;
 
@@ -57,43 +59,6 @@ public class playerBase : MonoBehaviour
     {
         checkNmove();
 
-        // pickup
-        RaycastHit hit;
-        bool cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, pickupDist);
-
-        if (Input.GetKeyDown(KeyCode.F)) {
-            if (pickedObject != null) {
-                pickedObject.SetParent(candleList.transform);
-
-                if (pickedObject.GetComponent<Rigidbody>() != null) {
-                    pickedObject.GetComponent<Rigidbody>().isKinematic = false;
-                }
-
-                if (pickedObject.GetComponent<Collider>() != null) {
-                    pickedObject.GetComponent<Collider>().enabled = true;
-                }
-
-                pickedObject = null;
-            }
-            else { 
-                if (cast) {
-                    if (hit.transform.CompareTag("pickupAble")) { 
-                        pickedObject = hit.transform;
-                        pickedObject.SetParent(controller.transform);
-
-                        if (pickedObject.GetComponent<Rigidbody>() != null)
-                        {
-                            pickedObject.GetComponent<Rigidbody>().isKinematic = true;
-                        }
-
-                        if (pickedObject.GetComponent<Collider>() != null)
-                        {
-                            pickedObject.GetComponent<Collider>().enabled = false;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private void LateUpdate()
@@ -116,7 +81,7 @@ public class playerBase : MonoBehaviour
 
         // SPRINTING
         if (Input.GetKey(KeyCode.LeftShift)) { isSprinting = true; }
-        else {  isSprinting = false; }
+        else { isSprinting = false; }
 
         if (controller.isGrounded) {
             if (isSprinting) {
@@ -128,7 +93,7 @@ public class playerBase : MonoBehaviour
             if (velocity.y < 0) {
                 velocity.y = -1f;
             }
-            if (Input.GetKey(KeyCode.Space)) { 
+            if (Input.GetKey(KeyCode.Space)) {
                 velocity.y = jumpForce;
             }
         }
@@ -149,4 +114,44 @@ public class playerBase : MonoBehaviour
 
         controller.Move(finalMove * Time.deltaTime);
     }
+
+    private void OnPickup(InputAction.CallbackContext context)
+    {
+        if (context.performed) {
+
+            RaycastHit hit;
+            bool cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, pickupDist);
+
+            if (pickedObject != null) {
+                pickedObject.SetParent(candleList.transform);
+
+                if (pickedObject.GetComponent<Rigidbody>() != null) {
+                    pickedObject.GetComponent<Rigidbody>().isKinematic = false;
+                }
+
+                if (pickedObject.GetComponent<Collider>() != null) {
+                    pickedObject.GetComponent<Collider>().enabled = true;
+                }
+
+                pickedObject = null;
+            }
+            else {
+                if (cast) {
+                    if (hit.transform.CompareTag("pickupAble")) {
+                        pickedObject = hit.transform;
+                        pickedObject.SetParent(controller.transform);
+
+                        if (pickedObject.GetComponent<Rigidbody>() != null) {
+                            pickedObject.GetComponent<Rigidbody>().isKinematic = true;
+                        }
+
+                        if (pickedObject.GetComponent<Collider>() != null) {
+                            pickedObject.GetComponent<Collider>().enabled = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

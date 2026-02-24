@@ -16,6 +16,8 @@ using UnityEngine;
 public class gameplayBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    public static gameplayBase instance;
+
     [Header("Progress Tracking")]
     public bool diningUnlocked;
     public List<bool> puzzlesCompleted; // track completion
@@ -27,7 +29,7 @@ public class gameplayBase : MonoBehaviour
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
-        puzzlesCompleted = new List<bool> { false, false, false, false, false};
+        instance.puzzlesCompleted = new List<bool> { false, false, false, false, false};
     }
 
     void Start()
@@ -51,10 +53,10 @@ public class gameplayBase : MonoBehaviour
     ///
     public void completePuzzle(int currPuzInt)    // skulls are in the correct placement
     {
-        puzzlesCompleted[currPuzInt] = true;
+        this.puzzlesCompleted[currPuzInt] = true;
 
         // set active curr candle :)
-        candlesList[currPuzInt].SetActive(true);
+        instance.candlesList[currPuzInt].SetActive(true);
     }
 
 }
