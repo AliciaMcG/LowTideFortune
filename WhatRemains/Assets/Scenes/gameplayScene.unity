@@ -3648,7 +3648,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 1f42a27018ed74ba4914596ffacf5587, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7973,6 +7973,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd7310f00dba744bbe3f3897cfdbbcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cauldron: {fileID: 0}
+  requiredIngredients: 00000000010000000200000003000000
+  currentIngredients: 
 --- !u!1001 &337098384
 PrefabInstance:
   m_ObjectHideFlags: 0
