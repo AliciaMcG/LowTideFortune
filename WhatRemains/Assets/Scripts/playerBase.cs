@@ -20,6 +20,7 @@ public class playerBase : MonoBehaviour
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     public CharacterController controller;
     public Transform camOrient;
+    public Transform playerCam;
 
     [Header("Movement")]
     public float playerSpeed;
@@ -59,7 +60,7 @@ public class playerBase : MonoBehaviour
 
         // pickup
         RaycastHit hit;
-        bool cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, pickupDist);
+        bool cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, pickupDist);
 
         if (Input.GetKeyDown(KeyCode.F)) {
             if (pickedObject != null) {
@@ -90,6 +91,23 @@ public class playerBase : MonoBehaviour
                         {
                             pickedObject.GetComponent<Collider>().enabled = false;
                         }
+                    }
+                    if (hit.transform.CompareTag("chair"))
+                    {
+                        //get the chair object
+                        Transform chair;
+                        chair = hit.transform;
+                        //Debug.Log(chair);
+
+                        //move the chair back 2 spaces
+                        chair.Translate(Vector3.right * 2.0f, Space.Self);
+
+                        //disable the collider
+                        chair.GetComponent<BoxCollider>().enabled = false;
+
+                        //unparent the tarot card to pick up
+                        Transform tarotCard = chair.Find("sagittariusTarotCard");
+                        tarotCard.SetParent(null);
                     }
                 }
             }
