@@ -10378,7 +10378,7 @@ MonoBehaviour:
   wasdInput: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   isSprinting: 0
-  pickupDist: 4.3
+  pickupDist: 4
   attachedDist: 3
   pickedObject: {fileID: 0}
   candleList: {fileID: 2091748432}
@@ -42908,7 +42908,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae4029af669fbae43857ab99a94d1f4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puzzleManager: {fileID: 2091748434}
   playerCam: {fileID: 2062277781}
   symbol: {fileID: 153842366}
   stareTime: 7

@@ -20,16 +20,25 @@ public class gameplayBase : MonoBehaviour
     
     [Header("Progress Tracking")]
     public bool diningUnlocked;
-    public List<bool> puzzlesCompleted; // track completion
+    public bool[] puzzlesCompleted; // track completion
     public int currPuz; //current puzzle
 
     [Header("Objects")]
-    public List<GameObject> candlesList;
+    public GameObject[] candlesList;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
-        puzzlesCompleted = new List<bool> { false, false, false, false, false};
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            if (instance == null) { Debug.Log("destroyed wrong gameplayBase instance??"); }
+        }
+        instance = this;
+        if (instance == null) { Debug.Log("no gameplayBase instance, youre cooked buddy :(((( "); }
+
+
+        puzzlesCompleted = new bool[] { false, false, false, false, false };
     }
 
     void Start()

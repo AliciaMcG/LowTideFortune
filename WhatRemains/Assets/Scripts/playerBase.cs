@@ -38,7 +38,7 @@ public class playerBase : MonoBehaviour
 
     [Header("Pickup")]
     public float pickupDist;
-    public float attachedDist = 0f;
+    public float attachedDist;
     public Transform pickedObject;
     public GameObject candleList;
 
@@ -99,7 +99,7 @@ public class playerBase : MonoBehaviour
     private void LateUpdate()
     {
         if (pickedObject != null) {
-            pickedObject.position = camOrient.position + camOrient.forward * pickupDist;
+            pickedObject.position = camOrient.position + camOrient.forward * attachedDist;
         }
     }
 
@@ -140,7 +140,7 @@ public class playerBase : MonoBehaviour
         if (velocity.z < 1 || wasdInput.z < 0.5) { velocity.z = 1; }
         // NO JUMP SPRINT FLYING
         if (!controller.isGrounded) {
-            velocity.z = Mathf.Clamp(velocity.z, 1f, 1.2f);
+            velocity.z = Mathf.Clamp(velocity.z, 1f, 1.18f);
         }
 
 
