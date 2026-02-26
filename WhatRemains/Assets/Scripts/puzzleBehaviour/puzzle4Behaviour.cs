@@ -15,7 +15,6 @@ public class puzzle4Behaviour : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     [Header("Objects")]
-    gameplayBase puzzleManager;
     public List<GameObject> skullsList;
     public List<GameObject> podiumList;
 

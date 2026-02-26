@@ -16,6 +16,8 @@ using UnityEngine;
 public class gameplayBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    public static gameplayBase instance;
+    
     [Header("Progress Tracking")]
     public bool diningUnlocked;
     public List<bool> puzzlesCompleted; // track completion
