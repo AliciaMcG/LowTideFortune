@@ -91,6 +91,14 @@ public class playerBase : MonoBehaviour
                             pickedObject.GetComponent<Collider>().enabled = false;
                         }
                     }
+                    else if (hit.transform.CompareTag("door"))
+                    {
+                        Transform door;
+                        door = hit.transform;
+                        Debug.Log(door);
+                        door.Rotate(0.0f,90.0f,0.0f);
+                    
+                    }
                 }
             }
         }
