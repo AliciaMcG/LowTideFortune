@@ -19,7 +19,7 @@ public class puzzle1Behaviour : MonoBehaviour
     public float maxDist = 12f;
     public float dist;
 
-    [SerializeField]private float stareTimer = 0;
+    private float stareTimer = 0;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     void Start()
