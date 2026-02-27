@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Holds code for:
@@ -18,9 +19,9 @@ using UnityEngine;
 public class playerBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    [Header("GameObjects")]
     public CharacterController controller;
     public Transform camOrient;
-    public Transform playerCam;
 
     [Header("Movement")]
     public float playerSpeed;
@@ -31,7 +32,6 @@ public class playerBase : MonoBehaviour
     public Vector3 velocity;
     public bool isSprinting;
 
-
     //[Header("Head Bob")]   //FIX
     //public bool headBobIsActive;
     //public float bobStrength;
@@ -41,9 +41,12 @@ public class playerBase : MonoBehaviour
     public float pickupDist;
     public float attachedDist;
     public Transform pickedObject;
-    public GameObject candleList;
+    public GameObject candleList; //FIX (make record current parent)
     public RaycastHit hit;
     public bool cast;
+
+    [Header("Object Interaction")]
+    public GameObject interactableObj;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -60,38 +63,27 @@ public class playerBase : MonoBehaviour
     {
         checkNmove();
 
-        // pickup
+        // pickup / put down
         cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, pickupDist);
 
         if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
-            if (pickedObject != null) {
+            if (pickedObject != null) {           // Put down
                 pickedObject.SetParent(candleList.transform);
-
-                if (pickedObject.GetComponent<Rigidbody>() != null) {
-                    pickedObject.GetComponent<Rigidbody>().isKinematic = false;
-                }
-
-                if (pickedObject.GetComponent<Collider>() != null) {
-                    pickedObject.GetComponent<Collider>().enabled = true;
-                }
+                pickedObject.SetParent(candleList.transform); //FIX (make return)
+                if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = false; }
+                if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = true; }
 
                 pickedObject = null;
             }
-            else { 
+            else {             // pickup
                 if (cast) {
                     if (hit.transform.CompareTag("pickupAble")) { 
+
                         pickedObject = hit.transform;
                         pickedObject.SetParent(controller.transform);
 
-                        if (pickedObject.GetComponent<Rigidbody>() != null)
-                        {
-                            pickedObject.GetComponent<Rigidbody>().isKinematic = true;
-                        }
-
-                        if (pickedObject.GetComponent<Collider>() != null)
-                        {
-                            pickedObject.GetComponent<Collider>().enabled = false;
-                        }
+                        if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = true; }
+                        if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = false; }
                     }
                     if (hit.transform.CompareTag("chair"))
                     {
@@ -167,5 +159,16 @@ public class playerBase : MonoBehaviour
         Vector3 finalMove = moveVector * playerSpeed * velocity.z + Vector3.up * velocity.y;
 
         controller.Move(finalMove * Time.deltaTime);
+    }
+
+    public  void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (interactableObj != null)
+            {
+                
+            }            
+        }
     }
 }
