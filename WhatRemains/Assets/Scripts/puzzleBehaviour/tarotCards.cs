@@ -2,11 +2,29 @@ using UnityEngine;
 
 public class tarotCards : MonoBehaviour
 {
+    /// <summary>
+    /// Holds code for:
+    /// 
+    ///   Placing tarot cards on the table
+    ///   
+    ///   
+    ///   
+    ///   
+    ///   
+    ///   
+    ///   
+    /// </summary>
+    /// 
+    /// 
+    ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+
     public static bool[] tarotsInPosition = new bool[12];
 
     public playerBase playerBaseScript;
 
     public static bool pointingAtTargetPos;
+
+    ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
 
     // Update is called once per frame
     void Update()
@@ -24,7 +42,7 @@ public class tarotCards : MonoBehaviour
                 {
                     //pointing at a snapping position
                     pointingAtTargetPos = true;
-                    
+
                     //Debug.Log(playerBaseScript.pickedObject);
 
                     //if f is pressed
