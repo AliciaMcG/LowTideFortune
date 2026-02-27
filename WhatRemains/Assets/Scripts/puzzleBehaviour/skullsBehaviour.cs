@@ -22,8 +22,6 @@ public class skullsBehaviour : MonoBehaviour
 
     public playerBase playerBaseScript;
 
-    public static bool pointingAtTargetPos;
-
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
 
     // Update is called once per frame
@@ -41,7 +39,7 @@ public class skullsBehaviour : MonoBehaviour
                 if(playerBaseScript.pickedObject != null && playerBaseScript.pickedObject.name.Contains("Skull"))
                 {
                     //pointing at a snapping position
-                    pointingAtTargetPos = true;
+                    tarotCards.pointingAtTargetPos = true;
 
                     //Debug.Log(playerBaseScript.pickedObject);
 
@@ -62,7 +60,7 @@ public class skullsBehaviour : MonoBehaviour
                         playerBaseScript.pickedObject = null;
 
                         //no longer holding a snap object
-                        pointingAtTargetPos = false;
+                        tarotCards.pointingAtTargetPos = false;
                     }
                 }
             }
