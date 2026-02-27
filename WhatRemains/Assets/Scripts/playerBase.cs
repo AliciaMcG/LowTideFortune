@@ -63,7 +63,7 @@ public class playerBase : MonoBehaviour
         // pickup
         cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, pickupDist);
 
-        if (Input.GetKeyDown(KeyCode.F && tarotCards.pointingAtTargetPos == false)) {
+        if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
             if (pickedObject != null) {
                 pickedObject.SetParent(candleList.transform);
 
