@@ -2,6 +2,21 @@ using UnityEngine;
 
 public class tarotPositionsBehaviour : MonoBehaviour
 {
+    /// <summary>
+    /// Holds code for:
+    /// 
+    ///   Checking if the tarot cards are placed in the right order
+    ///   completing puzzle index 2 (spawning candle)
+    ///   
+    ///   
+    ///   
+    ///   
+    ///   
+    ///   
+    /// </summary>
+    /// 
+    /// 
+    ///////////////////////////////////////////////////////////      LOOPS      ////////////////////////////////////////////////////////////////////////////////
 
     void OnTriggerEnter(Collider collider)
     {

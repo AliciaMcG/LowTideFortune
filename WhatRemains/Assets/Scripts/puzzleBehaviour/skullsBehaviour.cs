@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class tarotCards : MonoBehaviour
+public class skullsBehaviour : MonoBehaviour
 {
     /// <summary>
     /// Holds code for:
     /// 
-    ///   Placing tarot cards on the table
+    ///   Placing skulls on pedestals
     ///   
     ///   
     ///   
@@ -18,7 +18,7 @@ public class tarotCards : MonoBehaviour
     /// 
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
 
-    public static bool[] tarotsInPosition = new bool[12];
+    public static bool[] skullsInPosition = new bool[3];
 
     public playerBase playerBaseScript;
 
@@ -32,13 +32,13 @@ public class tarotCards : MonoBehaviour
         //if the ray is hitting something
         if (playerBaseScript.cast)
         {
-            //Debug.Log(playerBaseScript.hit.transform.name);
+            Debug.Log(playerBaseScript.hit.transform.name);
         
-            //if the player's looking at a tarot position
-            if (playerBaseScript.hit.transform.CompareTag("tarotPos"))
+            //if the player's looking at a skull position
+            if (playerBaseScript.hit.transform.CompareTag("skullPos"))
             {
-                //if they're holding a tarot card
-                if(playerBaseScript.pickedObject != null && playerBaseScript.pickedObject.name.Contains("TarotCard"))
+                //if they're holding a skull
+                if(playerBaseScript.pickedObject != null && playerBaseScript.pickedObject.name.Contains("Skull"))
                 {
                     //pointing at a snapping position
                     pointingAtTargetPos = true;
@@ -55,7 +55,7 @@ public class tarotCards : MonoBehaviour
                             playerBaseScript.pickedObject.GetComponent<Collider>().enabled = true;
                         }
 
-                        //snap the card to the card position plane
+                        //snap the skull to the skull position plane
                         playerBaseScript.pickedObject.transform.position = playerBaseScript.hit.transform.position;
                     
                         //set the picked up object back to null

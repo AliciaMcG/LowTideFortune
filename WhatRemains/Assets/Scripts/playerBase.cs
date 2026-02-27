@@ -64,10 +64,11 @@ public class playerBase : MonoBehaviour
         checkNmove();
 
         // pickup / put down
-        cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, pickupDist);
-        if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
-            if (pickedObject != null) {            // Put down
+        cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, pickupDist);
 
+        if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
+            if (pickedObject != null) {           // Put down
+                pickedObject.SetParent(candleList.transform);
                 pickedObject.SetParent(candleList.transform); //FIX (make return)
                 if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = false; }
                 if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = true; }
