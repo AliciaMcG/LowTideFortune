@@ -42,6 +42,8 @@ public class playerBase : MonoBehaviour
     public float attachedDist;
     public Transform pickedObject;
     public GameObject candleList; //FIX (make record current parent)
+    public RaycastHit hit;
+    public bool cast;
 
     [Header("Object Interaction")]
     public GameObject interactableObj;
@@ -62,10 +64,8 @@ public class playerBase : MonoBehaviour
         checkNmove();
 
         // pickup / put down
-        RaycastHit hit;
-        bool cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, pickupDist);
-
-        if (Input.GetKeyDown(KeyCode.F)) {
+        cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, pickupDist);
+        if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
             if (pickedObject != null) {            // Put down
 
                 pickedObject.SetParent(candleList.transform); //FIX (make return)
@@ -83,6 +83,23 @@ public class playerBase : MonoBehaviour
 
                         if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = true; }
                         if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = false; }
+                    }
+                    if (hit.transform.CompareTag("chair"))
+                    {
+                        //get the chair object
+                        Transform chair;
+                        chair = hit.transform;
+                        //Debug.Log(chair);
+
+                        //move the chair back 2 spaces
+                        chair.Translate(Vector3.right * 2.0f, Space.Self);
+
+                        //disable the collider
+                        chair.GetComponent<BoxCollider>().enabled = false;
+
+                        //unparent the tarot card to pick up
+                        Transform tarotCard = chair.Find("sagittariusTarotCard");
+                        tarotCard.SetParent(null);
                     }
                 }
             }
