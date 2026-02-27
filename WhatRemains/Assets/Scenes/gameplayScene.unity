@@ -10948,6 +10948,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1929298619}
   camOrient: {fileID: 1929298620}
+  playerCam: {fileID: 2062277781}
   playerSpeed: 10
   jumpForce: 8
   gravity: -20
@@ -45559,6 +45560,7 @@ MonoBehaviour:
   stareTime: 5
   maxDist: 10
   dist: 0
+  stareTimer: 0
 --- !u!1 &2013382863
 GameObject:
   m_ObjectHideFlags: 0
@@ -46949,13 +46951,7 @@ MonoBehaviour:
   diningUnlocked: 0
   puzzlesCompleted: 
   currPuz: 0
-  candlesArr:
-  - {fileID: 114233176}
-  - {fileID: 638127803}
-  - {fileID: 1736172982}
-  - {fileID: 1566590117}
-  - {fileID: 1825367438}
-  - {fileID: 292650262}
+  candlesArr: []
 --- !u!1001 &2091989142
 PrefabInstance:
   m_ObjectHideFlags: 0
