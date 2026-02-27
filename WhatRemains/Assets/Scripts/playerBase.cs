@@ -37,16 +37,16 @@ public class playerBase : MonoBehaviour
     //public float bobStrength;
     //public float bobFreq;
 
-    [Header("Pickup")]
-    public float pickupDist;
-    public float attachedDist;
-    public Transform pickedObject;
+    [Header("Interaction")]
+    public float interactDist;
+    public float attachedDist; //FIX (move)
+    public Transform pickedObject; //FIX (move)
     public GameObject candleList; //FIX (make record current parent)
     public RaycastHit hit;
     public bool cast;
 
     [Header("Object Interaction")]
-    public GameObject interactableObj;
+    public IInteractable interactableObj;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -64,9 +64,23 @@ public class playerBase : MonoBehaviour
         checkNmove();
 
         // pickup / put down
-        cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, pickupDist);
-        if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
-            if (pickedObject != null) {            // Put down
+        cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, interactDist);
+        interactableObj = null;
+
+        if (cast)
+        {
+            if (hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable)) {
+                interactableObj = interactable;
+            }
+            Debug.Log("Ray hit: " + hit.collider.name);
+        }
+        if (interactableObj == null) { Debug.Log("no interactable"); }
+        
+
+        if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false)
+        {
+            if (pickedObject != null)
+            { // Put down
 
                 pickedObject.SetParent(candleList.transform); //FIX (make return)
                 if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = false; }
@@ -74,9 +88,12 @@ public class playerBase : MonoBehaviour
 
                 pickedObject = null;
             }
-            else {             // pickup
-                if (cast) {
-                    if (hit.transform.CompareTag("pickupAble")) { 
+            else
+            {             // pickup
+                if (cast)
+                {
+                    if (hit.transform.CompareTag("pickupAble"))
+                    {
 
                         pickedObject = hit.transform;
                         pickedObject.SetParent(controller.transform);
@@ -164,9 +181,8 @@ public class playerBase : MonoBehaviour
     {
         if (context.performed)
         {
-            if (interactableObj != null)
-            {
-                
+            if (interactableObj != null) {
+                interactableObj.interact(this);
             }            
         }
     }

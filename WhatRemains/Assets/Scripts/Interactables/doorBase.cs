@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 /// <summary>
 /// Holds code for:
@@ -8,7 +9,7 @@ using UnityEngine.InputSystem;
 ///   
 /// </summary>
 
-public class doorBase : MonoBehaviour
+public class doorBase : MonoBehaviour, IInteractable
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     public bool doorIsOpen;
@@ -36,14 +37,17 @@ public class doorBase : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out playerBase player)) { player.interactableObj = gameObject; }
+    private void OnTriggerEnter(Collider other)    {
+        if (other.TryGetComponent(out playerBase player)) { player.interactableObj = this; }
     }
-
-    private void OnTriggerExit(Collider other)
-    {
+    private void OnTriggerExit(Collider other)    {
         if (other.TryGetComponent(out playerBase player)) { player.interactableObj = null; }
+    }
+    public void interact(playerBase player)
+    {
+        doorIsOpen = !doorIsOpen;
+        if (doorIsOpen) { Debug.Log("door open"); }
+        else { Debug.Log("door closed"); }
     }
 }
 
