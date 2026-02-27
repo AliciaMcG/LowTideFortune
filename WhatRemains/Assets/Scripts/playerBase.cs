@@ -22,6 +22,7 @@ public class playerBase : MonoBehaviour
     [Header("GameObjects")]
     public CharacterController controller;
     public Transform camOrient;
+    public Transform playerCam;
 
     [Header("Movement")]
     public float playerSpeed;
