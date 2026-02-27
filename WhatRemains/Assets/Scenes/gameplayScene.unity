@@ -2735,6 +2735,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1208998239}
     m_Modifications:
+    - target: {fileID: 3979334997566346750, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5839373142633764481, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -6523,6 +6527,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1208998239}
     m_Modifications:
+    - target: {fileID: 3979334997566346750, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5839373142633764481, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -20881,7 +20889,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 878726476}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c91bc80d3cd5acc4fba541bdb1c9cb4f, type: 3}
   m_Name: 
@@ -25041,6 +25049,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1208998239}
     m_Modifications:
+    - target: {fileID: 3979334997566346750, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5839373142633764481, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -44720,6 +44732,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1208998239}
     m_Modifications:
+    - target: {fileID: 3979334997566346750, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5839373142633764481, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -46951,7 +46967,12 @@ MonoBehaviour:
   diningUnlocked: 0
   puzzlesCompleted: 
   currPuz: 0
-  candlesArr: []
+  candlesArr:
+  - {fileID: 114233176}
+  - {fileID: 638127803}
+  - {fileID: 1736172982}
+  - {fileID: 1566590117}
+  - {fileID: 1825367438}
 --- !u!1001 &2091989142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48602,6 +48623,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1208998239}
     m_Modifications:
+    - target: {fileID: 3979334997566346750, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5839373142633764481, guid: 1e03b3ddae7984208bc0ddfda33535e2, type: 3}
       propertyPath: m_Enabled
       value: 0
