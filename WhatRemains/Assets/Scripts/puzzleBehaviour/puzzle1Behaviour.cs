@@ -18,8 +18,7 @@ public class puzzle1Behaviour : MonoBehaviour
     public float stareTime = 5f;
     public float maxDist = 12f;
     public float dist;
-
-    private float stareTimer = 0;
+    public float stareTimer = 0;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     void Start()

@@ -45035,7 +45035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCam: {fileID: 2062277781}
   symbol: {fileID: 153842366}
-  stareTime: 7
+  stareTime: 5
   maxDist: 10
   dist: 0
 --- !u!1 &2013382863
