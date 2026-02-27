@@ -32,7 +32,6 @@ public class playerBase : MonoBehaviour
     public Vector3 velocity;
     public bool isSprinting;
 
-
     //[Header("Head Bob")]   //FIX
     //public bool headBobIsActive;
     //public float bobStrength;
@@ -43,6 +42,9 @@ public class playerBase : MonoBehaviour
     public float attachedDist;
     public Transform pickedObject;
     public GameObject candleList; //FIX (make record current parent)
+
+    [Header("Object Interaction")]
+    public GameObject interactableObj;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -145,7 +147,10 @@ public class playerBase : MonoBehaviour
     {
         if (context.performed)
         {
-            
+            if (interactableObj != null)
+            {
+                
+            }            
         }
     }
 }

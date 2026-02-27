@@ -15,11 +15,12 @@ public class puzzle4Behaviour : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     [Header("Objects")]
-    public List<GameObject> skullsList;
-    public List<GameObject> podiumList;
+    public GameObject[] skullsArr;
+    public GameObject[] podiumArr;
 
     [Header("Lists")]
-    private List<int> correctOrder;
+    public int[] corrOrder;
+    public int[] currOrder; 
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
   
@@ -40,6 +41,16 @@ public class puzzle4Behaviour : MonoBehaviour
 
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
+    ///
+    private void check4correctOrder()
+    {
+        if (currOrder == corrOrder)
+        {
+            gameplayBase.instance.completePuzzle(3);
+            Debug.Log("4 is done for");
+        }
+    }
+
     //bool correctSkullOrder()    {
     //    // Check that skulls are near the correct podiums
     //    bool rightRatPos = Math.Abs(ratSkull.transform.position.x - ratPodium.transform.position.x) < 2
