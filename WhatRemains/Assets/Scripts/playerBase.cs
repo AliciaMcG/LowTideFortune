@@ -49,15 +49,31 @@ public class playerBase : MonoBehaviour
     [Header("Object Interaction")]
     public IInteractable interactableObj;
 
+    //input system
+    private InputSystem_Actions input;
+
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
         pickedObject = null;
+        input = new InputSystem_Actions();
     }
     void Start()
     {
         velocity.z = 1;
         isSprinting = false;
+    }
+
+    private void OnEnable()
+    {
+        input.Player.Enable();
+        input.Player.Interact.performed += OnInteract;
+    }
+
+    private void OnDisable()
+    {
+        input.Player.Interact.performed -= OnInteract;
+        input.Player.Disable();
     }
 
     void Update()
@@ -176,11 +192,13 @@ public class playerBase : MonoBehaviour
         controller.Move(finalMove * Time.deltaTime);
     }
 
-    public  void OnInteract(InputAction.CallbackContext context)
+    public void OnInteract(InputAction.CallbackContext context)
     {
+        Debug.Log("Interacting with door");
         if (context.performed)
         {
             if (interactableObj != null) {
+                //Debug.Log("Interacting with door");
                 interactableObj.interact(this);
             }            
         }
