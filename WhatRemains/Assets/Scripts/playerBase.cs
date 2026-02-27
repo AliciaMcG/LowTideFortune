@@ -22,6 +22,7 @@ public class playerBase : MonoBehaviour
     [Header("GameObjects")]
     public CharacterController controller;
     public Transform camOrient;
+    public Transform playerCam;
 
     [Header("Movement")]
     public float playerSpeed;
@@ -64,7 +65,7 @@ public class playerBase : MonoBehaviour
         checkNmove();
 
         // pickup / put down
-        cast = Physics.Raycast(camOrient.position, camOrient.forward, out hit, interactDist);
+        cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, attachedDist);
         interactableObj = null;
 
         if (cast)
@@ -77,10 +78,8 @@ public class playerBase : MonoBehaviour
         if (interactableObj == null) { Debug.Log("no interactable"); }
         
 
-        if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false)
-        {
-            if (pickedObject != null)
-            { // Put down
+        if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
+            if (pickedObject != null) {     // Put down
 
                 pickedObject.SetParent(candleList.transform); //FIX (make return)
                 if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = false; }
