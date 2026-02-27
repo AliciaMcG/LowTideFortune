@@ -42,6 +42,8 @@ public class playerBase : MonoBehaviour
     public float attachedDist;
     public Transform pickedObject;
     public GameObject candleList;
+    public RaycastHit hit;
+    public bool cast;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -59,10 +61,9 @@ public class playerBase : MonoBehaviour
         checkNmove();
 
         // pickup
-        RaycastHit hit;
-        bool cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, pickupDist);
+        cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, pickupDist);
 
-        if (Input.GetKeyDown(KeyCode.F)) {
+        if (Input.GetKeyDown(KeyCode.F && tarotCards.pointingAtTargetPos == false)) {
             if (pickedObject != null) {
                 pickedObject.SetParent(candleList.transform);
 
