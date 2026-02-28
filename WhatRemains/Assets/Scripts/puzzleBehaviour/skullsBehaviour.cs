@@ -41,7 +41,7 @@ public class skullsBehaviour : MonoBehaviour
                     //pointing at a snapping position
                     tarotCards.pointingAtTargetPos = true;
 
-                    //Debug.Log(playerBaseScript.pickedObject);
+                    Debug.Log(playerBaseScript.pickedObject);
 
                     //if f is pressed
                     if (Input.GetKeyDown(KeyCode.F))

@@ -13,6 +13,7 @@ public class doorBase : MonoBehaviour, IInteractable
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     public bool doorIsOpen;
+    public Animator animator;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -50,8 +51,16 @@ public class doorBase : MonoBehaviour, IInteractable
     public void interact(playerBase player)
     {
         doorIsOpen = !doorIsOpen;
-        if (doorIsOpen) { Debug.Log("door open"); }
-        else { Debug.Log("door closed"); }
+        if (doorIsOpen) 
+        { 
+            animator.SetTrigger("Open");
+            //Debug.Log("door open"); 
+        }
+        else 
+        { 
+            animator.SetTrigger("Close");
+            //Debug.Log("door closed"); 
+        }
     }
 }
 
