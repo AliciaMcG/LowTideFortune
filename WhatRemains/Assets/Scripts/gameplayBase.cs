@@ -44,7 +44,7 @@ public class gameplayBase : MonoBehaviour
     void Start()
     {
         foreach (GameObject candle  in candlesArr) {
-            candle.SetActive(false);
+            candle.SetActive(true);
         }
     }
 
