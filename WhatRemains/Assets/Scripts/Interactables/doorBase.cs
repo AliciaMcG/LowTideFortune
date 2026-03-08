@@ -15,6 +15,10 @@ public class doorBase : MonoBehaviour, IInteractable
     public bool doorIsOpen;
     public Animator animator;
 
+    public AudioSource doorOpenSound;
+    public AudioSource doorCloseSound;
+
+
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
@@ -53,11 +57,17 @@ public class doorBase : MonoBehaviour, IInteractable
         doorIsOpen = !doorIsOpen;
         if (doorIsOpen) 
         { 
+            //play door open sound
+            //doorOpenSound.Play();
+
             animator.SetTrigger("Open");
             //Debug.Log("door open"); 
         }
         else 
-        { 
+        {
+            //play door close sound
+            //doorCloseSound.Play();
+
             animator.SetTrigger("Close");
             //Debug.Log("door closed"); 
         }
