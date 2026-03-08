@@ -58,7 +58,7 @@ public class doorBase : MonoBehaviour, IInteractable
         if (doorIsOpen) 
         { 
             //play door open sound
-            //doorOpenSound.Play();
+            doorOpenSound.Play();
 
             animator.SetTrigger("Open");
             //Debug.Log("door open"); 
@@ -66,7 +66,7 @@ public class doorBase : MonoBehaviour, IInteractable
         else 
         {
             //play door close sound
-            //doorCloseSound.Play();
+            doorCloseSound.Play();
 
             animator.SetTrigger("Close");
             //Debug.Log("door closed"); 

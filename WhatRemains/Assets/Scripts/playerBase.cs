@@ -118,6 +118,8 @@ public class playerBase : MonoBehaviour
                 if (!placeSound.isPlaying)
                 {
                     placeSound.Play();
+                    Debug.Log("placing sound playing");
+
                 }
 
                 pickedObject.SetParent(candleList.transform); //FIX (make return)
@@ -259,6 +261,7 @@ public class playerBase : MonoBehaviour
         //if the distance is within 1, play the boiling sound
         if (distance <= 1.0)
         {
+            Debug.Log("next to cauldron");
             if (!cauldronSound.isPlaying)
             {
                 cauldronSound.Play();

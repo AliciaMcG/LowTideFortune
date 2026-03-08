@@ -50,7 +50,7 @@ public class gameplayBase : MonoBehaviour
     void Start()
     {
         foreach (GameObject candle  in candlesArr) {
-            candle.SetActive(true);
+            candle.SetActive(false);
         }
     }
 
