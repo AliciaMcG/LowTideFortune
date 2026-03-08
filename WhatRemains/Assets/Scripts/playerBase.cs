@@ -49,6 +49,12 @@ public class playerBase : MonoBehaviour
     [Header("Object Interaction")]
     public IInteractable interactableObj;
 
+    [Header("Sounds")]
+    public AudioSource walkingSound;
+    public AudioSource pickupSound;
+    public AudioSource placeSound;
+    
+
     //input system
     private InputSystem_Actions input;
 
@@ -97,6 +103,9 @@ public class playerBase : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
             if (pickedObject != null) {     // Put down
 
+                //play placing sound
+                placeSound.Play();
+
                 pickedObject.SetParent(candleList.transform); //FIX (make return)
                 if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = false; }
                 if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = true; }
@@ -109,6 +118,8 @@ public class playerBase : MonoBehaviour
                 {
                     if (hit.transform.CompareTag("pickupAble"))
                     {
+                        //play picking up sound
+                        pickupSound.Play();
 
                         pickedObject = hit.transform;
                         pickedObject.SetParent(controller.transform);
@@ -118,6 +129,9 @@ public class playerBase : MonoBehaviour
                     }
                     if (hit.transform.CompareTag("chair"))
                     {
+                        //play picking up sound
+                        pickupSound.Play();
+                        
                         //get the chair object
                         Transform chair;
                         chair = hit.transform;
@@ -150,6 +164,9 @@ public class playerBase : MonoBehaviour
     ///
     private void checkNmove()
     {
+        //play the walking sound
+        walkingSound.Play();
+
         wasdInput.x = Input.GetAxisRaw("Horizontal");
         wasdInput.z = Input.GetAxisRaw("Vertical");
 
@@ -194,11 +211,10 @@ public class playerBase : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        Debug.Log("Interacting with door");
         if (context.performed)
         {
             if (interactableObj != null) {
-                //Debug.Log("Interacting with door");
+                Debug.Log("Interacting with door");
                 interactableObj.interact(this);
             }            
         }
