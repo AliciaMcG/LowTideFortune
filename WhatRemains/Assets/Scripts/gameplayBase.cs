@@ -25,6 +25,7 @@ public class gameplayBase : MonoBehaviour
 
     [Header("Objects")]
     public GameObject[] candlesArr;
+    public GameObject[] candlePlacements;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -46,6 +47,11 @@ public class gameplayBase : MonoBehaviour
         foreach (GameObject candle  in candlesArr) {
             candle.SetActive(true);
         }
+
+        foreach (GameObject candlePlacement in candlePlacements)
+        {
+            candlePlacement.SetActive(false);
+        }
     }
 
     void Update()
@@ -65,7 +71,9 @@ public class gameplayBase : MonoBehaviour
         puzzlesCompleted[currPuzInt] = true;
 
         // set active curr candle :)
-        candlesArr[currPuzInt].SetActive(true); 
+        candlesArr[currPuzInt].SetActive(true);
+        candlePlacements[currPuzInt].SetActive(true);
+
     }
 
 }

@@ -20,15 +20,17 @@ public class puzzle2Behaviour : MonoBehaviour
     [Header("Objects")]
     gameplayBase puzzleManager;
     public GameObject cauldron;
+    public ParticleSystem cauldronParticles;
 
     [Header("Recipe")]
     public List<int> requiredIngredients = new List<int> { 0, 1, 2, 3 };
-    public List<int> currentIngredients;
+    public List<int> currentIngredients = new List<int>();
     bool isSpoiled;
+
 
     //[Header("Lists")]
 
-    ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////      LOOPS     ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
     }
@@ -49,6 +51,11 @@ public class puzzle2Behaviour : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
+    private void OnTriggerEnter(Collider other)
+    {
+        addIngredient(other.gameObject);
+    }
+
     public void addIngredient(GameObject ingredient)
     {
         if (isSpoiled == true)
@@ -75,9 +82,12 @@ public class puzzle2Behaviour : MonoBehaviour
         if (!currentIngredients.Contains(jarID))
         {
             currentIngredients.Add(jarID);
+            updateParticles();
             checkMixture();
         }
     }
+
+    
 
     void checkMixture()
     {
@@ -93,11 +103,38 @@ public class puzzle2Behaviour : MonoBehaviour
     {
         // play spoil sound effect
         isSpoiled = true;
+
+        var main = cauldronParticles.main;
+        var emission = cauldronParticles.emission;
+
+        //darkens the colour as they put ingredients in
+        Color startColour = Color.black;
+        emission.rateOverTime = 0;
+
+        cauldronParticles.Clear();
     }
 
     public void dumpMixture()
     {
         currentIngredients.Clear();
         isSpoiled = false;
+
+        var emission = cauldronParticles.emission;
+        emission.rateOverTime = 10;
+    }
+
+    void updateParticles()
+    {
+        float progress = (float)currentIngredients.Count / requiredIngredients.Count;
+
+        var main = cauldronParticles.main;
+        var emission = cauldronParticles.emission;
+
+        //darkens the colour as they put ingredients in
+        Color startColour = Color.Lerp(Color.white, Color.red, progress);
+        main.startColor = startColour;
+
+        //increases the particles amount over time
+        emission.rateOverTime = 10 + (progress * 50);
     }
 }

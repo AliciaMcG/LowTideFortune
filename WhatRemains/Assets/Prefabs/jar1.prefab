@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: jar1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 18dfca5958fe5e74a80e6638bc8a62af, type: 3}
+      propertyPath: m_TagString
+      value: pickupAble
+      objectReference: {fileID: 0}
     - target: {fileID: 2586607309129781981, guid: 18dfca5958fe5e74a80e6638bc8a62af, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
