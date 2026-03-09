@@ -49,6 +49,17 @@ public class playerBase : MonoBehaviour
     [Header("Object Interaction")]
     public IInteractable interactableObj;
 
+    [Header("Sounds")]
+    public AudioSource walkingSound;
+    public AudioSource pickupSound;
+    public AudioSource placeSound;
+    public AudioSource cauldronSound;
+    public AudioSource entityNormalSound;
+    public AudioSource entityChaseSound;
+    public Transform entityPos; 
+    public Transform cauldronPos; 
+    public bool entityChasing;
+
     //input system
     private InputSystem_Actions input;
 
@@ -62,6 +73,8 @@ public class playerBase : MonoBehaviour
     {
         velocity.z = 1;
         isSprinting = false;
+
+        entityChasing = false;
     }
 
     private void OnEnable()
@@ -80,6 +93,10 @@ public class playerBase : MonoBehaviour
     {
         checkNmove();
 
+        //play certain sounds depending on the players distance from different objects
+        checkEntityDistance();
+        checkCauldronDistance();
+
         // pickup / put down
         cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, attachedDist);
         interactableObj = null;
@@ -97,6 +114,14 @@ public class playerBase : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
             if (pickedObject != null) {     // Put down
 
+                //play placing sound
+                if (!placeSound.isPlaying)
+                {
+                    placeSound.Play();
+                    Debug.Log("placing sound playing");
+
+                }
+
                 pickedObject.SetParent(candleList.transform); //FIX (make return)
                 if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = false; }
                 if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = true; }
@@ -109,6 +134,11 @@ public class playerBase : MonoBehaviour
                 {
                     if (hit.transform.CompareTag("pickupAble"))
                     {
+                        //play picking up sound
+                        if (!pickupSound.isPlaying)
+                        {
+                            pickupSound.Play();
+                        }
 
                         pickedObject = hit.transform;
                         pickedObject.SetParent(controller.transform);
@@ -118,6 +148,12 @@ public class playerBase : MonoBehaviour
                     }
                     if (hit.transform.CompareTag("chair"))
                     {
+                        //play picking up sound
+                        if (!pickupSound.isPlaying)
+                        {
+                            pickupSound.Play();
+                        }
+
                         //get the chair object
                         Transform chair;
                         chair = hit.transform;
@@ -190,17 +226,83 @@ public class playerBase : MonoBehaviour
         Vector3 finalMove = moveVector * playerSpeed * velocity.z + Vector3.up * velocity.y;
 
         controller.Move(finalMove * Time.deltaTime);
+
+        // play the walking sound
+        if ((wasdInput.x != 0 || wasdInput.z != 0) && controller.isGrounded)
+        {
+            if (!walkingSound.isPlaying)
+            {
+                walkingSound.Play();
+            }
+        }
+        else
+        {
+            walkingSound.Stop();
+        }
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        Debug.Log("Interacting with door");
         if (context.performed)
         {
             if (interactableObj != null) {
-                //Debug.Log("Interacting with door");
+                Debug.Log("Interacting with door");
                 interactableObj.interact(this);
             }            
         }
     }
+
+    //plays a boiling sound when the player is close enough to the cauldron
+    public void checkCauldronDistance()
+    {
+        //get the distance between the player and the cauldron
+        float distance = Vector3.Distance(cauldronPos.position, playerCam.position);
+
+        //if the distance is within 1, play the boiling sound
+        if (distance <= 10.0)
+        {
+            if (!cauldronSound.isPlaying)
+            {
+                cauldronSound.Play();
+            }
+        }
+        else
+        {
+            cauldronSound.Stop();
+        }
+    }
+    //plays entity sounds when the player is close enough to the entity
+    public void checkEntityDistance()
+    {
+        //get the distance between the player and the entity
+        float distance = Vector3.Distance(entityPos.position, playerCam.position);
+
+        //if the distance is within 1, play the entity sound
+        if (distance <= 15.0)
+        {
+            //if its chasing, play the footsteps
+            if (!entityNormalSound.isPlaying)
+            {
+                entityNormalSound.Play();
+            }
+        
+            if (entityChasing)
+            {
+                if (!entityChaseSound.isPlaying)
+                {
+                    entityChaseSound.Play();
+                }
+            }
+            else
+            {
+                entityChaseSound.Stop();
+            }
+        }
+        else
+        {
+            entityNormalSound.Stop();
+            entityChaseSound.Stop();
+        }
+    }
+
 }

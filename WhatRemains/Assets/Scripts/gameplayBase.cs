@@ -6,6 +6,8 @@ using UnityEngine;
 /// 
 ///   Global variables like which rooms unlocked 
 ///   set current puzzle to 7 for none
+/// 
+///   Ending the game
 ///   
 ///   Placed this script on candlesFolder
 ///   
@@ -25,6 +27,8 @@ public class gameplayBase : MonoBehaviour
 
     [Header("Objects")]
     public GameObject[] candlesArr;
+    public AudioSource candleSpawnSound;
+    public AudioSource entityScream;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -44,7 +48,7 @@ public class gameplayBase : MonoBehaviour
     void Start()
     {
         foreach (GameObject candle  in candlesArr) {
-            candle.SetActive(true);
+            candle.SetActive(false);
         }
     }
 
@@ -66,6 +70,19 @@ public class gameplayBase : MonoBehaviour
 
         // set active curr candle :)
         candlesArr[currPuzInt].SetActive(true); 
+
+        //play the candle spawn sound
+        candleSpawnSound.Play();
+    }
+
+    public void completeGame()
+    {
+        //entity screams
+        if (!entityScream.isPlaying)
+        {
+            entityScream.Play();
+        }
+        
     }
 
 }

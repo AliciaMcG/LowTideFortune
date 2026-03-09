@@ -23,6 +23,8 @@ public class tarotCards : MonoBehaviour
     public playerBase playerBaseScript;
 
     public static bool pointingAtTargetPos;
+    public AudioSource placeSound;
+
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
 
@@ -48,6 +50,14 @@ public class tarotCards : MonoBehaviour
                     //if f is pressed
                     if (Input.GetKeyDown(KeyCode.F))
                     {
+                        //play placing sound
+                        if (!placeSound.isPlaying)
+                        {
+                            placeSound.Play();
+                            Debug.Log("placing sound playing");
+
+                        }
+
                         //disconnect it from the hand and re-enable the collider
                         playerBaseScript.pickedObject.SetParent(null);
 
