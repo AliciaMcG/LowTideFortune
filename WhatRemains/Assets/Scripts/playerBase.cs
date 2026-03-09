@@ -259,9 +259,8 @@ public class playerBase : MonoBehaviour
         float distance = Vector3.Distance(cauldronPos.position, playerCam.position);
 
         //if the distance is within 1, play the boiling sound
-        if (distance <= 1.0)
+        if (distance <= 10.0)
         {
-            Debug.Log("next to cauldron");
             if (!cauldronSound.isPlaying)
             {
                 cauldronSound.Play();
@@ -279,7 +278,7 @@ public class playerBase : MonoBehaviour
         float distance = Vector3.Distance(entityPos.position, playerCam.position);
 
         //if the distance is within 1, play the entity sound
-        if (distance <= 5.0)
+        if (distance <= 15.0)
         {
             //if its chasing, play the footsteps
             if (!entityNormalSound.isPlaying)
@@ -302,6 +301,7 @@ public class playerBase : MonoBehaviour
         else
         {
             entityNormalSound.Stop();
+            entityChaseSound.Stop();
         }
     }
 

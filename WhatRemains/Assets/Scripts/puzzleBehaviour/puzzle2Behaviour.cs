@@ -26,6 +26,11 @@ public class puzzle2Behaviour : MonoBehaviour
     public List<int> currentIngredients;
     bool isSpoiled;
 
+    [Header("Recipe")]
+    public AudioSource buttonClickSound;
+    public AudioSource correctJarSound;
+    public AudioSource incorrectJarSound;
+
     //[Header("Lists")]
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
@@ -82,6 +87,10 @@ public class puzzle2Behaviour : MonoBehaviour
     void checkMixture()
     {
         // play sound effect for correct ingredient
+        if (!correctJarSound.isPlaying)
+        {
+            correctJarSound.Play();
+        }
         
         if (currentIngredients.Count == requiredIngredients.Count)
         {
@@ -92,12 +101,25 @@ public class puzzle2Behaviour : MonoBehaviour
     void spoilMixture()
     {
         // play spoil sound effect
+        if (!incorrectJarSound.isPlaying)
+        {
+            incorrectJarSound.Play();
+        }
+        
         isSpoiled = true;
     }
 
+    //call this when teh dump button is pressed
     public void dumpMixture()
     {
+        //play button click sound
+        if (!buttonClickSound.isPlaying)
+        {
+            buttonClickSound.Play();
+        }
+
         currentIngredients.Clear();
         isSpoiled = false;
     }
+
 }

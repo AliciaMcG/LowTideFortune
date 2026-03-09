@@ -27,8 +27,6 @@ public class gameplayBase : MonoBehaviour
 
     [Header("Objects")]
     public GameObject[] candlesArr;
-    public static bool[] candlesPlaced;
-
     public AudioSource candleSpawnSound;
     public AudioSource entityScream;
 
@@ -79,22 +77,12 @@ public class gameplayBase : MonoBehaviour
 
     public void completeGame()
     {
-        int numCandlesPlaced = 0;
-        foreach (bool candlePlaced  in candlesPlaced) 
+        //entity screams
+        if (!entityScream.isPlaying)
         {
-            if (candlePlaced == true)
-            {
-                numCandlesPlaced++;
-            }
+            entityScream.Play();
         }
-
-        if (numCandlesPlaced == 6)
-        {
-            if (!entityScream.isPlaying)
-            {
-                entityScream.Play();
-            }
-        }
+        
     }
 
 }
