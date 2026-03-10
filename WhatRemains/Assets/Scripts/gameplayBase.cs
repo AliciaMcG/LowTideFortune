@@ -27,6 +27,7 @@ public class gameplayBase : MonoBehaviour
 
     [Header("Objects")]
     public GameObject[] candlesArr;
+    public GameObject[] candlePlacements;
     public AudioSource candleSpawnSound;
     public AudioSource entityScream;
 
@@ -50,6 +51,11 @@ public class gameplayBase : MonoBehaviour
         foreach (GameObject candle  in candlesArr) {
             candle.SetActive(false);
         }
+
+        foreach (GameObject candlePlacement in candlePlacements)
+        {
+            candlePlacement.SetActive(false);
+        }
     }
 
     void Update()
@@ -69,7 +75,8 @@ public class gameplayBase : MonoBehaviour
         puzzlesCompleted[currPuzInt] = true;
 
         // set active curr candle :)
-        candlesArr[currPuzInt].SetActive(true); 
+        candlesArr[currPuzInt].SetActive(true);
+        candlePlacements[currPuzInt].SetActive(true);
 
         //play the candle spawn sound
         candleSpawnSound.Play();
