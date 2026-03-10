@@ -8,6 +8,7 @@ TagManager:
   - chair
   - tarotPos
   - skullPos
+  - Floor
   layers:
   - Default
   - TransparentFX

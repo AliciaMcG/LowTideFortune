@@ -17,12 +17,33 @@ public class ingredientJar : MonoBehaviour
     /// 
 
     public int id;
-    
+    Vector3 startPos;
+    Quaternion startRotation;
+
+    Rigidbody rb;
+
     void Start()
     {
+        startPos = transform.position;
+        startRotation = transform.rotation;
+
+        rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
+    public void RespawnJar()
     {
+        transform.position = startPos;
+        transform.rotation = startRotation;
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            RespawnJar();
+        }
     }
 }

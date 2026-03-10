@@ -144,7 +144,7 @@ public class playerBase : MonoBehaviour
                         pickedObject.SetParent(controller.transform);
 
                         if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = true; }
-                        if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = false; }
+                        if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = true; }
                     }
                     if (hit.transform.CompareTag("chair"))
                     {
