@@ -1,7 +1,5 @@
 using UnityEngine;
 
-public class tarotCards : MonoBehaviour
-{
     /// <summary>
     /// Holds code for:
     /// 
@@ -14,8 +12,9 @@ public class tarotCards : MonoBehaviour
     ///   
     ///   
     /// </summary>
-    /// 
-    /// 
+
+public class tarotCards : MonoBehaviour
+{
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
 
     public static bool[] tarotsInPosition = new bool[12];

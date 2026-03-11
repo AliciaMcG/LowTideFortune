@@ -4,8 +4,8 @@ using UnityEngine;
 /// <summary>
 /// Holds code for:
 /// 
-///   Global variables like which rooms unlocked 
-///   set current puzzle to 7 for none
+///   Global variables 
+///   set current puzzle to 0 for none
 /// 
 ///   Ending the game
 ///   
@@ -37,13 +37,13 @@ public class gameplayBase : MonoBehaviour
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
-            if (instance == null) { Debug.Log("destroyed wrong gameplayBase instance??"); }
         }
         instance = this;
         if (instance == null) { Debug.Log("no gameplayBase instance, youre cooked buddy :(((( "); }
 
 
         puzzlesCompleted = new bool[] { false, false, false, false, false };
+        currPuz = 0;
     }
 
     void Start()

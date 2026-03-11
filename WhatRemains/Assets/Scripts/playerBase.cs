@@ -19,10 +19,11 @@ using UnityEngine.InputSystem;
 public class playerBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
-    [Header("GameObjects")]
+    [Header("Objects")]
     public CharacterController controller;
     public Transform camOrient;
     public Transform playerCam;
+    public Rigidbody rb; //FIX VARS OVERLAP
 
     [Header("Movement")]
     public float playerSpeed;

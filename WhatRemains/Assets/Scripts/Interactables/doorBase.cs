@@ -42,16 +42,16 @@ public class doorBase : MonoBehaviour, IInteractable
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    private void OnTriggerEnter(Collider other)    {
-        if (other.TryGetComponent(out playerBase player)) 
-        { 
-            player.interactableObj = this; 
-            //Debug.Log("player colliding with door");
-        }
-    }
-    private void OnTriggerExit(Collider other)    {
-        if (other.TryGetComponent(out playerBase player)) { player.interactableObj = null; }
-    }
+    //private void OnTriggerEnter(Collider other)    {
+    //    if (other.TryGetComponent(out playerBase player)) 
+    //    { 
+    //        player.interactableObj = this; 
+    //        //Debug.Log("player colliding with door");
+    //    }
+    //}
+    //private void OnTriggerExit(Collider other)    {
+    //    if (other.TryGetComponent(out playerBase player)) { player.interactableObj = null; } //FIX (delete??)
+    //}
     public void interact(playerBase player)
     {
         doorIsOpen = !doorIsOpen;
