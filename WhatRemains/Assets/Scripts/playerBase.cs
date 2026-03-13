@@ -80,18 +80,6 @@ public class playerBase : MonoBehaviour
         entityChasing = false;
     }
 
-    private void OnEnable()
-    {
-        input.Player.Enable();
-        input.Player.Interact.performed += OnInteract;
-    }
-
-    private void OnDisable()
-    {
-        input.Player.Interact.performed -= OnInteract;
-        input.Player.Disable();
-    }
-
     void Update()
     {
         //play certain sounds depending on the players distance from different objects
