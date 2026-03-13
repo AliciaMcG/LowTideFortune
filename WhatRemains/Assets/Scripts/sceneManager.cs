@@ -13,13 +13,25 @@ using UnityEngine.SceneManagement;
 public class sceneManager : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    public static sceneManager instance; //not multiplayer?? fix????
+
     public static bool gameIsPaused;
     public GameObject pauseMenuUI;
-    //public static bool gameOver; //FIX (is necessary?? Set up ui??)
-    //public GameObject gameOverUI; //
+    public static bool gameOver; //FIX (is necessary?? Set up ui??)
     //public int lastCheckpoint; //FIX (add chckpoints)
 
+
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
+    private void Awake()
+    {
+
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        instance = this;
+    }
+
     void Start()
     {
         if (SceneManager.GetActiveScene().name == "gameplayScene") { 
@@ -27,6 +39,8 @@ public class sceneManager : MonoBehaviour
         }
         Time.timeScale = 1.0f;
         gameIsPaused = false;
+
+        gameOver = false;
     }
 
 

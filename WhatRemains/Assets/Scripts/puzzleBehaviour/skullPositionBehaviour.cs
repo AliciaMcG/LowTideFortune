@@ -31,6 +31,7 @@ public class skullPositionBehaviour : MonoBehaviour
 
             //check if the skulls are in the right place
             CheckSkulls();
+            if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
         }
         if (collider.gameObject.name.Contains("ratSkull") && gameObject.name.Contains("ratPos"))
         {
@@ -42,6 +43,7 @@ public class skullPositionBehaviour : MonoBehaviour
 
             //check if the skulls are in the right place
             CheckSkulls();
+            if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
         }
         if (collider.gameObject.name.Contains("deerSkull") && gameObject.name.Contains("deerPos"))
         {
@@ -53,6 +55,7 @@ public class skullPositionBehaviour : MonoBehaviour
 
             //check if the skulls are in the right place
             CheckSkulls();
+            if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
         }
         
     }

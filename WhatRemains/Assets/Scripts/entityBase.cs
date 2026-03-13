@@ -18,6 +18,7 @@ public class entityBase : MonoBehaviour
     [Header("Entity Attributes")]
     public int entityState;
     public float entitySpeed;
+    public float messTime;
 
     [Header("Objects")]
     public playerBase targetPlayer;
@@ -56,6 +57,13 @@ public class entityBase : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.TryGetComponent(out playerBase player) && entityState == 3) {
+            takePlayerHealth(player);
+        }
+    }
+
     private void updateEntityState()
     {
         switch (entityState)        {
@@ -68,6 +76,10 @@ public class entityBase : MonoBehaviour
                 //entity is idle
                 //FIX add idle actions
                 //FIX add movement
+                if (messTime <= 0)
+                {
+                    entityState = 2;
+                }
                 break;
 
             case 2:
@@ -109,8 +121,26 @@ public class entityBase : MonoBehaviour
                 break;
 
             case 4:
-                //
+                // Skulls
                 Debug.Log("Entity is messing with puzzle 4");
+
+                if (gameplayBase.instance.puzzlesCompleted[3] == false)
+                {
+
+                    for (int i = 0; i < puzzle4Behaviour.puzz4.skullsArr.Length; i++)
+                    {
+                        for (int j = 0; j < puzzle4Behaviour.puzz4.skullsArr.Length; j++) { 
+
+                            if (Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position) < 3f) {
+                                puzzle4Behaviour.puzz4.skullsArr[i].transform.position = puzzle4Behaviour.puzz4.skullPlacesArr[Random.Range(0, puzzle4Behaviour.puzz4.skullsArr.Length)].transform.position;
+                                messTime = 7f;
+                                break;
+                            }
+                            else { messTime = 3f; }                        
+                        }
+                    }
+                }
+
                 break;
 
             case 5:
@@ -134,5 +164,28 @@ public class entityBase : MonoBehaviour
 
         // the if reaches player is in collision
 
+    }
+
+    private void takePlayerHealth(playerBase player)
+    {
+        player.playerHealth--;
+
+        if (player.playerHealth <= 0)
+        {
+            sceneManager.gameOver = true;
+        }
+
+        //Set display
+        for (int i = 0; i < gameplayBase.instance.healthDisplay.Length; i++)
+        {
+            if (i <= player.playerHealth)
+            {
+                gameplayBase.instance.healthDisplay[i].texture = gameplayBase.instance.healthTrue;
+            }
+            else if (i > player.playerHealth)
+            {
+                gameplayBase.instance.healthDisplay[i].texture = gameplayBase.instance.healthFalse;
+            }
+        }
     }
 }

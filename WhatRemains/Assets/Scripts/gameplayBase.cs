@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Holds code for:
@@ -24,6 +25,12 @@ public class gameplayBase : MonoBehaviour
     public bool diningUnlocked;
     public bool[] puzzlesCompleted; // track completion
     public int currPuz; //current puzzle
+
+    [Header("UI")]
+    public Texture healthTrue;
+    public Texture healthFalse;
+
+    public RawImage[] healthDisplay = new RawImage[3];
 
     [Header("Objects")]
     public GameObject[] candlesArr;

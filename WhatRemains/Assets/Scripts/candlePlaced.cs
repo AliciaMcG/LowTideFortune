@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class candlePlaced : MonoBehaviour
 {
-    public gameplayBase gameplayBase;
     public static int numCandlesPlaced = 0;
     public ParticleSystem placeParticles;
 
@@ -28,9 +27,9 @@ public class candlePlaced : MonoBehaviour
         }
 
         //if six candles have been placed, the game ends
-        if (numCandlesPlaced == 6)
+        if (numCandlesPlaced == 5)
         {
-            gameplayBase.completeGame();
+            gameplayBase.instance.completeGame();
             placeParticles.Play();
 
         }

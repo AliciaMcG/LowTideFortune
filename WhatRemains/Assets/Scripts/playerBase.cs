@@ -29,6 +29,7 @@ public class playerBase : MonoBehaviour
     public float playerSpeed;
     public float jumpForce = 7f;
     public float gravity = -20f;
+    public int playerHealth;
 
     public Vector3 wasdInput;
     public Vector3 velocity;
@@ -74,6 +75,7 @@ public class playerBase : MonoBehaviour
     {
         velocity.z = 1;
         isSprinting = false;
+        playerHealth = 3;
 
         entityChasing = false;
     }
@@ -92,14 +94,12 @@ public class playerBase : MonoBehaviour
 
     void Update()
     {
-        checkNmove();
-
         //play certain sounds depending on the players distance from different objects
         checkEntityDistance();
         checkCauldronDistance();
 
         // pickup / put down
-        cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, attachedDist);
+        cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, interactDist);
         interactableObj = null;
 
         if (cast)
@@ -123,7 +123,6 @@ public class playerBase : MonoBehaviour
 
                 }
 
-                pickedObject.SetParent(candleList.transform); //FIX (make return)
                 if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = false; }
                 if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = true; }
 
@@ -142,7 +141,6 @@ public class playerBase : MonoBehaviour
                         }
 
                         pickedObject = hit.transform;
-                        pickedObject.SetParent(controller.transform);
 
                         if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = true; }
                         if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = true; }
@@ -175,27 +173,44 @@ public class playerBase : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        movePlayer();
+    }
+
     private void LateUpdate()
     {
         if (pickedObject != null) {
-            pickedObject.position = camOrient.position + camOrient.forward * attachedDist;
+            pickedObject.position = playerCam.position + playerCam.forward * attachedDist; 
+
         }
     }
 
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    private void checkNmove()
+    public void OnMove(InputAction.CallbackContext context)
     {
-        wasdInput.x = Input.GetAxisRaw("Horizontal");
-        wasdInput.z = Input.GetAxisRaw("Vertical");
+        wasdInput.x = context.ReadValue<Vector2>().x;
+        wasdInput.z = context.ReadValue<Vector2>().y;
+    }
+    public void OnShift(InputAction.CallbackContext context)
+    {
+        if (context.started)        {
+            isSprinting = true;
+        }
 
+        if (context.canceled)        {
+            isSprinting = false;
+        }
+    }
+
+    private void movePlayer()
+    {
         Vector3 moveVector = camOrient.forward * wasdInput.z + camOrient.right * wasdInput.x;
         moveVector = Vector3.ClampMagnitude(moveVector, 1f);
 
         // SPRINTING
-        if (Input.GetKey(KeyCode.LeftShift)) { isSprinting = true; }
-        else {  isSprinting = false; }
 
         if (controller.isGrounded) {
             if (isSprinting) {
