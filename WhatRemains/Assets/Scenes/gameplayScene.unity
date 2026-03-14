@@ -8843,7 +8843,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -36031,7 +36031,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77633751cc3cb48f5bd63f2261a82188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeParticles: {fileID: 329767077}
 --- !u!1001 &1320214873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36130,7 +36129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77633751cc3cb48f5bd63f2261a82188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeParticles: {fileID: 329767077}
 --- !u!1001 &1320708643
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44072,7 +44070,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77633751cc3cb48f5bd63f2261a82188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeParticles: {fileID: 329767077}
 --- !u!1001 &1703829983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45709,7 +45706,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77633751cc3cb48f5bd63f2261a82188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeParticles: {fileID: 329767077}
 --- !u!1001 &1782323084
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48841,6 +48837,7 @@ MonoBehaviour:
   - {fileID: 1703453505}
   candleSpawnSound: {fileID: 356883739}
   entityScream: {fileID: 1951028913}
+  entityParticles: {fileID: 329767077}
 --- !u!1001 &1875361513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50551,7 +50548,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77633751cc3cb48f5bd63f2261a82188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeParticles: {fileID: 329767077}
 --- !u!1 &1938229167 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5686134208185362930, guid: 1fd3a7c43c8190f4d8c167ebde694364, type: 3}
@@ -59186,7 +59182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77633751cc3cb48f5bd63f2261a82188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placeParticles: {fileID: 329767077}
 --- !u!1 &2091748432
 GameObject:
   m_ObjectHideFlags: 0

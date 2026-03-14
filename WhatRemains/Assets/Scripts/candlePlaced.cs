@@ -3,15 +3,6 @@ using UnityEngine;
 public class candlePlaced : MonoBehaviour
 {
     public static int numCandlesPlaced = 0;
-    public ParticleSystem placeParticles;
-
-    private void Start()
-    {
-        if(placeParticles != null)
-        {
-            placeParticles.Stop();
-        }
-    }
 
     //if a candle holder is colliding with a candle
     void OnTriggerEnter(Collider other)
@@ -30,8 +21,6 @@ public class candlePlaced : MonoBehaviour
         if (numCandlesPlaced == 5)
         {
             gameplayBase.instance.completeGame();
-            placeParticles.Play();
-
         }
     }
 }
