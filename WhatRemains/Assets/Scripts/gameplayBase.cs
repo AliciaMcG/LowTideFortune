@@ -37,6 +37,7 @@ public class gameplayBase : MonoBehaviour
     public GameObject[] candlePlacements;
     public AudioSource candleSpawnSound;
     public AudioSource entityScream;
+    public ParticleSystem entityParticles;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -96,7 +97,7 @@ public class gameplayBase : MonoBehaviour
         {
             entityScream.Play();
         }
-        
+        entityParticles.Play();
     }
 
 }
