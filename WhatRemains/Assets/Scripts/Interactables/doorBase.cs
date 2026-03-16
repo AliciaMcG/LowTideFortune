@@ -9,7 +9,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 ///   
 /// </summary>
 
-public class doorBase : MonoBehaviour, IInteractable
+public class doorBase : MonoBehaviour, IPullable
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     public bool doorIsOpen;
@@ -52,7 +52,7 @@ public class doorBase : MonoBehaviour, IInteractable
     //private void OnTriggerExit(Collider other)    {
     //    if (other.TryGetComponent(out playerBase player)) { player.interactableObj = null; } //FIX (delete??)
     //}
-    public void interact(playerBase player)
+    public void pull(playerBase player)
     {
         doorIsOpen = !doorIsOpen;
         if (doorIsOpen) 

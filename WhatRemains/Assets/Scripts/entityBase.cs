@@ -90,7 +90,7 @@ public class entityBase : MonoBehaviour
             case 3:
                 //enity is chasing player
                 //FIX start chase sounds
-                entityMoveTo(targetPlayer.rb.position); 
+                //entityMoveTo(targetPlayer.GetComponent<RigidBody>().position); 
                 break;
 
         }
@@ -180,11 +180,11 @@ public class entityBase : MonoBehaviour
         {
             if (i <= player.playerHealth)
             {
-                gameplayBase.instance.healthDisplay[i].texture = gameplayBase.instance.healthTrue;
+                gameplayBase.instance.healthDisplay[i].sprite = gameplayBase.instance.healthTrue;
             }
             else if (i > player.playerHealth)
             {
-                gameplayBase.instance.healthDisplay[i].texture = gameplayBase.instance.healthFalse;
+                gameplayBase.instance.healthDisplay[i].sprite = gameplayBase.instance.healthFalse;
             }
         }
     }

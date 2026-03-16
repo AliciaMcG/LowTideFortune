@@ -27,10 +27,10 @@ public class gameplayBase : MonoBehaviour
     public int currPuz; //current puzzle
 
     [Header("UI")]
-    public Texture healthTrue;
-    public Texture healthFalse;
+    public Sprite healthTrue;
+    public Sprite healthFalse;
 
-    public RawImage[] healthDisplay = new RawImage[3];
+    public Image[] healthDisplay = new Image[3];
 
     [Header("Objects")]
     public GameObject[] candlesArr;

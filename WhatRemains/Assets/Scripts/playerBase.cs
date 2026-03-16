@@ -19,37 +19,33 @@ using UnityEngine.InputSystem;
 public class playerBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    public int playerHealth;
+    
     [Header("Objects")]
+    public playerScriptable playerScriptable;
     public CharacterController controller;
+    public camMover playerCam;
     public Transform camOrient;
-    public Transform playerCam;
-    public Rigidbody rb; //FIX VARS OVERLAP
+    public GameObject playerUIScreen; //pause n gameover
+    public Transform pickable;
+    public Transform pullable;
 
     [Header("Movement")]
-    public float playerSpeed;
-    public float jumpForce = 7f;
-    public float gravity = -20f;
-    public int playerHealth;
-
     public Vector3 wasdInput;
     public Vector3 velocity;
     public bool isSprinting;
+    public bool isJumping;
 
     //[Header("Head Bob")]   //FIX
     //public bool headBobIsActive;
     //public float bobStrength;
     //public float bobFreq;
 
-    [Header("Interaction")]
-    public float interactDist;
-    public float attachedDist; //FIX (move)
+    [Header("Player Object Interaction")]
     public Transform pickedObject; //FIX (move)
-    public GameObject candleList; //FIX (make record current parent)
     public RaycastHit hit;
     public bool cast;
-
-    [Header("Object Interaction")]
-    public IInteractable interactableObj;
+    public GameObject candleList; //FIX (make record current parent)
 
     [Header("Sounds")]
     public AudioSource walkingSound;
@@ -58,18 +54,15 @@ public class playerBase : MonoBehaviour
     public AudioSource cauldronSound;
     public AudioSource entityNormalSound;
     public AudioSource entityChaseSound;
+
     public Transform entityPos; 
     public Transform cauldronPos; 
     public bool entityChasing;
 
-    //input system
-    private InputSystem_Actions input;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
-        pickedObject = null;
-        input = new InputSystem_Actions();
     }
     void Start()
     {
@@ -78,61 +71,23 @@ public class playerBase : MonoBehaviour
         playerHealth = 3;
 
         entityChasing = false;
+        pickedObject = null;
     }
 
     void Update()
     {
+        castPlayerRay();
+
+
         //play certain sounds depending on the players distance from different objects
-        checkEntityDistance();
-        checkCauldronDistance();
+        checkEntityDistance(); //FIX make event?
+        checkCauldronDistance();        
 
-        // pickup / put down
-        cast = Physics.Raycast(playerCam.position, playerCam.forward, out hit, interactDist);
-        interactableObj = null;
-
-        if (cast)
-        {
-            if (hit.collider.TryGetComponent<IInteractable>(out IInteractable interactable)) {
-                interactableObj = interactable;
-            }
-            Debug.Log("Ray hit: " + hit.collider.name);
-        }
-        if (interactableObj == null) { Debug.Log("no interactable"); }
-        
-
-        if (Input.GetKeyDown(KeyCode.F) && tarotCards.pointingAtTargetPos == false) {
-            if (pickedObject != null) {     // Put down
-
-                //play placing sound
-                if (!placeSound.isPlaying)
+        if (Input.GetKeyDown(KeyCode.E) && tarotCards.pointingAtTargetPos == false) {
+  
+                if (cast) //FIX later eep now
                 {
-                    placeSound.Play();
-                    Debug.Log("placing sound playing");
 
-                }
-
-                if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = false; }
-                if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = true; }
-
-                pickedObject = null;
-            }
-            else
-            {             // pickup
-                if (cast)
-                {
-                    if (hit.transform.CompareTag("pickupAble"))
-                    {
-                        //play picking up sound
-                        if (!pickupSound.isPlaying)
-                        {
-                            pickupSound.Play();
-                        }
-
-                        pickedObject = hit.transform;
-
-                        if (pickedObject.GetComponent<Rigidbody>() != null) { pickedObject.GetComponent<Rigidbody>().isKinematic = true; }
-                        if (pickedObject.GetComponent<Collider>() != null) { pickedObject.GetComponent<Collider>().enabled = true; }
-                    }
                     if (hit.transform.CompareTag("chair"))
                     {
                         //play picking up sound
@@ -157,7 +112,7 @@ public class playerBase : MonoBehaviour
                         tarotCard.SetParent(null);
                     }
                 }
-            }
+            
         }
     }
 
@@ -168,9 +123,10 @@ public class playerBase : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (pickedObject != null) {
-            pickedObject.position = playerCam.position + playerCam.forward * attachedDist; 
-
+        if (pickedObject != null)
+        {
+            //hold object position
+            pickedObject.transform.position = camOrient.position + camOrient.up * 4f + playerCam.transform.forward * playerScriptable.attachedDist;
         }
     }
 
@@ -182,15 +138,15 @@ public class playerBase : MonoBehaviour
         wasdInput.x = context.ReadValue<Vector2>().x;
         wasdInput.z = context.ReadValue<Vector2>().y;
     }
-    public void OnShift(InputAction.CallbackContext context)
+    public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.started)        {
-            isSprinting = true;
-        }
-
-        if (context.canceled)        {
-            isSprinting = false;
-        }
+        if (context.performed) { isSprinting = true; }
+        if (context.canceled) { isSprinting = false; }
+    }
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed) { isJumping = true; }
+        if (context.canceled) { isJumping = false; }
     }
 
     private void movePlayer()
@@ -200,67 +156,139 @@ public class playerBase : MonoBehaviour
 
         // SPRINTING
 
-        if (controller.isGrounded) {
-            if (isSprinting) {
+        if (controller.isGrounded)        {
+            if (isSprinting)            {
                 velocity.z += 0.08f;
-                velocity.z = Mathf.Clamp(velocity.z, 1f, 1.5f);
+                velocity.z = Mathf.Clamp(velocity.z, 1f, 1.7f);
             }
 
-            // JUMPING 
-            if (velocity.y < 0) {
+            // JUMPING
+            if (velocity.y < 0)            {
                 velocity.y = -1f;
             }
-            if (Input.GetKey(KeyCode.Space)) { 
-                velocity.y = jumpForce;
+            if (isJumping)            {
+                velocity.y = playerScriptable.jumpForce;
             }
         }
 
         //DECELERATION / Velocity reset / Only forward sprint
-        if (!isSprinting && (velocity.z > 1)) {
-            velocity.z -= 0.1f;
+        if (!isSprinting && (velocity.z > 1))        {
+            velocity.z -= 0.01f;
         }
         if (velocity.z < 1 || wasdInput.z < 0.5) { velocity.z = 1; }
         // NO JUMP SPRINT FLYING
-        if (!controller.isGrounded) {
+        if (!controller.isGrounded)        {
             velocity.z = Mathf.Clamp(velocity.z, 1f, 1.18f);
         }
 
 
-        velocity.y += gravity * Time.deltaTime;
-        Vector3 finalMove = moveVector * playerSpeed * velocity.z + Vector3.up * velocity.y;
+        velocity.y += playerScriptable.gravity * Time.deltaTime;
+        Vector3 finalMove = moveVector * playerScriptable.playerSpeed * velocity.z + Vector3.up * velocity.y;
 
         controller.Move(finalMove * Time.deltaTime);
 
         // play the walking sound
-        if ((wasdInput.x != 0 || wasdInput.z != 0) && controller.isGrounded)
-        {
-            if (!walkingSound.isPlaying)
-            {
+        if ((wasdInput.x != 0 || wasdInput.z != 0) && controller.isGrounded)        {
+            if (!walkingSound.isPlaying)            {
                 walkingSound.Play();
             }
         }
+        else        {
+            walkingSound.Stop();
+        }
+    }
+
+    private void castPlayerRay()
+    {
+        cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
+        if (cast)
+        {
+            if (hit.collider.GetComponent<pickupAble>() != null)
+            {
+                pickable = hit.collider.transform;
+                pullable = null;
+            }
+            else if (hit.collider.GetComponent<IPullable>() != null) 
+            { 
+                pullable = hit.collider.transform;
+                pickable = null;
+            }
+            else
+            {
+                pullable = null;
+                pickable = null;
+                //Debug.Log(" Didnt hit an interactable");
+            }
+
+            playerCam.crosshair.color = pickable != null || pullable != null ? playerCam.cursorScriptable.interactCross : playerCam.cursorScriptable.normalCross;
+            if (pullable != null) { Debug.Log("hit pullable: " + hit.collider.name); }
+            if (pickable != null) { Debug.Log("hit pickable: " + hit.collider.name); }
+            //Debug.Log("Ray hit: " + hit.collider.name);
+        }
         else
         {
-            walkingSound.Stop();
+            pullable = null;
+            pickable = null;
+            playerCam.crosshair.color = playerCam.cursorScriptable.normalCross;
         }
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            if (interactableObj != null) {
-                Debug.Log("Interacting with door");
-                interactableObj.interact(this);
-            }            
+        if (context.started)        {
+
+            if (pickable != null)
+            {
+                if (pickedObject != null) { undoPickup(); }
+
+                if (!pickupSound.isPlaying)
+                {
+                    pickupSound.Play();
+                }
+
+                pickable.GetComponent<pickupAble>().pickup(this);
+                if (pickedObject != null) { 
+                    pickedObject.GetComponent<Rigidbody>().isKinematic = true;
+                    pickedObject.GetComponent<Collider>().enabled = false;
+                    //Debug.Log("Picked up: " + pickedObject.name);
+                }
+            }
+            else if (pickedObject != null)
+            {
+                undoPickup();
+                //Debug.Log("Dropped" + pickedObject.name);
+            }
+            else if (pickable == null) { Debug.Log("nothing pickable"); }
         }
+       
+    }
+    public void OnOpen(InputAction.CallbackContext context)
+    {
+        if (context.started)         { 
+            if (pullable != null)                {
+                pullable.GetComponent<IPullable>().pull(this);
+            }
+            else { Debug.Log("Not an openable"); }
+
+        }
+    }
+
+    private void undoPickup()
+    {
+        if (!placeSound.isPlaying)        {
+            placeSound.Play();
+        }
+
+        pickedObject.GetComponent<Rigidbody>().isKinematic = false;
+        pickedObject.GetComponent<Collider>().enabled = true;
+        pickedObject = null;
     }
 
     //plays a boiling sound when the player is close enough to the cauldron
     public void checkCauldronDistance()
     {
         //get the distance between the player and the cauldron
-        float distance = Vector3.Distance(cauldronPos.position, playerCam.position);
+        float distance = Vector3.Distance(cauldronPos.position, playerCam.transform.position);
 
         //if the distance is within 1, play the boiling sound
         if (distance <= 10.0)
@@ -279,7 +307,7 @@ public class playerBase : MonoBehaviour
     public void checkEntityDistance()
     {
         //get the distance between the player and the entity
-        float distance = Vector3.Distance(entityPos.position, playerCam.position);
+        float distance = Vector3.Distance(entityPos.position, playerCam.transform.position);
 
         //if the distance is within 1, play the entity sound
         if (distance <= 15.0)

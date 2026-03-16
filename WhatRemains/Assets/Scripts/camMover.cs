@@ -1,39 +1,45 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class camMover : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
-    public Camera playerCam;
-    public Vector2 camSpeed;
+    [Header("Camera Attributes")]
     public Transform camOrient;
     public Vector2 camRotation;
+    public Vector2 camSpeed;
+
+    [Header("Objects")]
+    public crosshairScriptable cursorScriptable;
+    public Vector2 cursorMoveInp;
+    public Image crosshair;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        crosshair.sprite = cursorScriptable.crossSpr;
     }
 
     void Update()
     {
-        checkCursorPlace();
         moveCam();
     }
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    private void checkCursorPlace()
+    public void OnLook(InputAction.CallbackContext context)
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * camSpeed.x * Time.deltaTime;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * camSpeed.y * Time.deltaTime;
-
-        camRotation.y += mouseX;
-        camRotation.x -= mouseY;
-        camRotation.x = Mathf.Clamp(camRotation.x, -90f, 90f);
+        cursorMoveInp = context.ReadValue<Vector2>();
     }
-    private void moveCam()
+    public void moveCam()
     {
+        camRotation.y += cursorMoveInp.x * camSpeed.x * Time.fixedDeltaTime;
+        camRotation.x -= cursorMoveInp.y * camSpeed.y * Time.fixedDeltaTime;
+        camRotation.x = Mathf.Clamp(camRotation.x, -90f, 90f);
+
         transform.rotation = Quaternion.Euler(camRotation.x, camRotation.y, 0);
         camOrient.rotation = Quaternion.Euler(0, camRotation.y, 0);
     }

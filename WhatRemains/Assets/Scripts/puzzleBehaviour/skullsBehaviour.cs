@@ -30,7 +30,7 @@ public class skullsBehaviour : MonoBehaviour
         //if the ray is hitting something
         if (playerBaseScript.cast)
         {
-            Debug.Log(playerBaseScript.hit.transform.name);
+            //Debug.Log(playerBaseScript.hit.transform.name);
         
             //if the player's looking at a skull position
             if (playerBaseScript.hit.transform.CompareTag("skullPos"))
