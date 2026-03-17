@@ -27,8 +27,8 @@ public class playerBase : MonoBehaviour
     public camMover playerCam;
     public Transform camOrient;
     public GameObject playerUIScreen; //pause n gameover
-    public Transform pickable;
-    public Transform pullable;
+    public Transform interactable; //e
+    public Transform pullable; //f
 
     [Header("Movement")]
     public Vector3 wasdInput;
@@ -45,7 +45,6 @@ public class playerBase : MonoBehaviour
     public Transform pickedObject; //FIX (move)
     public RaycastHit hit;
     public bool cast;
-    public GameObject candleList; //FIX (make record current parent)
 
     [Header("Sounds")]
     public AudioSource walkingSound;
@@ -68,9 +67,8 @@ public class playerBase : MonoBehaviour
     {
         velocity.z = 1;
         isSprinting = false;
-        playerHealth = 3;
 
-        entityChasing = false;
+        playerHealth = 3;
         pickedObject = null;
     }
 
@@ -203,32 +201,33 @@ public class playerBase : MonoBehaviour
         cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
         if (cast)
         {
-            if (hit.collider.GetComponent<pickupAble>() != null)
+            if (hit.collider.GetComponent<IInteractable>() != null)
             {
-                pickable = hit.collider.transform;
+                interactable = hit.collider.transform;
                 pullable = null;
             }
             else if (hit.collider.GetComponent<IPullable>() != null) 
             { 
                 pullable = hit.collider.transform;
-                pickable = null;
+                interactable = null;
             }
             else
             {
+                interactable = null;
                 pullable = null;
-                pickable = null;
-                //Debug.Log(" Didnt hit an interactable");
+                //Debug.Log(" Didnt hit an interactable or pullable");
             }
 
-            playerCam.crosshair.color = pickable != null || pullable != null ? playerCam.cursorScriptable.interactCross : playerCam.cursorScriptable.normalCross;
+            // CROSSHAIR RED OR BLACK + DEBUGS
+            playerCam.crosshair.color = interactable != null || pullable != null ? playerCam.cursorScriptable.interactCross : playerCam.cursorScriptable.normalCross;
             if (pullable != null) { Debug.Log("hit pullable: " + hit.collider.name); }
-            if (pickable != null) { Debug.Log("hit pickable: " + hit.collider.name); }
+            if (interactable != null) { Debug.Log("hit interactable: " + hit.collider.name); }
             //Debug.Log("Ray hit: " + hit.collider.name);
         }
         else
         {
             pullable = null;
-            pickable = null;
+            interactable = null;
             playerCam.crosshair.color = playerCam.cursorScriptable.normalCross;
         }
     }
@@ -237,30 +236,52 @@ public class playerBase : MonoBehaviour
     {
         if (context.started)        {
 
-            if (pickable != null)
+            if (interactable == null && pickedObject == null)
             {
-                if (pickedObject != null) { undoPickup(); }
+                Debug.Log("nothing interactable");
+            }
+            //if nothing to pickup or interact but still drop/place
+            else if (interactable == null && pickedObject != null)
+            {
+                if (pickedObject != null) { pickedObject.GetComponent<pickupInteractable>().undoPickup(this); }
 
-                if (!pickupSound.isPlaying)
+                if (!placeSound.isPlaying)
                 {
-                    pickupSound.Play();
+                    placeSound.Play();
                 }
 
-                pickable.GetComponent<pickupAble>().pickup(this);
-                if (pickedObject != null) { 
-                    pickedObject.GetComponent<Rigidbody>().isKinematic = true;
-                    pickedObject.GetComponent<Collider>().enabled = false;
-                    //Debug.Log("Picked up: " + pickedObject.name);
-                }
             }
-            else if (pickedObject != null)
+            else if (interactable != null)
             {
-                undoPickup();
-                //Debug.Log("Dropped" + pickedObject.name);
+                //pickup, if holding sum drop first
+                if (interactable.GetComponent<pickupInteractable>() != null)
+                {
+
+                    if (pickedObject != null) { pickedObject.GetComponent<pickupInteractable>().undoPickup(this); }
+
+                    if (!pickupSound.isPlaying)
+                    {
+                        pickupSound.Play();
+                    }
+
+                    interactable.GetComponent<pickupInteractable>().interact(this);
+                }                
+                //Press button
+                else if (interactable.GetComponent<buttonBase>() != null)
+                {
+
+                    interactable.GetComponent<buttonBase>().interact(this);
+                }
+                //Painting Dialogue Hint 
+                else if (interactable.GetComponent<paintingBase>() != null)
+                {
+
+                    interactable.GetComponent<paintingBase>().interact(this);
+
+                }
+                else { Debug.Log("Whelp, check OnInteract"); }
             }
-            else if (pickable == null) { Debug.Log("nothing pickable"); }
-        }
-       
+        }       
     }
     public void OnOpen(InputAction.CallbackContext context)
     {
@@ -271,17 +292,6 @@ public class playerBase : MonoBehaviour
             else { Debug.Log("Not an openable"); }
 
         }
-    }
-
-    private void undoPickup()
-    {
-        if (!placeSound.isPlaying)        {
-            placeSound.Play();
-        }
-
-        pickedObject.GetComponent<Rigidbody>().isKinematic = false;
-        pickedObject.GetComponent<Collider>().enabled = true;
-        pickedObject = null;
     }
 
     //plays a boiling sound when the player is close enough to the cauldron

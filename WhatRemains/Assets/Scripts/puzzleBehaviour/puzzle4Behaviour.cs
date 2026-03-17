@@ -18,6 +18,11 @@ public class puzzle4Behaviour : MonoBehaviour
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
+        if (puzz4 != null && puzz4 != this)
+        {
+            Destroy(gameObject);
+        }
+        puzz4 = this;
     }
 
     void Start()

@@ -15,7 +15,7 @@ public class puzzle1Behaviour : MonoBehaviour
     public GameObject symbol;
 
     [Header("Measurements")]
-    public float stareTime = 5f;
+    public float stareTime = 4f;
     public float maxDist = 12f;
     public float dist;
     public float stareTimer = 0;

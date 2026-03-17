@@ -47,7 +47,6 @@ public class gameplayBase : MonoBehaviour
             Destroy(gameObject);
         }
         instance = this;
-        if (instance == null) { Debug.Log("no gameplayBase instance, youre cooked buddy :(((( "); }
 
 
         puzzlesCompleted = new bool[] { false, false, false, false, false };

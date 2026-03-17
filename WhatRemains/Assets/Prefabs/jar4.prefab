@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4668074107676032118, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4265338650084452101, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -76,6 +80,14 @@ PrefabInstance:
       propertyPath: m_TagString
       value: pickupAble
       objectReference: {fileID: 0}
+    - target: {fileID: 2974637336586596102, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4518980002003577502, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7216655632450529714, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -86,41 +98,19 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2630261547589770244}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1432947583063999763}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -2517252383283283140}
+      addedObject: {fileID: 1738585332328297868}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -873099482534772491}
   m_SourcePrefab: {fileID: 100100000, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
 --- !u!1 &366851930469030667 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ed26fe86f2afec4fb17532a080bef9c, type: 3}
   m_PrefabInstance: {fileID: 708815782997976666}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &2630261547589770244
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 366851930469030667}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!54 &1432947583063999763
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -144,11 +134,11 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &-2517252383283283140
+--- !u!114 &1738585332328297868
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,6 +147,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 366851930469030667}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3240a8094d189646ad43c23fde6601b, type: 3}
+  m_Script: {fileID: 11500000, guid: 357366b1eeae18a4cbc35e56a9bbe566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &-873099482534772491
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366851930469030667}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0093, y: 0.0115, z: 0.010112656}
+  m_Center: {x: 0.0001592566, y: 0.00559605, z: 0.00006}

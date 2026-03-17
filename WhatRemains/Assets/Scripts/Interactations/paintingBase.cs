@@ -3,25 +3,25 @@ using UnityEngine;
 /// <summary>
 /// Holds code for:
 /// 
-///   ///
+///   This is for the PUZZLE 1 PAINTING INTERACTION
 ///   
 /// </summary>
 
-public class pickupAble : MonoBehaviour
+public class paintingBase : MonoBehaviour, IInteractable
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
-
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
 
 
-
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    public void pickup(playerBase player)     { 
+    public void interact(playerBase player)
+    {
+        //painting interaction
+        Debug.Log("Giving Hint Puzz 1");
 
-        player.pickedObject = this.transform; 
-        Debug.Log("Picked up: " + this.transform.name); 
+        dialogueBase.dialogueScript.activateDialogue("I can't seem to look away...", 4f);
+
     }
-
 }
