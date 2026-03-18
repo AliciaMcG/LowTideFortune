@@ -77,7 +77,7 @@ public class skullPositionBehaviour : MonoBehaviour
         //spawn candle if they are and set puzzle to complete
         if (numSkulls == 3)
         {
-            gameplayBase.instance.completePuzzle(3);
+            gameplayBase.instance.completePuzzle(4);
         }
     }
 }
