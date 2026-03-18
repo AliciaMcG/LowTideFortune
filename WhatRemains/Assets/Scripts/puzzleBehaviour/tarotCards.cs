@@ -47,7 +47,7 @@ public class tarotCards : MonoBehaviour
                     //Debug.Log(playerBaseScript.pickedObject);
 
                     //if f is pressed
-                    if (Input.GetKeyDown(KeyCode.F))
+                    if (Input.GetKeyDown(KeyCode.Q))
                     {
                         //play placing sound
                         if (!placeSound.isPlaying)

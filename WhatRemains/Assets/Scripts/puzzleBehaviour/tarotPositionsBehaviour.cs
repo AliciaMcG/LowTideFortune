@@ -124,7 +124,7 @@ public class tarotPositionsBehaviour : MonoBehaviour
         //spawn candle if they are and set puzzle to complete
         if (numCards == 12)
         {
-            gameplayBase.instance.completePuzzle(2);
+            gameplayBase.instance.completePuzzle(3);
         }
     }
 }
