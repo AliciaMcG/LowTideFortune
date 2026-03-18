@@ -201,6 +201,7 @@ public class playerBase : MonoBehaviour
         cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
         if (cast)
         {
+            Debug.Log("Ray hit: " + hit.collider.name);
             if (hit.collider.GetComponent<IInteractable>() != null)
             {
                 interactable = hit.collider.transform;
