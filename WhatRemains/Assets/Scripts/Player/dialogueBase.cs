@@ -62,7 +62,7 @@ public class dialogueBase : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    public void activateDialogue(string dialogue, float timeNeeded)
+    public void setDialogue(string dialogue, float timeNeeded)
     {
         timeLeft = timeNeeded;
         textObj.text = dialogue;

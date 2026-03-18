@@ -19,9 +19,9 @@ public class paintingBase : MonoBehaviour, IInteractable
     public void interact(playerBase player)
     {
         //painting interaction
-        Debug.Log("Giving Hint Puzz 1");
+        //Debug.Log("Giving Hint Puzz 1");
 
-        dialogueBase.dialogueScript.activateDialogue("I can't seem to look away...", 4f);
+        dialogueBase.dialogueScript.setDialogue("I can't seem to look away...", 4f);
 
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class candlePlacement : MonoBehaviour
 {
+
     public int placementID;
     public Transform snapPoint;
 
@@ -24,6 +25,12 @@ public class candlePlacement : MonoBehaviour
         }
 
         SnapCandle(other.GetComponent<candleID>());
+        if (other.GetComponent<candleID>().candlesID == 0 && !gameplayBase.instance.entityIsSpawned)
+        {
+            gameplayBase.instance.spawnEntity();
+
+        }
+
     }
 
     void SnapCandle(candleID candle)

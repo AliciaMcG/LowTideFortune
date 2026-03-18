@@ -39,11 +39,4 @@ public class ingredientJar : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Floor"))
-        {
-            RespawnJar();
-        }
-    }
 }

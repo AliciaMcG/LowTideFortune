@@ -4,6 +4,7 @@ using UnityEngine;
 /// Holds code for:
 /// 
 ///   Entity movement
+///   taking player health
 ///   
 ///   Entity state machine:
 ///             0 - default 
@@ -19,6 +20,7 @@ public class entityBase : MonoBehaviour
     public int entityState;
     public float entitySpeed;
     public float messTime;
+    public int currTargetPuzzle; //to compare if player actally switched rooms or just triggered the trigger objects in the same room
 
     [Header("Objects")]
     public playerBase targetPlayer;
@@ -40,6 +42,7 @@ public class entityBase : MonoBehaviour
     void Start()
     {
         entityState = 0;
+        currTargetPuzzle = 0;
         gameObject.SetActive(false);
 
     }
@@ -52,16 +55,51 @@ public class entityBase : MonoBehaviour
     private void FixedUpdate()
     {
         updateEntityState();
+
+        if (messTime > 0)
+        {
+            if (entityState == 2) { entityState = 1; } //reset back to idle
+            messTime -= Time.fixedDeltaTime;
+
+            if (messTime <= 0)            {
+                entityState = 2;
+            }
+        }
     }
 
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.TryGetComponent(out playerBase player) && entityState == 3) {
             takePlayerHealth(player);
         }
+    }
+
+    private void OnEnable()    {
+        roomTriggers.OnCurrPuzzChange += notifyEnitityOfPuzzChange;
+    }
+    private void OnDisable()    {
+        roomTriggers.OnCurrPuzzChange -= notifyEnitityOfPuzzChange;
+    }
+    private void notifyEnitityOfPuzzChange()
+    {
+        if (gameplayBase.instance.currPuz != currTargetPuzzle)
+        {
+            currTargetPuzzle = gameplayBase.instance.currPuz;
+            Debug.Log("Entity knows that player switched to puzzle: " + currTargetPuzzle);
+
+            if (currTargetPuzzle == 0 || currTargetPuzzle == 1)
+            {
+                return;
+            }
+            else if (currTargetPuzzle >= 2 && currTargetPuzzle <= 4) {
+                messTime = 8.5f;
+            }
+        }
+
     }
 
     private void updateEntityState()
@@ -76,10 +114,6 @@ public class entityBase : MonoBehaviour
                 //entity is idle
                 //FIX add idle actions
                 //FIX add movement
-                if (messTime <= 0)
-                {
-                    entityState = 2;
-                }
                 break;
 
             case 2:
@@ -98,7 +132,7 @@ public class entityBase : MonoBehaviour
 
     private void messWithPuzzle()
     {
-        switch (gameplayBase.instance.currPuz)
+        switch (currTargetPuzzle)
         { 
             case 0:
                 //
@@ -113,6 +147,8 @@ public class entityBase : MonoBehaviour
             case 2:
                 //
                 Debug.Log("Entity is messing with puzzle 2");
+                //FIX
+                messTime = 7f;
                 break;
 
             case 3:
@@ -143,11 +179,6 @@ public class entityBase : MonoBehaviour
 
                 break;
 
-            case 5:
-                //
-                Debug.Log("Entity is messing with puzzle 5");
-                break;
-
 
             default:
                 Debug.LogWarning("Enitity cannot mess with an invalid puzzle index");
@@ -166,7 +197,7 @@ public class entityBase : MonoBehaviour
 
     }
 
-    private void takePlayerHealth(playerBase player)
+    private void takePlayerHealth(playerBase player) //FIX make event
     {
         player.playerHealth--;
 

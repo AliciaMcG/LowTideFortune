@@ -93,6 +93,7 @@ public class puzzle2Behaviour : MonoBehaviour
             jar.RespawnJar();
 
         }
+        entityBase.entity.messTime = 7f;
     }
 
     void checkMixture()
@@ -103,12 +104,13 @@ public class puzzle2Behaviour : MonoBehaviour
         }
         
         if (currentIngredients.Count == requiredIngredients.Count)        {
-            gameplayBase.instance.completePuzzle(1);
+            gameplayBase.instance.completePuzzle(2);
         }
     }
 
     void spoilMixture()
     {
+        dialogueBase.dialogueScript.setDialogue("Dammit! The potion is screwed up, need to dump and restart", 5f);
         // play spoil sound effect
         if (!incorrectJarSound.isPlaying)        {
             incorrectJarSound.Play();
@@ -149,6 +151,7 @@ public class puzzle2Behaviour : MonoBehaviour
         cauldronParticles.Clear();
 
         StartCoroutine(ResetParticlesDelay());
+        entityBase.entity.messTime = 12f;
     }
 
     void updateParticles()

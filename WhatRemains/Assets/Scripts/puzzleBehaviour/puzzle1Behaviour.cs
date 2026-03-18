@@ -57,9 +57,7 @@ public class puzzle1Behaviour : MonoBehaviour
 
                 if (stareTimer >= stareTime)
                 {
-                    gameplayBase.instance.completePuzzle(0);
-                    entityBase.entity.entityState = 1; //activates entity
-                    entityBase.entity.gameObject.SetActive(true); //activates entity object //do not move its best here so only once called
+                    gameplayBase.instance.completePuzzle(1);
                     Debug.Log("1 is done");
                 }
             }

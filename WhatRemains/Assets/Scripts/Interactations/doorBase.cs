@@ -5,13 +5,22 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 /// <summary>
 /// Holds code for:
 /// 
-///   ///
+///   door opening and closing
+///   
+///   also room locking teehee :)
+///   
+///   door type to help lock
+///     0 - always open
+///     1 - locked until entity is spawned
+///     2 - locked until dinner??
 ///   
 /// </summary>
 
 public class doorBase : MonoBehaviour, IPullable
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
+    public int doorType;
+    public bool isAccessible;
     public bool doorIsOpen;
     public Animator animator;
 
@@ -27,6 +36,12 @@ public class doorBase : MonoBehaviour, IPullable
     void Start()
     {
         doorIsOpen = false;
+
+        if (doorType == 1 || doorType == 2)
+        {
+            isAccessible = false;
+        }
+        else { isAccessible = true; }
     }
 
     void Update()
@@ -54,22 +69,45 @@ public class doorBase : MonoBehaviour, IPullable
     //}
     public void pull(playerBase player)
     {
-        doorIsOpen = !doorIsOpen;
-        if (doorIsOpen) 
-        { 
-            //play door open sound
-            doorOpenSound.Play();
-
-            animator.SetTrigger("Open");
-            //Debug.Log("door open"); 
-        }
-        else 
+        if (isAccessible)
         {
-            //play door close sound
-            doorCloseSound.Play();
+            doorIsOpen = !doorIsOpen;
+            if (doorIsOpen)
+            {
+                //play door open sound
+                doorOpenSound.Play();
 
-            animator.SetTrigger("Close");
-            //Debug.Log("door closed"); 
+                animator.SetTrigger("Open");
+                //Debug.Log("door open"); 
+            }
+            else
+            {
+                //play door close sound
+                doorCloseSound.Play();
+
+                animator.SetTrigger("Close");
+                //Debug.Log("door closed"); 
+            }
+        }
+        else
+        {
+            dialogueBase.dialogueScript.setDialogue("Can't seem to be able the door right now? I guess I'll look around", 8f);
+        }
+    }
+
+    private void OnEnable()
+    {
+        gameplayBase.OnUnlockDoors += unlockDoor;
+    }
+    private void OnDisable()
+    {
+        gameplayBase.OnUnlockDoors -= unlockDoor;
+    }
+
+    private void unlockDoor(int doorTypeInp)
+    {
+        if (doorType == doorTypeInp) {
+            isAccessible = true;
         }
     }
 }

@@ -37,10 +37,6 @@ public class puzzle4Behaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (entityBase.entity.messTime > 0)
-        {
-            entityBase.entity.messTime -= Time.fixedDeltaTime;
-        }
     }
 
 

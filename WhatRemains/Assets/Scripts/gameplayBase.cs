@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,11 +7,13 @@ using UnityEngine.UI;
 /// Holds code for:
 /// 
 ///   Global variables 
-///   set current puzzle to 0 for none
 /// 
 ///   Ending the game
 ///   
 ///   Placed this script on candlesFolder
+///   
+///   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! current puzzle STARTS FROM 1 TO 5 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+///   0 for none
 ///   
 ///
 ///   
@@ -22,6 +25,7 @@ public class gameplayBase : MonoBehaviour
     public static gameplayBase instance;
     
     [Header("Progress Tracking")]
+    public bool entityIsSpawned;
     public bool diningUnlocked;
     public bool[] puzzlesCompleted; // track completion
     public int currPuz; //current puzzle
@@ -50,7 +54,7 @@ public class gameplayBase : MonoBehaviour
 
 
         puzzlesCompleted = new bool[] { false, false, false, false, false };
-        currPuz = 0;
+        currPuz = 1;
     }
 
     void Start()
@@ -63,15 +67,17 @@ public class gameplayBase : MonoBehaviour
         {
             candlePlacement.SetActive(false);
         }
+
+        entityIsSpawned = false;
     }
 
     void Update()
     {
-
     }
 
     private void FixedUpdate()
     {
+
     }
 
 
@@ -79,24 +85,44 @@ public class gameplayBase : MonoBehaviour
     ///
     public void completePuzzle(int currPuzInt)    // skulls are in the correct placement
     {
-        puzzlesCompleted[currPuzInt] = true;
+        int correctedIndex = currPuzInt - 1;
+        if (correctedIndex >= 0 && correctedIndex <= 4)
+        {
+            puzzlesCompleted[correctedIndex] = true;
 
-        // set active curr candle :)
-        candlesArr[currPuzInt].SetActive(true);
-        candlePlacements[currPuzInt].SetActive(true);
+            // set active curr candle :)
+            candlesArr[correctedIndex].SetActive(true);
+            candlePlacements[correctedIndex].SetActive(true);
 
-        //play the candle spawn sound
-        candleSpawnSound.Play();
+            //play the candle spawn sound
+            candleSpawnSound.Play();
+        }
     }
 
     public void completeGame()
     {
-        //entity screams
+        //entity screams //FIX
         if (!entityScream.isPlaying)
         {
             entityScream.Play();
         }
         entityParticles.Play();
+    }
+
+    public void spawnEntity()
+    {
+        entityBase.entity.gameObject.SetActive(true); //activates entity object
+        entityBase.entity.entityState = 1;
+        dialogueBase.dialogueScript.setDialogue("Wh-what is THAT???", 3f);
+        entityIsSpawned = true;
+        unlockDoors(1);
+
+    }
+
+    public static event Action<int> OnUnlockDoors;
+    public void unlockDoors(int doorType)
+    {
+        OnUnlockDoors?.Invoke(doorType);
     }
 
 }

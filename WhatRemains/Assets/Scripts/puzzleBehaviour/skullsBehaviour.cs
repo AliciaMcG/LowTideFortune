@@ -44,7 +44,7 @@ public class skullsBehaviour : MonoBehaviour
                     Debug.Log(playerBaseScript.pickedObject);
 
                     //if f is pressed
-                    if (Input.GetKeyDown(KeyCode.F))
+                    if (Input.GetKeyDown(KeyCode.E))
                     {
                         //disconnect it from the hand and re-enable the collider
                         playerBaseScript.pickedObject.SetParent(null);
