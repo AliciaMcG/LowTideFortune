@@ -93,5 +93,20 @@ public class gameTimers : MonoBehaviour
                 doorOpenedPlayed = true;
             }
         }
+
+        //dissolve safety rooms
+        if (gameplayBaseObj.numPuzzlesCompleted == 3)
+        {
+            //dissolve room 1
+        }
+        if (gameplayBaseObj.numPuzzlesCompleted == 4)
+        {
+            //dissolve room 2
+        }
+        if (gameplayBaseObj.numPuzzlesCompleted == 5)
+        {
+            //dissolve room 3
+        }
+
     }
 }
