@@ -2,6 +2,21 @@ using UnityEngine;
 using TMPro; 
 using System.Collections;
 
+/// <summary>
+/// Holds code for:
+/// 
+///   All timing components, including:
+///   
+///   Unlocking doors
+/// 
+///   Opening the final room door
+/// 
+///   Setting the game timer (clock)
+/// 
+///   Dissolving safety rooms
+///   
+/// </summary>
+
 
 public class gameTimers : MonoBehaviour
 {
@@ -10,19 +25,26 @@ public class gameTimers : MonoBehaviour
     public static int currentGameHour;
     float deltaTime = 0;
     int elapsedMinutes = 0;
-    
+    public gameplayBase gameplayBaseObj;
+    public Animator door;
+
+    public AudioSource unlockSound;
+    public AudioSource doorOpenSound;
+    bool doorOpenedPlayed;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentGameMinute = 0;
         currentGameHour = 12;
+        doorOpenedPlayed = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //seconds represent minutes, minutes represent hours
-
+        //setting the clock
         //get the current second of the game
         deltaTime += Time.deltaTime;
         elapsedMinutes = (int)deltaTime;
@@ -50,6 +72,26 @@ public class gameTimers : MonoBehaviour
         {
             gameTime.text = currentGameHour + ":" + (int)currentGameMinute + "am";
         }
-        Debug.Log("Minutes: " + currentGameMinute);
+
+        //unlock the dining room door at 4 minutes
+        bool diningDoorUnlocked = false;
+        if (currentGameHour == 4 && currentGameMinute == 0 && diningDoorUnlocked == false)
+        {
+            gameplayBaseObj.unlockDoors(2);
+            diningDoorUnlocked = true;
+            unlockSound.Play();
+        }
+
+        //open the final room door when all candles have been placed and the player is in the final room
+        if (gameplayBaseObj.numPuzzlesCompleted == 5 && finalRoomTrigger.playerEnteredFinalSR == true)
+        {
+            gameplayBaseObj.unlockDoors(3);
+            door.SetTrigger("Open");
+            if (doorOpenedPlayed == false)
+            {
+                doorOpenSound.Play();
+                doorOpenedPlayed = true;
+            }
+        }
     }
 }

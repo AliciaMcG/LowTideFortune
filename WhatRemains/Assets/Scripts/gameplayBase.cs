@@ -28,6 +28,7 @@ public class gameplayBase : MonoBehaviour
     public bool entityIsSpawned;
     public bool diningUnlocked;
     public bool[] puzzlesCompleted; // track completion
+    public int numPuzzlesCompleted;
     public int currPuz; //current puzzle
 
     [Header("UI")]
@@ -69,6 +70,7 @@ public class gameplayBase : MonoBehaviour
         }
 
         entityIsSpawned = false;
+        numPuzzlesCompleted = 0;
     }
 
     void Update()
@@ -96,6 +98,9 @@ public class gameplayBase : MonoBehaviour
 
             //play the candle spawn sound
             candleSpawnSound.Play();
+
+            //increase the number of puzzles completed
+            numPuzzlesCompleted++; 
         }
     }
 

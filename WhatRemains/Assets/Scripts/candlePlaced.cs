@@ -17,7 +17,7 @@ public class candlePlaced : MonoBehaviour
 
         }
 
-        //if six candles have been placed, the game ends
+        //if five candles have been placed, the game ends
         if (numCandlesPlaced == 5)
         {
             gameplayBase.instance.completeGame();
