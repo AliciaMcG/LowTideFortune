@@ -81,7 +81,8 @@ public class playerBase : MonoBehaviour
         checkEntityDistance(); //FIX make event?
         checkCauldronDistance();        
 
-        if (Input.GetKeyDown(KeyCode.E) && tarotCards.pointingAtTargetPos == false) {
+        //pulls the chair out
+        if (Input.GetKeyDown(KeyCode.E) && pointAtTarget.pointingAtTargetPos == false) {
   
                 if (cast) //FIX later eep now
                 {
@@ -244,7 +245,7 @@ public class playerBase : MonoBehaviour
             //if nothing to pickup or interact but still drop/place
             else if (interactable == null && pickedObject != null)
             {
-                if (pickedObject != null) { pickedObject.GetComponent<pickupInteractable>().undoPickup(this); }
+                pickedObject.GetComponent<pickupInteractable>().undoPickup(this); 
 
                 if (!placeSound.isPlaying)
                 {
@@ -278,6 +279,17 @@ public class playerBase : MonoBehaviour
                 {
 
                     interactable.GetComponent<paintingBase>().interact(this);
+
+                }
+                //snapping objects (tarot cards, skulls)
+                else if (interactable.GetComponent<snapInteractable>() != null)
+                {
+
+                    interactable.GetComponent<snapInteractable>().interact(this);
+                    if (!placeSound.isPlaying)
+                    {
+                        placeSound.Play();
+                    }
 
                 }
                 else { Debug.Log("Whelp, check OnInteract"); }
