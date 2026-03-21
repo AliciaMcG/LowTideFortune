@@ -80,38 +80,6 @@ public class playerBase : MonoBehaviour
         //play certain sounds depending on the players distance from different objects
         checkEntityDistance(); //FIX make event?
         checkCauldronDistance();        
-
-        if (Input.GetKeyDown(KeyCode.E) && tarotCards.pointingAtTargetPos == false) {
-  
-                if (cast) //FIX later eep now
-                {
-
-                    if (hit.transform.CompareTag("chair"))
-                    {
-                        //play picking up sound
-                        if (!pickupSound.isPlaying)
-                        {
-                            pickupSound.Play();
-                        }
-
-                        //get the chair object
-                        Transform chair;
-                        chair = hit.transform;
-                        //Debug.Log(chair);
-
-                        //move the chair back 2 spaces
-                        chair.Translate(Vector3.right * 2.0f, Space.Self);
-
-                        //disable the collider
-                        chair.GetComponent<BoxCollider>().enabled = false;
-
-                        //unparent the tarot card to pick up
-                        Transform tarotCard = chair.Find("sagittariusTarotCard");
-                        tarotCard.SetParent(null);
-                    }
-                }
-            
-        }
     }
 
     private void FixedUpdate()
@@ -244,7 +212,7 @@ public class playerBase : MonoBehaviour
             //if nothing to pickup or interact but still drop/place
             else if (interactable == null && pickedObject != null)
             {
-                if (pickedObject != null) { pickedObject.GetComponent<pickupInteractable>().undoPickup(this); }
+                pickedObject.GetComponent<pickupInteractable>().undoPickup(this); 
 
                 if (!placeSound.isPlaying)
                 {
@@ -278,6 +246,17 @@ public class playerBase : MonoBehaviour
                 {
 
                     interactable.GetComponent<paintingBase>().interact(this);
+
+                }
+                //snapping objects (tarot cards, skulls)
+                else if (interactable.GetComponent<snapInteractable>() != null)
+                {
+
+                    interactable.GetComponent<snapInteractable>().interact(this);
+                    if (!placeSound.isPlaying)
+                    {
+                        placeSound.Play();
+                    }
 
                 }
                 else { Debug.Log("Whelp, check OnInteract"); }
