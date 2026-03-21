@@ -13,6 +13,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 ///     0 - always open
 ///     1 - locked until entity is spawned
 ///     2 - locked until dinner??
+///     3 - locked until final chase
 ///   
 /// </summary>
 
@@ -37,7 +38,7 @@ public class doorBase : MonoBehaviour, IPullable
     {
         doorIsOpen = false;
 
-        if (doorType == 1 || doorType == 2)
+        if (doorType == 1 || doorType == 2 || doorType == 3)
         {
             isAccessible = false;
         }
