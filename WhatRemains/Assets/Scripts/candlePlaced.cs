@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class candlePlaced : MonoBehaviour
 {
-    public static int numCandlesPlaced = 0;
+    [SerializeField] public static int numCandlesPlaced = 0;
 
     //if a candle holder is colliding with a candle
     void OnTriggerEnter(Collider other)
@@ -15,6 +15,11 @@ public class candlePlaced : MonoBehaviour
             //untag the candle so the player cant pick it up again
             other.tag = "Untagged";
 
+        }
+
+        if (numCandlesPlaced == 4)
+        {
+            gameplayBase.instance.startChase();
         }
 
         //if five candles have been placed, the game ends

@@ -30,6 +30,7 @@ public class gameplayBase : MonoBehaviour
     public bool[] puzzlesCompleted; // track completion
     public int numPuzzlesCompleted;
     public int currPuz; //current puzzle
+    public int potentialNewPuz;
 
     [Header("UI")]
     public Sprite healthTrue;
@@ -43,6 +44,9 @@ public class gameplayBase : MonoBehaviour
     public AudioSource candleSpawnSound;
     public AudioSource entityScream;
     public ParticleSystem entityParticles;
+
+    public static event Action<int> OnUnlockDoors;
+    public static event Action OnChaseStarted;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -124,11 +128,17 @@ public class gameplayBase : MonoBehaviour
 
     }
 
-    public static event Action<int> OnUnlockDoors;
     public void unlockDoors(int doorType)
     {
         OnUnlockDoors?.Invoke(doorType);
     }
+
+    public void startChase()
+    {
+        OnChaseStarted?.Invoke();
+    }
+
+
 
 }
 

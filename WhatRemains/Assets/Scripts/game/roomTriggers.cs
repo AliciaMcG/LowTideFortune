@@ -8,6 +8,10 @@ using System;
 /// 
 ///   room number beteen ONE and FIVE
 ///   
+///   0 is none (general)
+///   6 is dining
+///   7 is safe room
+///   
 /// </summary>
 
 public class roomTriggers : MonoBehaviour
@@ -22,7 +26,8 @@ public class roomTriggers : MonoBehaviour
     ///
     public void OnTriggerEnter(Collider other)
     {
-        if (roomNum >= 0 && roomNum <= 5)        {
+        if (roomNum >= 0 && roomNum <= 5)
+        {
 
             if (roomNum == 1)
             {
@@ -31,7 +36,7 @@ public class roomTriggers : MonoBehaviour
             else
             {
                 // BTW 0 is for no active puzzle :)
-                if(roomNum == 0)
+                if (roomNum == 0)
                 {
                     gameplayBase.instance.currPuz = 0;
                 }
@@ -50,6 +55,19 @@ public class roomTriggers : MonoBehaviour
 
         //Debug.Log("entered room:" +  roomNum);
         Debug.Log("current puzzle: " + gameplayBase.instance.currPuz);
+
+        //if (other.TryGetComponent<playerBase>(out playerBase player)) {
+        //    if (0 <= roomNum && roomNum >= 7)
+        //    {
+        //        player.currRoom = roomNum;
+
+        //        if (2 <= roomNum && roomNum >= 5)
+        //        {
+        //            gameplayBase.instance.potentialNewPuz = roomNum; //FIX
+        //        }           
+
+
+        //} }
 
     }
 

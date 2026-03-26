@@ -32,7 +32,10 @@ public class camMover : MonoBehaviour
     ///
     public void OnLook(InputAction.CallbackContext context)
     {
-        cursorMoveInp = context.ReadValue<Vector2>();
+        if (sceneManager.gameIsPaused == false)
+        {
+            cursorMoveInp = context.ReadValue<Vector2>();
+        }
     }
     public void moveCam()
     {

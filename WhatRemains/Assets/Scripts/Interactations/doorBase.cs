@@ -38,7 +38,7 @@ public class doorBase : MonoBehaviour, IPullable
     {
         doorIsOpen = false;
 
-        if (doorType == 1 || doorType == 2 || doorType == 3)
+        if (doorType != 0)
         {
             isAccessible = false;
         }

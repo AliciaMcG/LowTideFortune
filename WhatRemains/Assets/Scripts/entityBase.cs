@@ -8,6 +8,9 @@ using UnityEngine;
 ///   
 ///   Entity state machine:
 ///             0 - default 
+///             1 - idle
+///             2 - entity is messing with puzzles
+///             3 - enity is chasing player
 ///   
 /// </summary>
 
@@ -15,6 +18,7 @@ public class entityBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     public static entityBase entity;
+    public entityScriptable entityScriptable;
 
     [Header("Entity Attributes")]
     public int entityState;
@@ -24,7 +28,6 @@ public class entityBase : MonoBehaviour
 
     [Header("Objects")]
     public playerBase targetPlayer;
-    Rigidbody rb; 
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -162,19 +165,7 @@ public class entityBase : MonoBehaviour
 
                 if (gameplayBase.instance.puzzlesCompleted[3] == false)
                 {
-
-                    for (int i = 0; i < puzzle4Behaviour.puzz4.skullsArr.Length; i++)
-                    {
-                        for (int j = 0; j < puzzle4Behaviour.puzz4.skullsArr.Length; j++) { 
-
-                            if (Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position) < 3f) {
-                                puzzle4Behaviour.puzz4.skullsArr[i].transform.position = puzzle4Behaviour.puzz4.skullPlacesArr[Random.Range(0, puzzle4Behaviour.puzz4.skullsArr.Length)].transform.position;
-                                messTime = 7f;
-                                break;
-                            }
-                            else { messTime = 3f; }                        
-                        }
-                    }
+                    messWithPuzz4();
                 }
 
                 break;
@@ -191,9 +182,9 @@ public class entityBase : MonoBehaviour
     {
         //FIX DIRECTION FACING
 
-        rb.MovePosition((rb.position + ((targetPOS - this.rb.position).normalized) * entitySpeed * Time.fixedDeltaTime));
+        transform.Translate((transform.position + ((targetPOS - this.transform.position).normalized) * entitySpeed * Time.fixedDeltaTime));
 
-        // the if reaches player is in collision
+        // the if reaches player is in collision //take helth funcion
 
     }
 
@@ -218,5 +209,24 @@ public class entityBase : MonoBehaviour
                 gameplayBase.instance.healthDisplay[i].sprite = gameplayBase.instance.healthFalse;
             }
         }
+    }
+
+    public void messWithPuzz4()
+    {
+        for (int i = 0; i < puzzle4Behaviour.puzz4.skullsArr.Length; i++)
+        {
+            for (int j = 0; j < puzzle4Behaviour.puzz4.skullsArr.Length; j++)
+            {
+
+                if (Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position) < 3f)
+                {
+                    puzzle4Behaviour.puzz4.skullsArr[i].transform.position = puzzle4Behaviour.puzz4.skullPlacesArr[Random.Range(0, puzzle4Behaviour.puzz4.skullsArr.Length)].transform.position;
+                    messTime = 7f;
+                    break;
+                }
+                else { messTime = 3f; }
+            }
+        }
+
     }
 }

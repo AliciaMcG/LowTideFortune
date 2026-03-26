@@ -35,6 +35,7 @@ public class playerBase : MonoBehaviour
     public Vector3 velocity;
     public bool isSprinting;
     public bool isJumping;
+    public int currRoom;
 
     //[Header("Head Bob")]   //FIX
     //public bool headBobIsActive;
@@ -169,7 +170,7 @@ public class playerBase : MonoBehaviour
         cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
         if (cast)
         {
-            Debug.Log("Ray hit: " + hit.collider.name);
+            //Debug.Log("Ray hit: " + hit.collider.name);
             if (hit.collider.GetComponent<IInteractable>() != null)
             {
                 interactable = hit.collider.transform;
