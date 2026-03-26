@@ -10,25 +10,28 @@ public class candlePlacement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        int candle = other.GetComponent<candleID>().candlesID;
-        UnityEngine.Debug.Log("candleID" + candle);
-        UnityEngine.Debug.Log("placementID" + placementID);
-
-        if (other == null)
+        if (other.name.Contains("Candle"))
         {
-            return;
-        }
+            int candle = other.GetComponent<candleID>().candlesID;
+            UnityEngine.Debug.Log("candleID" + candle);
+            UnityEngine.Debug.Log("placementID" + placementID);
 
-        if (candle != placementID)
-        {
-            return;
-        }
+            if (other == null)
+            {
+                return;
+            }
 
-        SnapCandle(other.GetComponent<candleID>());
-        if (other.GetComponent<candleID>().candlesID == 0 && !gameplayBase.instance.entityIsSpawned)
-        {
-            gameplayBase.instance.spawnEntity();
+            if (candle != placementID)
+            {
+                return;
+            }
 
+            SnapCandle(other.GetComponent<candleID>());
+            if (other.GetComponent<candleID>().candlesID == 0 && !gameplayBase.instance.entityIsSpawned)
+            {
+                gameplayBase.instance.spawnEntity();
+
+            }
         }
 
     }
