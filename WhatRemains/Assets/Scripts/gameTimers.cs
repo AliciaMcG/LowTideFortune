@@ -83,7 +83,7 @@ public class gameTimers : MonoBehaviour
         }
 
         //open the final room door when all candles have been placed and the player is in the final room
-        if (gameplayBaseObj.numPuzzlesCompleted == 5 && finalRoomTrigger.playerEnteredFinalSR == true)
+        if (gameplayBaseObj.numPuzzlesCompleted == 4 && finalRoomTrigger.playerEnteredFinalSR == true)
         {
             gameplayBaseObj.unlockDoors(3);
             door.SetTrigger("Open");
@@ -95,15 +95,15 @@ public class gameTimers : MonoBehaviour
         }
 
         //dissolve safety rooms
-        if (gameplayBaseObj.numPuzzlesCompleted == 3)
+        if (gameplayBaseObj.numPuzzlesCompleted == 2)
         {
             //dissolve room 1
         }
-        if (gameplayBaseObj.numPuzzlesCompleted == 4)
+        if (gameplayBaseObj.numPuzzlesCompleted == 3)
         {
             //dissolve room 2
         }
-        if (gameplayBaseObj.numPuzzlesCompleted == 5)
+        if (gameplayBaseObj.numPuzzlesCompleted == 4)
         {
             //dissolve room 3
         }

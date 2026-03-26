@@ -67,6 +67,7 @@ public class puzzle2Behaviour : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         addIngredient(other.gameObject);
+        Debug.Log("cauldron object" +  other);
     }
     public void addIngredient(GameObject ingredient)
     {
@@ -79,9 +80,16 @@ public class puzzle2Behaviour : MonoBehaviour
 
         // compare jar type to required jar types
         int jarID = jar.id;
-
+        Debug.Log("jar id " + jarID);
+        if (jarID == 4)
+        {
+            spoilMixture();
+            jar.RespawnJar();
+            return;
+        }
         if (!requiredIngredients.Contains(jarID))        {
             spoilMixture();
+            jar.RespawnJar();
             return;
         }
 
@@ -114,19 +122,23 @@ public class puzzle2Behaviour : MonoBehaviour
         // play spoil sound effect
         if (!incorrectJarSound.isPlaying)        {
             incorrectJarSound.Play();
+            Debug.Log("Wrong ingredient");
         }
         
         isSpoiled = true;
-        
+        currentIngredients.Clear();
+
         //changes the particles
         var main = cauldronParticles.main;
-        var emission = cauldronParticles.emission;
-
-        //darkens the colour as they put ingredients in
         Color startColour = Color.black;
-        emission.rateOverTime = 0;
+
+        var emission = cauldronParticles.emission;
+        emission.rateOverTime = 50;
+
 
         cauldronParticles.Clear();
+        StartCoroutine(ResetParticlesDelay());
+        isSpoiled = false;
     }
 
     //call this when the dump button is pressed
