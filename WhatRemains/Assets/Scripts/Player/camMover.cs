@@ -39,6 +39,11 @@ public class camMover : MonoBehaviour
     }
     public void moveCam()
     {
+        float sensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 1f);
+        
+        float lookX = cursorMoveInp.x * sensitivity;
+        float lookY = cursorMoveInp.y * sensitivity;
+        
         camRotation.y += cursorMoveInp.x * camSpeed.x * Time.fixedDeltaTime;
         camRotation.x -= cursorMoveInp.y * camSpeed.y * Time.fixedDeltaTime;
         camRotation.x = Mathf.Clamp(camRotation.x, -90f, 90f);

@@ -302,6 +302,7 @@ public class playerBase : MonoBehaviour
 
         //if the distance is within 1, play the entity sound
         if (distance <= 15.0)
+        
         {
             //if its chasing, play the footsteps
             if (!entityNormalSound.isPlaying)

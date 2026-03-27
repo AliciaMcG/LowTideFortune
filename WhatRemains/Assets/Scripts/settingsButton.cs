@@ -26,10 +26,15 @@ public class settingsButton : MonoBehaviour
         {
             textSizeOptions.value = 0;
         }
-        else if(textSize == "Large")
+        else if (textSize == "Small")
         {
             textSizeOptions.value = 1;
         }
+        else if (textSize == "Large")
+        {
+            textSizeOptions.value = 2;
+        }
+        
     }
 
     //stores any setting changes
@@ -47,6 +52,9 @@ public class settingsButton : MonoBehaviour
                 textSize = "Standard";
                 break;
             case 1:
+                textSize = "Small";
+                break;
+            case 2:
                 textSize = "Large";
                 break;
         }
