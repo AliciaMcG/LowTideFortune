@@ -184,7 +184,13 @@ public class puzzle2Behaviour : MonoBehaviour
     IEnumerator ResetParticlesDelay()
     {
         yield return new WaitForSeconds(2f);
+        var main = cauldronParticles.main;
         var emission = cauldronParticles.emission;
+
+        //resets the particles to white after dumping the cauldron
+        main.startColor = Color.white;
         emission.rateOverTime = 10;
+
+        cauldronParticles.Clear();
     }
 }
