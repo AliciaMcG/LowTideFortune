@@ -55,6 +55,9 @@ public class playerBase : MonoBehaviour
     public AudioSource entityNormalSound;
     public AudioSource entityChaseSound;
 
+    [Header("Animator")]
+    public Animator playerAnimator;
+
     public Transform entityPos; 
     public Transform cauldronPos; 
     public bool entityChasing;
@@ -127,6 +130,11 @@ public class playerBase : MonoBehaviour
             if (isSprinting)            {
                 velocity.z += 0.08f;
                 velocity.z = Mathf.Clamp(velocity.z, 1f, 1.7f);
+                playerAnimator.SetFloat("walkSpeed", 2f);
+            }
+            else
+            {
+                playerAnimator.SetFloat("walkSpeed", 1f);
             }
 
             // JUMPING
@@ -135,6 +143,9 @@ public class playerBase : MonoBehaviour
             }
             if (isJumping)            {
                 velocity.y = playerScriptable.jumpForce;
+                
+                //jump animation
+                playerAnimator.SetTrigger("jump");
             }
         }
 
@@ -154,14 +165,16 @@ public class playerBase : MonoBehaviour
 
         controller.Move(finalMove * Time.deltaTime);
 
-        // play the walking sound
+        // play the walking sound and animation
         if ((wasdInput.x != 0 || wasdInput.z != 0) && controller.isGrounded)        {
             if (!walkingSound.isPlaying)            {
                 walkingSound.Play();
+                playerAnimator.SetBool("walking", true);
             }
         }
         else        {
             walkingSound.Stop();
+            playerAnimator.SetBool("walking", false);
         }
     }
 
@@ -218,6 +231,7 @@ public class playerBase : MonoBehaviour
                 if (!placeSound.isPlaying)
                 {
                     placeSound.Play();
+                    playerAnimator.SetTrigger("place");
                 }
 
             }
@@ -232,6 +246,7 @@ public class playerBase : MonoBehaviour
                     if (!pickupSound.isPlaying)
                     {
                         pickupSound.Play();
+                        playerAnimator.SetTrigger("pickup");
                     }
 
                     interactable.GetComponent<pickupInteractable>().interact(this);
@@ -257,6 +272,7 @@ public class playerBase : MonoBehaviour
                     if (!placeSound.isPlaying)
                     {
                         placeSound.Play();
+                        playerAnimator.SetTrigger("place");
                     }
 
                 }
@@ -269,6 +285,7 @@ public class playerBase : MonoBehaviour
         if (context.started)         { 
             if (pullable != null)                {
                 pullable.GetComponent<IPullable>().pull(this);
+                playerAnimator.SetTrigger("pickup");
             }
             else { Debug.Log("Not an openable"); }
 
