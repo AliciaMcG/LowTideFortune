@@ -110,6 +110,7 @@ public class sceneManager : MonoBehaviour
     public void gamemodeSelect()
     {
         mainMenuPanel.SetActive(false);
+        instructionsPanel.SetActive(false);
         gamemodePanel.SetActive(true);
 
     }

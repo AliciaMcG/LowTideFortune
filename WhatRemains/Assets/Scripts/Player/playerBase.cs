@@ -63,11 +63,24 @@ public class playerBase : MonoBehaviour
     public bool entityChasing;
 
     //game mode selected
+    [Header("Gamemode Selection")]
     public static bool desktopMode;
-
+    public GameObject vrPlayer;
+    public GameObject desktopPlayer;
+    
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
+        if (desktopMode == true)
+        {
+            desktopPlayer.SetActive(true);
+            vrPlayer.SetActive(false);
+        }
+        else
+        {
+            desktopPlayer.SetActive(false);
+            vrPlayer.SetActive(true);
+        }
     }
     void Start()
     {
