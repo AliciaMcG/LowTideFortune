@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using static entityScriptable;
 
 /// <summary>
 /// Holds code for:
@@ -25,6 +27,7 @@ public class entityBase : MonoBehaviour
     public float entitySpeed;
     public float messTime;
     public int currTargetPuzzle; //to compare if player actally switched rooms or just triggered the trigger objects in the same room
+    public bool isBeingIdle;
 
     [Header("Objects")]
     public playerBase targetPlayer;
@@ -47,6 +50,9 @@ public class entityBase : MonoBehaviour
         entityState = 0;
         currTargetPuzzle = 0;
         gameObject.SetActive(false);
+
+        entityScriptable.entitysMap = new room[11];
+        foreach (room room in entitysmap)
 
     }
 
@@ -229,4 +235,10 @@ public class entityBase : MonoBehaviour
         }
 
     }
+
+    //public IEnumerator actIdle()
+    //{
+    //    int roomNum = Random.Range(0, entityScriptable.roomNumArray.Length);
+
+    //}
 }

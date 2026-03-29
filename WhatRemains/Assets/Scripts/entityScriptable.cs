@@ -10,6 +10,12 @@ using UnityEngine.Windows.Speech;
 ///   1 to 5 - corresponding puzzle nums
 ///   6 - dining room
 ///   
+///   7 - hallway
+///   
+///   8 - safe room near 4
+///   9 - safe room near dining
+///   10 - safe room near 2
+///   
 ///   
 /// </summary>
 
@@ -21,23 +27,68 @@ public class entityScriptable : ScriptableObject
 
     public Dictionary<int, Transform> roomNumDict; //FIX almost certainly not gonna be a transform but a container
 
-    ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
-    private void Awake()
+    public room[] entitysMap;
+
+    public class room
     {
-    }
+        public int roomNum;
+        public HashSet<int> neighbouringRooms;
 
-    void Start()
-    {
+        public room(int roomNum)
+        {
+            this.roomNum = roomNum;
+            neighbouringRooms = new HashSet<int>();
 
-    }
+            switch (roomNum)             {
+                case 0:
+                    neighbouringRooms.Add(1);
+                    break;
+                case 1:
+                    neighbouringRooms.Add(0);
+                    neighbouringRooms.Add(7);
+                    break;
+                case 2:
+                    neighbouringRooms.Add(3);
+                    neighbouringRooms.Add(7);
+                    neighbouringRooms.Add(10);
+                    break;
+                case 3:
+                    neighbouringRooms.Add(2);
+                    neighbouringRooms.Add(4);
+                    break;
+                case 4:
+                    neighbouringRooms.Add(3);
+                    neighbouringRooms.Add(8);
+                    break;
+                case 5:
+                    neighbouringRooms.Add(8);
+                    neighbouringRooms.Add(6);
+                    break;
+                case 6:
+                    neighbouringRooms.Add(5);
+                    neighbouringRooms.Add(7);
+                    break;
+                case 7:
+                    neighbouringRooms.Add(1);
+                    neighbouringRooms.Add(2);
+                    neighbouringRooms.Add(6);
+                    neighbouringRooms.Add(9);
+                    break;
+                case 8:
+                    neighbouringRooms.Add(4);
+                    neighbouringRooms.Add(5);
+                    break;
+                case 9:
+                    neighbouringRooms.Add(7);
+                    break;
+                case 10:
+                    neighbouringRooms.Add(2);
+                    break;
 
-    void Update()
-    {
 
-    }
+            }
+        }
 
-    private void FixedUpdate()
-    {
     }
 
 
@@ -45,15 +96,12 @@ public class entityScriptable : ScriptableObject
     ///
     private void OnEnable()
     {
-        roomNumDict = new Dictionary<int, Transform>()
-        {
+        //roomNumDict = new Dictionary<int, room>()
+        //{
+        //    {1,  entityBase.entity.entityScriptable.entitysMap[1] }, 
 
 
-        };
+        //};
     }
 
-    public void idleChooseRandomRoom(Transform entityTF)
-    {
-        int roomNum = Random.Range(0, roomNumArray.Length);
-    }
 }
