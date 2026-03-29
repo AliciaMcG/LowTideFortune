@@ -55,6 +55,9 @@ public class playerBase : MonoBehaviour
     public AudioSource entityNormalSound;
     public AudioSource entityChaseSound;
 
+    [Header("Animator")]
+    public Animator playerAnimator;
+
     public Transform entityPos; 
     public Transform cauldronPos; 
     public bool entityChasing;
@@ -154,14 +157,16 @@ public class playerBase : MonoBehaviour
 
         controller.Move(finalMove * Time.deltaTime);
 
-        // play the walking sound
+        // play the walking sound and animation
         if ((wasdInput.x != 0 || wasdInput.z != 0) && controller.isGrounded)        {
             if (!walkingSound.isPlaying)            {
                 walkingSound.Play();
+                playerAnimator.SetBool("walking", true);
             }
         }
         else        {
             walkingSound.Stop();
+            playerAnimator.SetBool("walking", false);
         }
     }
 
@@ -218,6 +223,7 @@ public class playerBase : MonoBehaviour
                 if (!placeSound.isPlaying)
                 {
                     placeSound.Play();
+                    playerAnimator.SetTrigger("place");
                 }
 
             }
@@ -232,6 +238,7 @@ public class playerBase : MonoBehaviour
                     if (!pickupSound.isPlaying)
                     {
                         pickupSound.Play();
+                        playerAnimator.SetTrigger("pickup");
                     }
 
                     interactable.GetComponent<pickupInteractable>().interact(this);
@@ -257,6 +264,7 @@ public class playerBase : MonoBehaviour
                     if (!placeSound.isPlaying)
                     {
                         placeSound.Play();
+                        playerAnimator.SetTrigger("place");
                     }
 
                 }
