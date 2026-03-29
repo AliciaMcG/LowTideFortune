@@ -130,6 +130,11 @@ public class playerBase : MonoBehaviour
             if (isSprinting)            {
                 velocity.z += 0.08f;
                 velocity.z = Mathf.Clamp(velocity.z, 1f, 1.7f);
+                playerAnimator.SetFloat("walkSpeed", 2f);
+            }
+            else
+            {
+                playerAnimator.SetFloat("walkSpeed", 1f);
             }
 
             // JUMPING
@@ -138,6 +143,9 @@ public class playerBase : MonoBehaviour
             }
             if (isJumping)            {
                 velocity.y = playerScriptable.jumpForce;
+                
+                //jump animation
+                playerAnimator.SetTrigger("jump");
             }
         }
 
