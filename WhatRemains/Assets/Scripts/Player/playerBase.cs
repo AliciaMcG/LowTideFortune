@@ -277,6 +277,7 @@ public class playerBase : MonoBehaviour
         if (context.started)         { 
             if (pullable != null)                {
                 pullable.GetComponent<IPullable>().pull(this);
+                playerAnimator.SetTrigger("pickup");
             }
             else { Debug.Log("Not an openable"); }
 
