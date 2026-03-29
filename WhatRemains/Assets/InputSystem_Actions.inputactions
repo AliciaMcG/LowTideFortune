@@ -196,7 +196,7 @@
                 {
                     "name": "",
                     "id": "d8bf24bf-3f2f-4160-a97c-38ec1eb520ba",
-                    "path": "<XRController>/trigger",
+                    "path": "<XRController>/{Primary2DAxisClick}",
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
@@ -239,11 +239,33 @@
                 },
                 {
                     "name": "",
+                    "id": "cebd8875-8e6c-442b-b8a6-4ace15ccadbf",
+                    "path": "<XRController>/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";XR",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "f53915c3-e925-416c-922d-d768884c7c1c",
                     "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
+                    "action": "Open",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "271457ad-08a6-4eee-a24e-b5f14068c957",
+                    "path": "<XRController>/{GripButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";XR",
                     "action": "Open",
                     "isComposite": false,
                     "isPartOfComposite": false
