@@ -17,6 +17,9 @@ public class sceneManager : MonoBehaviour
 
     public static bool gameIsPaused;
     public GameObject pauseMenuUI;
+    public GameObject mainMenuPanel;
+    public GameObject instructionsPanel;
+    public GameObject gamemodePanel;
     public static bool gameOver; //FIX (is necessary?? Set up ui??)
     //public int lastCheckpoint; //FIX (add chckpoints)
 
@@ -95,6 +98,31 @@ public class sceneManager : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    public void instructions()
+    {
+        mainMenuPanel.SetActive(false);
+        instructionsPanel.SetActive(true);
+
+    }
+
+    public void gamemodeSelect()
+    {
+        mainMenuPanel.SetActive(false);
+        gamemodePanel.SetActive(true);
+
+    }
+
+    public void setVrMode()
+    {
+        playerBase.desktopMode = false;
+        loadGame();
+    }
+    public void setDesktopMode()
+    {
+        playerBase.desktopMode = true;
+        loadGame();
     }
 
 }

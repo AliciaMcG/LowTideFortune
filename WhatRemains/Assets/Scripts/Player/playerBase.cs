@@ -62,6 +62,8 @@ public class playerBase : MonoBehaviour
     public Transform cauldronPos; 
     public bool entityChasing;
 
+    //game mode selected
+    public static bool desktopMode;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -74,6 +76,8 @@ public class playerBase : MonoBehaviour
 
         playerHealth = 3;
         pickedObject = null;
+
+        desktopMode = true;
     }
 
     void Update()

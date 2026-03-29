@@ -13,6 +13,7 @@ public class settingsButton : MonoBehaviour
 
     public string textSize = "Standard";
 
+    public GameObject settingsMenu;
     void Start()
     {
         //mouse
@@ -62,5 +63,6 @@ public class settingsButton : MonoBehaviour
 
         PlayerPrefs.Save();
 
+        settingsMenu.SetActive(false);
     }
 }
