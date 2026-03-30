@@ -21,14 +21,23 @@ public class puzzle1Behaviour : MonoBehaviour
     public float stareTimer = 0;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
-    void Start()
+    void Awake()
     {
+        if (playerBase.desktopMode == true)
+        {
+            playerCam = gameplayBase.instance.desktopCam.transform;
+        }
+        else
+        {
+            playerCam = gameplayBase.instance.vrCam.transform;
+        }
     }
 
     void Update()
     {
         if (gameplayBase.instance.puzzlesCompleted[0] != true) { 
             dist = Vector3.Distance(playerCam.position, symbol.transform.position);
+            Debug.Log("distance: " + dist);
             if (dist <= maxDist) {
                 checkStare();
             }
