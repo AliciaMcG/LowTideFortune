@@ -25,7 +25,11 @@ public class camMover : MonoBehaviour
 
     void Update()
     {
-        moveCam();
+        
+        if(playerBase.desktopMode == true)
+        {
+            moveCam();
+        }
     }
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////

@@ -21,8 +21,16 @@ public class puzzle1Behaviour : MonoBehaviour
     public float stareTimer = 0;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
-    void Start()
+    void Awake()
     {
+        if (playerBase.desktopMode == true)
+        {
+            playerCam = gameplayBase.instance.desktopCam.transform;
+        }
+        else
+        {
+            playerCam = gameplayBase.instance.vrCam.transform;
+        }
     }
 
     void Update()
@@ -49,6 +57,7 @@ public class puzzle1Behaviour : MonoBehaviour
     {
         Ray ray = new Ray(playerCam.position, playerCam.forward);
         RaycastHit hit;
+        
         if (Physics.Raycast(ray, out hit, maxDist))
         {
             if (hit.collider.gameObject == symbol)

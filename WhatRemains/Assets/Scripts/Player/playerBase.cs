@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 /// <summary>
 /// Holds code for:
@@ -62,10 +63,26 @@ public class playerBase : MonoBehaviour
     public Transform cauldronPos; 
     public bool entityChasing;
 
-
+    //game mode selected
+    [Header("Gamemode Selection")]
+    public static bool desktopMode;
+    
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
+        //enable the different players and menu cameras for the chosen gamemode
+        if (desktopMode == true)
+        {
+            gameplayBase.instance.desktopPlayer.SetActive(true);
+            gameplayBase.instance.vrPlayer.SetActive(false);
+            gameplayBase.instance.setDesktopMode();
+        }
+        else
+        {
+            gameplayBase.instance.desktopPlayer.SetActive(false);
+            gameplayBase.instance.vrPlayer.SetActive(true);
+            gameplayBase.instance.setVrMode();
+        }
     }
     void Start()
     {
@@ -79,8 +96,6 @@ public class playerBase : MonoBehaviour
     void Update()
     {
         castPlayerRay();
-
-
         //play certain sounds depending on the players distance from different objects
         checkEntityDistance(); //FIX make event?
         checkCauldronDistance();        
@@ -88,11 +103,26 @@ public class playerBase : MonoBehaviour
 
     private void FixedUpdate()
     {
-        movePlayer();
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
+        {
+            //if in desktop mode, move the player manually
+            if (playerBase.desktopMode == true)
+            {
+                movePlayer();
+            }
+        }
     }
 
     private void LateUpdate()
     {
+        //if in vr mode, move the player using xr controls
+        if (playerBase.desktopMode == false)
+        {
+            Debug.Log(controller.name);
+            Debug.Log(controller.transform.position);
+        }
+
         if (pickedObject != null)
         {
             //hold object position
@@ -180,95 +210,66 @@ public class playerBase : MonoBehaviour
 
     private void castPlayerRay()
     {
-        cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
-        if (cast)
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
         {
-            //Debug.Log("Ray hit: " + hit.collider.name);
-            if (hit.collider.GetComponent<IInteractable>() != null)
+            cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
+            Debug.Log(
+                "Pos: " + playerCam.transform.position +
+                " | Rot (Euler): " + playerCam.transform.eulerAngles +
+                " | Forward: " + playerCam.transform.forward
+            );
+            if (cast)
             {
-                interactable = hit.collider.transform;
-                pullable = null;
-            }
-            else if (hit.collider.GetComponent<IPullable>() != null) 
-            { 
-                pullable = hit.collider.transform;
-                interactable = null;
+                Debug.Log("Ray hit: " + hit.collider.name);
+                if (hit.collider.GetComponent<IInteractable>() != null)
+                {
+                    interactable = hit.collider.transform;
+                    pullable = null;
+                }
+                else if (hit.collider.GetComponent<IPullable>() != null) 
+                { 
+                    pullable = hit.collider.transform;
+                    interactable = null;
+                }
+                else
+                {
+                    interactable = null;
+                    pullable = null;
+                    //Debug.Log(" Didnt hit an interactable or pullable");
+                }
+
+                // CROSSHAIR RED OR BLACK + DEBUGS
+                playerCam.crosshair.color = interactable != null || pullable != null ? playerCam.cursorScriptable.interactCross : playerCam.cursorScriptable.normalCross;
+                if (pullable != null) { Debug.Log("hit pullable: " + hit.collider.name); }
+                if (interactable != null) { Debug.Log("hit interactable: " + hit.collider.name); }
+                //Debug.Log("Ray hit: " + hit.collider.name);
             }
             else
             {
-                interactable = null;
                 pullable = null;
-                //Debug.Log(" Didnt hit an interactable or pullable");
+                interactable = null;
+                playerCam.crosshair.color = playerCam.cursorScriptable.normalCross;
             }
-
-            // CROSSHAIR RED OR BLACK + DEBUGS
-            playerCam.crosshair.color = interactable != null || pullable != null ? playerCam.cursorScriptable.interactCross : playerCam.cursorScriptable.normalCross;
-            if (pullable != null) { Debug.Log("hit pullable: " + hit.collider.name); }
-            if (interactable != null) { Debug.Log("hit interactable: " + hit.collider.name); }
-            //Debug.Log("Ray hit: " + hit.collider.name);
-        }
-        else
-        {
-            pullable = null;
-            interactable = null;
-            playerCam.crosshair.color = playerCam.cursorScriptable.normalCross;
         }
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.started)        {
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
+        {
+            if (context.started)        {
 
-            if (interactable == null && pickedObject == null)
-            {
-                Debug.Log("nothing interactable");
-            }
-            //if nothing to pickup or interact but still drop/place
-            else if (interactable == null && pickedObject != null)
-            {
-                pickedObject.GetComponent<pickupInteractable>().undoPickup(this); 
-
-                if (!placeSound.isPlaying)
+                if (interactable == null && pickedObject == null)
                 {
-                    placeSound.Play();
-                    playerAnimator.SetTrigger("place");
+                    Debug.Log("nothing interactable");
                 }
-
-            }
-            else if (interactable != null)
-            {
-                //pickup, if holding sum drop first
-                if (interactable.GetComponent<pickupInteractable>() != null)
+                //if nothing to pickup or interact but still drop/place
+                else if (interactable == null && pickedObject != null)
                 {
+                    pickedObject.GetComponent<pickupInteractable>().undoPickup(this); 
 
-                    if (pickedObject != null) { pickedObject.GetComponent<pickupInteractable>().undoPickup(this); }
-
-                    if (!pickupSound.isPlaying)
-                    {
-                        pickupSound.Play();
-                        playerAnimator.SetTrigger("pickup");
-                    }
-
-                    interactable.GetComponent<pickupInteractable>().interact(this);
-                }                
-                //Press button
-                else if (interactable.GetComponent<buttonBase>() != null)
-                {
-
-                    interactable.GetComponent<buttonBase>().interact(this);
-                }
-                //Painting Dialogue Hint 
-                else if (interactable.GetComponent<paintingBase>() != null)
-                {
-
-                    interactable.GetComponent<paintingBase>().interact(this);
-
-                }
-                //snapping objects (tarot cards, skulls)
-                else if (interactable.GetComponent<snapInteractable>() != null)
-                {
-
-                    interactable.GetComponent<snapInteractable>().interact(this);
                     if (!placeSound.isPlaying)
                     {
                         placeSound.Play();
@@ -276,19 +277,139 @@ public class playerBase : MonoBehaviour
                     }
 
                 }
-                else { Debug.Log("Whelp, check OnInteract"); }
-            }
-        }       
+                else if (interactable != null)
+                {
+                    //pickup, if holding sum drop first
+                    if (interactable.GetComponent<pickupInteractable>() != null)
+                    {
+
+                        if (pickedObject != null) { pickedObject.GetComponent<pickupInteractable>().undoPickup(this); }
+
+                        if (!pickupSound.isPlaying)
+                        {
+                            pickupSound.Play();
+                            playerAnimator.SetTrigger("pickup");
+                        }
+
+                        interactable.GetComponent<pickupInteractable>().interact(this);
+                    }                
+                    //Press button
+                    else if (interactable.GetComponent<buttonBase>() != null)
+                    {
+
+                        interactable.GetComponent<buttonBase>().interact(this);
+                    }
+                    //Painting Dialogue Hint 
+                    else if (interactable.GetComponent<paintingBase>() != null)
+                    {
+
+                        interactable.GetComponent<paintingBase>().interact(this);
+
+                    }
+                    //snapping objects (tarot cards, skulls)
+                    else if (interactable.GetComponent<snapInteractable>() != null)
+                    {
+
+                        interactable.GetComponent<snapInteractable>().interact(this);
+                        if (!placeSound.isPlaying)
+                        {
+                            placeSound.Play();
+                            playerAnimator.SetTrigger("place");
+                        }
+
+                    }
+                    else { Debug.Log("Whelp, check OnInteract"); }
+                }
+            }     
+        }  
     }
     public void OnOpen(InputAction.CallbackContext context)
     {
-        if (context.started)         { 
-            if (pullable != null)                {
-                pullable.GetComponent<IPullable>().pull(this);
-                playerAnimator.SetTrigger("pickup");
-            }
-            else { Debug.Log("Not an openable"); }
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
+        {
+            if (context.started)         { 
+                if (pullable != null)                {
+                    pullable.GetComponent<IPullable>().pull(this);
+                    playerAnimator.SetTrigger("pickup");
+                }
+                else { Debug.Log("Not an openable"); }
 
+            }
+        }
+    }
+    //vr interactions
+    public void OnActivated(SelectEnterEventArgs args)
+    {
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
+        {
+            var vrInteractable = args.interactableObject.transform;
+
+            if (vrInteractable.GetComponent<IPullable>() != null)
+            {
+                vrInteractable.GetComponent<IPullable>().pull(this);
+            }
+            else if (vrInteractable.GetComponent<buttonBase>() != null)
+            {
+                vrInteractable.GetComponent<buttonBase>().interact(this);
+            }
+            //Painting Dialogue Hint 
+            else if (vrInteractable.GetComponent<paintingBase>() != null)
+            {
+                vrInteractable.GetComponent<paintingBase>().interact(this);
+            }
+            else if (vrInteractable.GetComponent<bookInteract>() != null)
+            {
+                vrInteractable.GetComponent<bookInteract>().ToggleBookMode(true);
+            }
+            //snapping objects (tarot cards, skulls)
+            else if (vrInteractable.GetComponent<snapInteractable>() != null)
+            {
+
+                vrInteractable.GetComponent<snapInteractable>().interact(this);
+                if (!placeSound.isPlaying)
+                {
+                    placeSound.Play();
+                    playerAnimator.SetTrigger("place");
+                }
+
+            }    
+        }
+    }
+
+    public void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        if (sceneManager.gameIsPaused == false)
+        {
+            var vrInteractable = args.interactableObject.transform;
+
+            if (vrInteractable.GetComponent<pickupInteractable>() != null)
+            {
+                if (!pickupSound.isPlaying)
+                {
+                    pickupSound.Play();
+                    playerAnimator.SetTrigger("pickup");
+                }
+
+            }      
+        }
+    }
+    public void OnSelectExited(SelectEnterEventArgs args)
+    {
+        if (sceneManager.gameIsPaused == false)
+        {
+            var vrInteractable = args.interactableObject.transform;
+
+            if (vrInteractable.GetComponent<pickupInteractable>() != null)
+            {
+                if (!placeSound.isPlaying)
+                {
+                    placeSound.Play();
+                    playerAnimator.SetTrigger("place");
+                }
+
+            }      
         }
     }
 

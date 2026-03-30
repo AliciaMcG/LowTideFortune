@@ -44,69 +44,73 @@ public class gameTimers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //setting the clock
-        //get the current second of the game
-        deltaTime += Time.deltaTime;
-        elapsedMinutes = (int)deltaTime;
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
+        {
+            //setting the clock
+            //get the current second of the game
+            deltaTime += Time.deltaTime;
+            elapsedMinutes = (int)deltaTime;
 
-        //after the first 60 seconds, set the hour back to 1
-        if (elapsedMinutes < 60)
-        {
-            currentGameHour = 12;
-        }
-        else
-        {
-            //the hour is elapsed minutes divided by 60
-            currentGameHour = elapsedMinutes / 60;
-        }
-
-        //the minute is the remainder of the seconds divide by 60 
-        currentGameMinute = (int)deltaTime % 60; 
-
-        //if the minute is less than 10, add a 0 in front of it
-        if (currentGameMinute < 10)
-        {
-            gameTime.text = currentGameHour + ":0" + (int)currentGameMinute + "am";
-        }
-        else
-        {
-            gameTime.text = currentGameHour + ":" + (int)currentGameMinute + "am";
-        }
-
-        //unlock the dining room door at 4 minutes
-        bool diningDoorUnlocked = false;
-        if (currentGameHour == 4 && currentGameMinute == 0 && diningDoorUnlocked == false)
-        {
-            gameplayBaseObj.unlockDoors(2);
-            diningDoorUnlocked = true;
-            unlockSound.Play();
-        }
-
-        //open the final room door when all candles have been placed and the player is in the final room
-        if (gameplayBaseObj.numPuzzlesCompleted == 4 && finalRoomTrigger.playerEnteredFinalSR == true)
-        {
-            gameplayBaseObj.unlockDoors(3);
-            door.SetTrigger("Open");
-            if (doorOpenedPlayed == false)
+            //after the first 60 seconds, set the hour back to 1
+            if (elapsedMinutes < 60)
             {
-                doorOpenSound.Play();
-                doorOpenedPlayed = true;
+                currentGameHour = 12;
             }
-        }
+            else
+            {
+                //the hour is elapsed minutes divided by 60
+                currentGameHour = elapsedMinutes / 60;
+            }
 
-        //dissolve safety rooms
-        if (gameplayBaseObj.numPuzzlesCompleted == 2)
-        {
-            //dissolve room 1
-        }
-        if (gameplayBaseObj.numPuzzlesCompleted == 3)
-        {
-            //dissolve room 2
-        }
-        if (gameplayBaseObj.numPuzzlesCompleted == 4)
-        {
-            //dissolve room 3
-        }
+            //the minute is the remainder of the seconds divide by 60 
+            currentGameMinute = (int)deltaTime % 60; 
 
+            //if the minute is less than 10, add a 0 in front of it
+            if (currentGameMinute < 10)
+            {
+                gameTime.text = currentGameHour + ":0" + (int)currentGameMinute + "am";
+            }
+            else
+            {
+                gameTime.text = currentGameHour + ":" + (int)currentGameMinute + "am";
+            }
+
+            //unlock the dining room door at 4 minutes
+            bool diningDoorUnlocked = false;
+            if (currentGameHour == 4 && currentGameMinute == 0 && diningDoorUnlocked == false)
+            {
+                gameplayBaseObj.unlockDoors(2);
+                diningDoorUnlocked = true;
+                unlockSound.Play();
+            }
+
+            //open the final room door when all candles have been placed and the player is in the final room
+            if (gameplayBaseObj.numPuzzlesCompleted == 4 && finalRoomTrigger.playerEnteredFinalSR == true)
+            {
+                gameplayBaseObj.unlockDoors(3);
+                door.SetTrigger("Open");
+                if (doorOpenedPlayed == false)
+                {
+                    doorOpenSound.Play();
+                    doorOpenedPlayed = true;
+                }
+            }
+
+            //dissolve safety rooms
+            if (gameplayBaseObj.numPuzzlesCompleted == 2)
+            {
+                //dissolve room 1
+            }
+            if (gameplayBaseObj.numPuzzlesCompleted == 3)
+            {
+                //dissolve room 2
+            }
+            if (gameplayBaseObj.numPuzzlesCompleted == 4)
+            {
+                //dissolve room 3
+            }
+
+        }
     }
 }
