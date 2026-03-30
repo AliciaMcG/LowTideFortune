@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
 
 /// <summary>
 /// Holds code for:
@@ -90,15 +91,11 @@ public class playerBase : MonoBehaviour
 
         playerHealth = 3;
         pickedObject = null;
-
-        desktopMode = true;
     }
 
     void Update()
     {
         castPlayerRay();
-
-
         //play certain sounds depending on the players distance from different objects
         checkEntityDistance(); //FIX make event?
         checkCauldronDistance();        
@@ -109,12 +106,23 @@ public class playerBase : MonoBehaviour
         //if the game's not paused
         if (sceneManager.gameIsPaused == false)
         {
-            movePlayer();
+            //if in desktop mode, move the player manually
+            if (playerBase.desktopMode == true)
+            {
+                movePlayer();
+            }
         }
     }
 
     private void LateUpdate()
     {
+        //if in vr mode, move the player using xr controls
+        if (playerBase.desktopMode == false)
+        {
+            Debug.Log(controller.name);
+            Debug.Log(controller.transform.position);
+        }
+
         if (pickedObject != null)
         {
             //hold object position
@@ -204,11 +212,16 @@ public class playerBase : MonoBehaviour
     {
         //if the game's not paused
         if (sceneManager.gameIsPaused == false)
-            {
+        {
             cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
+            Debug.Log(
+                "Pos: " + playerCam.transform.position +
+                " | Rot (Euler): " + playerCam.transform.eulerAngles +
+                " | Forward: " + playerCam.transform.forward
+            );
             if (cast)
             {
-                //Debug.Log("Ray hit: " + hit.collider.name);
+                Debug.Log("Ray hit: " + hit.collider.name);
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {
                     interactable = hit.collider.transform;

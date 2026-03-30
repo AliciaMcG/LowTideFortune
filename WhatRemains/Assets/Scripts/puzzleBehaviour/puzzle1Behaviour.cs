@@ -37,7 +37,6 @@ public class puzzle1Behaviour : MonoBehaviour
     {
         if (gameplayBase.instance.puzzlesCompleted[0] != true) { 
             dist = Vector3.Distance(playerCam.position, symbol.transform.position);
-            Debug.Log("distance: " + dist);
             if (dist <= maxDist) {
                 checkStare();
             }
@@ -58,6 +57,7 @@ public class puzzle1Behaviour : MonoBehaviour
     {
         Ray ray = new Ray(playerCam.position, playerCam.forward);
         RaycastHit hit;
+        
         if (Physics.Raycast(ray, out hit, maxDist))
         {
             if (hit.collider.gameObject == symbol)
