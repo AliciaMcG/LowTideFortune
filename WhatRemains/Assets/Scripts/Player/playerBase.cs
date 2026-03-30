@@ -65,21 +65,22 @@ public class playerBase : MonoBehaviour
     //game mode selected
     [Header("Gamemode Selection")]
     public static bool desktopMode;
-    public GameObject vrPlayer;
-    public GameObject desktopPlayer;
     
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
+        //enable the different players and menu cameras for the chosen gamemode
         if (desktopMode == true)
         {
-            desktopPlayer.SetActive(true);
-            vrPlayer.SetActive(false);
+            gameplayBase.instance.desktopPlayer.SetActive(true);
+            gameplayBase.instance.vrPlayer.SetActive(false);
+            gameplayBase.instance.setDesktopMode();
         }
         else
         {
-            desktopPlayer.SetActive(false);
-            vrPlayer.SetActive(true);
+            gameplayBase.instance.desktopPlayer.SetActive(false);
+            gameplayBase.instance.vrPlayer.SetActive(true);
+            gameplayBase.instance.setVrMode();
         }
     }
     void Start()

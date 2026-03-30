@@ -37,6 +37,11 @@ public class gameplayBase : MonoBehaviour
     public Sprite healthFalse;
 
     public Image[] healthDisplay = new Image[3];
+    public Canvas menuCanvas;
+    public Camera vrCam;
+    public Camera desktopCam;
+    public GameObject vrPlayer;
+    public GameObject desktopPlayer;
 
     [Header("Objects")]
     public GameObject[] candlesArr;
@@ -138,7 +143,17 @@ public class gameplayBase : MonoBehaviour
         OnChaseStarted?.Invoke();
     }
 
+    public void setVrMode()
+    {
+        menuCanvas.worldCamera = vrCam;
+        menuCanvas.transform.SetParent(vrCam.transform);
+    }
 
+    public void setDesktopMode()
+    {
+        menuCanvas.worldCamera = desktopCam;
+        menuCanvas.transform.SetParent(desktopCam.transform);
+    }
 
 }
 
