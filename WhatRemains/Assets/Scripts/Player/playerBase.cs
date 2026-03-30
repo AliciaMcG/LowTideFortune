@@ -106,7 +106,11 @@ public class playerBase : MonoBehaviour
 
     private void FixedUpdate()
     {
-        movePlayer();
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
+        {
+            movePlayer();
+        }
     }
 
     private void LateUpdate()
@@ -198,95 +202,61 @@ public class playerBase : MonoBehaviour
 
     private void castPlayerRay()
     {
-        cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
-        if (cast)
-        {
-            //Debug.Log("Ray hit: " + hit.collider.name);
-            if (hit.collider.GetComponent<IInteractable>() != null)
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
             {
-                interactable = hit.collider.transform;
-                pullable = null;
-            }
-            else if (hit.collider.GetComponent<IPullable>() != null) 
-            { 
-                pullable = hit.collider.transform;
-                interactable = null;
+            cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
+            if (cast)
+            {
+                //Debug.Log("Ray hit: " + hit.collider.name);
+                if (hit.collider.GetComponent<IInteractable>() != null)
+                {
+                    interactable = hit.collider.transform;
+                    pullable = null;
+                }
+                else if (hit.collider.GetComponent<IPullable>() != null) 
+                { 
+                    pullable = hit.collider.transform;
+                    interactable = null;
+                }
+                else
+                {
+                    interactable = null;
+                    pullable = null;
+                    //Debug.Log(" Didnt hit an interactable or pullable");
+                }
+
+                // CROSSHAIR RED OR BLACK + DEBUGS
+                playerCam.crosshair.color = interactable != null || pullable != null ? playerCam.cursorScriptable.interactCross : playerCam.cursorScriptable.normalCross;
+                if (pullable != null) { Debug.Log("hit pullable: " + hit.collider.name); }
+                if (interactable != null) { Debug.Log("hit interactable: " + hit.collider.name); }
+                //Debug.Log("Ray hit: " + hit.collider.name);
             }
             else
             {
-                interactable = null;
                 pullable = null;
-                //Debug.Log(" Didnt hit an interactable or pullable");
+                interactable = null;
+                playerCam.crosshair.color = playerCam.cursorScriptable.normalCross;
             }
-
-            // CROSSHAIR RED OR BLACK + DEBUGS
-            playerCam.crosshair.color = interactable != null || pullable != null ? playerCam.cursorScriptable.interactCross : playerCam.cursorScriptable.normalCross;
-            if (pullable != null) { Debug.Log("hit pullable: " + hit.collider.name); }
-            if (interactable != null) { Debug.Log("hit interactable: " + hit.collider.name); }
-            //Debug.Log("Ray hit: " + hit.collider.name);
-        }
-        else
-        {
-            pullable = null;
-            interactable = null;
-            playerCam.crosshair.color = playerCam.cursorScriptable.normalCross;
         }
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.started)        {
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
+        {
+            if (context.started)        {
 
-            if (interactable == null && pickedObject == null)
-            {
-                Debug.Log("nothing interactable");
-            }
-            //if nothing to pickup or interact but still drop/place
-            else if (interactable == null && pickedObject != null)
-            {
-                pickedObject.GetComponent<pickupInteractable>().undoPickup(this); 
-
-                if (!placeSound.isPlaying)
+                if (interactable == null && pickedObject == null)
                 {
-                    placeSound.Play();
-                    playerAnimator.SetTrigger("place");
+                    Debug.Log("nothing interactable");
                 }
-
-            }
-            else if (interactable != null)
-            {
-                //pickup, if holding sum drop first
-                if (interactable.GetComponent<pickupInteractable>() != null)
+                //if nothing to pickup or interact but still drop/place
+                else if (interactable == null && pickedObject != null)
                 {
+                    pickedObject.GetComponent<pickupInteractable>().undoPickup(this); 
 
-                    if (pickedObject != null) { pickedObject.GetComponent<pickupInteractable>().undoPickup(this); }
-
-                    if (!pickupSound.isPlaying)
-                    {
-                        pickupSound.Play();
-                        playerAnimator.SetTrigger("pickup");
-                    }
-
-                    interactable.GetComponent<pickupInteractable>().interact(this);
-                }                
-                //Press button
-                else if (interactable.GetComponent<buttonBase>() != null)
-                {
-
-                    interactable.GetComponent<buttonBase>().interact(this);
-                }
-                //Painting Dialogue Hint 
-                else if (interactable.GetComponent<paintingBase>() != null)
-                {
-
-                    interactable.GetComponent<paintingBase>().interact(this);
-
-                }
-                //snapping objects (tarot cards, skulls)
-                else if (interactable.GetComponent<snapInteractable>() != null)
-                {
-
-                    interactable.GetComponent<snapInteractable>().interact(this);
                     if (!placeSound.isPlaying)
                     {
                         placeSound.Play();
@@ -294,19 +264,65 @@ public class playerBase : MonoBehaviour
                     }
 
                 }
-                else { Debug.Log("Whelp, check OnInteract"); }
-            }
-        }       
+                else if (interactable != null)
+                {
+                    //pickup, if holding sum drop first
+                    if (interactable.GetComponent<pickupInteractable>() != null)
+                    {
+
+                        if (pickedObject != null) { pickedObject.GetComponent<pickupInteractable>().undoPickup(this); }
+
+                        if (!pickupSound.isPlaying)
+                        {
+                            pickupSound.Play();
+                            playerAnimator.SetTrigger("pickup");
+                        }
+
+                        interactable.GetComponent<pickupInteractable>().interact(this);
+                    }                
+                    //Press button
+                    else if (interactable.GetComponent<buttonBase>() != null)
+                    {
+
+                        interactable.GetComponent<buttonBase>().interact(this);
+                    }
+                    //Painting Dialogue Hint 
+                    else if (interactable.GetComponent<paintingBase>() != null)
+                    {
+
+                        interactable.GetComponent<paintingBase>().interact(this);
+
+                    }
+                    //snapping objects (tarot cards, skulls)
+                    else if (interactable.GetComponent<snapInteractable>() != null)
+                    {
+
+                        interactable.GetComponent<snapInteractable>().interact(this);
+                        if (!placeSound.isPlaying)
+                        {
+                            placeSound.Play();
+                            playerAnimator.SetTrigger("place");
+                        }
+
+                    }
+                    else { Debug.Log("Whelp, check OnInteract"); }
+                }
+            }     
+        }  
     }
     public void OnOpen(InputAction.CallbackContext context)
     {
-        if (context.started)         { 
-            if (pullable != null)                {
-                pullable.GetComponent<IPullable>().pull(this);
-                playerAnimator.SetTrigger("pickup");
-            }
-            else { Debug.Log("Not an openable"); }
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
+        {
+            if (context.started)         { 
+                if (pullable != null)                {
+                    pullable.GetComponent<IPullable>().pull(this);
+                    playerAnimator.SetTrigger("pickup");
+                }
+                else { Debug.Log("Not an openable"); }
 
+            }
         }
     }
 

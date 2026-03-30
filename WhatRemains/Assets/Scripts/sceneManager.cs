@@ -40,7 +40,7 @@ public class sceneManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "gameplayScene") { 
             pauseMenuUI.SetActive(false);
         }
-        Time.timeScale = 1.0f;
+        //Time.timeScale = 1.0f;
         gameIsPaused = false;
 
         gameOver = false;
@@ -84,7 +84,7 @@ public class sceneManager : MonoBehaviour
     public void pause()
     {
         pauseMenuUI.SetActive(true);
-        Time.timeScale = 0.0f;
+        //Time.timeScale = 0.0f;
         gameIsPaused = true;
 
         Cursor.lockState = CursorLockMode.Confined;
@@ -93,7 +93,7 @@ public class sceneManager : MonoBehaviour
     public void resume()
     {
         pauseMenuUI.SetActive(false);
-        Time.timeScale = 1.0f;
+        //Time.timeScale = 1.0f;
         gameIsPaused = false;
 
         Cursor.lockState = CursorLockMode.Locked;

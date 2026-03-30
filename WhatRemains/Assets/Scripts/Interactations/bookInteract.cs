@@ -48,6 +48,7 @@ public class bookInteract : MonoBehaviour
         }
     }
 
+    /*
     void SetPlayerState(bool canMove)
     {
         // 1. Disable/Enable the scripts
@@ -68,7 +69,7 @@ public class bookInteract : MonoBehaviour
             }
         }
     }
-
+    */
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Something entered book trigger");

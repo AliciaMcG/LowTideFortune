@@ -63,15 +63,19 @@ public class entityBase : MonoBehaviour
 
     private void FixedUpdate()
     {
-        updateEntityState();
-
-        if (messTime > 0)
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
         {
-            if (entityState == 2) { entityState = 1; } //reset back to idle
-            messTime -= Time.fixedDeltaTime;
+            updateEntityState();
 
-            if (messTime <= 0)            {
-                entityState = 2;
+            if (messTime > 0)
+            {
+                if (entityState == 2) { entityState = 1; } //reset back to idle
+                messTime -= Time.fixedDeltaTime;
+
+                if (messTime <= 0)            {
+                    entityState = 2;
+                }
             }
         }
     }
