@@ -25,7 +25,7 @@ public class bookInteract : MonoBehaviour
         }
     }
 
-    void ToggleBookMode(bool isReading)
+    public void ToggleBookMode(bool isReading)
     {
         bookUIPanel.SetActive(isReading);
 

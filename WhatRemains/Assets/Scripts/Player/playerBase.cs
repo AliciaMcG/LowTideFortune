@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
+using UnityEngine.XR.Interaction.Toolkit;
 
 /// <summary>
 /// Holds code for:
@@ -336,6 +336,80 @@ public class playerBase : MonoBehaviour
                 else { Debug.Log("Not an openable"); }
 
             }
+        }
+    }
+    //vr interactions
+    public void OnActivated(SelectEnterEventArgs args)
+    {
+        //if the game's not paused
+        if (sceneManager.gameIsPaused == false)
+        {
+            var vrInteractable = args.interactableObject.transform;
+
+            if (vrInteractable.GetComponent<IPullable>() != null)
+            {
+                vrInteractable.GetComponent<IPullable>().pull(this);
+            }
+            else if (vrInteractable.GetComponent<buttonBase>() != null)
+            {
+                vrInteractable.GetComponent<buttonBase>().interact(this);
+            }
+            //Painting Dialogue Hint 
+            else if (vrInteractable.GetComponent<paintingBase>() != null)
+            {
+                vrInteractable.GetComponent<paintingBase>().interact(this);
+            }
+            else if (vrInteractable.GetComponent<bookInteract>() != null)
+            {
+                vrInteractable.GetComponent<bookInteract>().ToggleBookMode(true);
+            }
+            //snapping objects (tarot cards, skulls)
+            else if (vrInteractable.GetComponent<snapInteractable>() != null)
+            {
+
+                vrInteractable.GetComponent<snapInteractable>().interact(this);
+                if (!placeSound.isPlaying)
+                {
+                    placeSound.Play();
+                    playerAnimator.SetTrigger("place");
+                }
+
+            }    
+        }
+    }
+
+    public void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        if (sceneManager.gameIsPaused == false)
+        {
+            var vrInteractable = args.interactableObject.transform;
+
+            if (vrInteractable.GetComponent<pickupInteractable>() != null)
+            {
+                if (!pickupSound.isPlaying)
+                {
+                    pickupSound.Play();
+                    playerAnimator.SetTrigger("pickup");
+                }
+
+            }      
+        }
+    }
+    public void OnSelectExited(SelectEnterEventArgs args)
+    {
+        if (sceneManager.gameIsPaused == false)
+        {
+            var vrInteractable = args.interactableObject.transform;
+
+            if (vrInteractable.GetComponent<pickupInteractable>() != null)
+            {
+                if (!placeSound.isPlaying)
+                {
+                    placeSound.Play();
+                    playerAnimator.SetTrigger("place");
+                }
+
+            }      
         }
     }
 
