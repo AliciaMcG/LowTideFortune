@@ -52,7 +52,9 @@ public class entityBase : MonoBehaviour
         gameObject.SetActive(false);
 
         entityScriptable.entitysMap = new room[11];
-        foreach (room room in entitysmap)
+        for (int i = 0; i <= 11; i++) {
+            entityScriptable.entitysMap[i] = new room(i);
+        }
 
     }
 
