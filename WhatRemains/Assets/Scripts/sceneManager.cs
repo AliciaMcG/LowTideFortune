@@ -65,6 +65,9 @@ public class sceneManager : MonoBehaviour
     public void loadGame()
     {
         SceneManager.LoadSceneAsync("gameplayScene");
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void quitGame()
