@@ -44,9 +44,10 @@ public class playerBase : MonoBehaviour
     //public float bobFreq;
 
     [Header("Player Object Interaction")]
-    public Transform pickedObject; //FIX (move)
+    public Transform pickedObject;
     public RaycastHit hit;
     public bool cast;
+    public float interactDist;
 
     [Header("Sounds")]
     public AudioSource walkingSound;
@@ -213,7 +214,7 @@ public class playerBase : MonoBehaviour
         //if the game's not paused
         if (sceneManager.gameIsPaused == false)
         {
-            cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, 5f); //VAR
+            cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactDist); //VAR
             Debug.Log(
                 "Pos: " + playerCam.transform.position +
                 " | Rot (Euler): " + playerCam.transform.eulerAngles +
