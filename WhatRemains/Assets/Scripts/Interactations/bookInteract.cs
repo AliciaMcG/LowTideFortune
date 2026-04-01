@@ -8,7 +8,7 @@ public class bookInteract : MonoBehaviour
     private bool playerInRange;
 
     public MonoBehaviour playerMovement;
-    public MonoBehaviour mouseLookScript;
+    public camMover mouseLookScript;
     public GameObject crosshair;
 
     void Start()
@@ -25,7 +25,7 @@ public class bookInteract : MonoBehaviour
         }
     }
 
-    void ToggleBookMode(bool isReading)
+    public void ToggleBookMode(bool isReading)
     {
         bookUIPanel.SetActive(isReading);
 
@@ -36,7 +36,9 @@ public class bookInteract : MonoBehaviour
         // 2. Manage the Mouse Cursor
         if (isReading)
         {
-            Cursor.lockState = CursorLockMode.None; // Let the mouse move freely
+            mouseLookScript.transform.rotation = Quaternion.Euler(-90f, mouseLookScript.camRotation.y, 0);
+
+            Cursor.lockState = CursorLockMode.Confined; // Let the mouse move freely
             Cursor.visible = true;                  // Show the system cursor
             if (crosshair != null) crosshair.SetActive(false); // Hide the crosshair
         }
@@ -48,6 +50,7 @@ public class bookInteract : MonoBehaviour
         }
     }
 
+    /*
     void SetPlayerState(bool canMove)
     {
         // 1. Disable/Enable the scripts
@@ -68,7 +71,7 @@ public class bookInteract : MonoBehaviour
             }
         }
     }
-
+    */
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Something entered book trigger");

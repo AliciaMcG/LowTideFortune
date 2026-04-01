@@ -17,6 +17,9 @@ public class sceneManager : MonoBehaviour
 
     public static bool gameIsPaused;
     public GameObject pauseMenuUI;
+    public GameObject mainMenuPanel;
+    public GameObject instructionsPanel;
+    public GameObject gamemodePanel;
     public static bool gameOver; //FIX (is necessary?? Set up ui??)
     //public int lastCheckpoint; //FIX (add chckpoints)
 
@@ -37,7 +40,7 @@ public class sceneManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "gameplayScene") { 
             pauseMenuUI.SetActive(false);
         }
-        Time.timeScale = 1.0f;
+        //Time.timeScale = 1.0f;
         gameIsPaused = false;
 
         gameOver = false;
@@ -81,7 +84,7 @@ public class sceneManager : MonoBehaviour
     public void pause()
     {
         pauseMenuUI.SetActive(true);
-        Time.timeScale = 0.0f;
+        //Time.timeScale = 0.0f;
         gameIsPaused = true;
 
         Cursor.lockState = CursorLockMode.Confined;
@@ -90,11 +93,37 @@ public class sceneManager : MonoBehaviour
     public void resume()
     {
         pauseMenuUI.SetActive(false);
-        Time.timeScale = 1.0f;
+        //Time.timeScale = 1.0f;
         gameIsPaused = false;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    public void instructions()
+    {
+        mainMenuPanel.SetActive(false);
+        instructionsPanel.SetActive(true);
+
+    }
+
+    public void gamemodeSelect()
+    {
+        mainMenuPanel.SetActive(false);
+        instructionsPanel.SetActive(false);
+        gamemodePanel.SetActive(true);
+
+    }
+
+    public void setVrMode()
+    {
+        playerBase.desktopMode = false;
+        loadGame();
+    }
+    public void setDesktopMode()
+    {
+        playerBase.desktopMode = true;
+        loadGame();
     }
 
 }
