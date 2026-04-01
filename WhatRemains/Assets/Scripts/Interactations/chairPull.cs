@@ -16,11 +16,18 @@ public class chairPull : MonoBehaviour, IPullable
 
         //get the chair object
         Transform chair;
-        chair = playerBaseScript.hit.transform;
-        //Debug.Log(chair);
+        if (playerBase.desktopMode)
+        {
+            chair = playerBaseScript.hit.transform;
+        }
+        else
+        {
+            chair = ;
+        }
+            //Debug.Log(chair);
 
-        //move the chair back 2 spaces
-        chair.Translate(Vector3.right * 2.0f, Space.Self);
+            //move the chair back 2 spaces
+            chair.Translate(Vector3.right * 2.0f, Space.Self);
 
         //disable the collider
         chair.GetComponent<BoxCollider>().enabled = false;
