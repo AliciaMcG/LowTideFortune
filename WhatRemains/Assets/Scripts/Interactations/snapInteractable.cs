@@ -16,7 +16,7 @@ public class snapInteractable : MonoBehaviour,  IInteractable
                 gameplayBase.instance.player.pickedObject.GetComponent<Collider>().enabled = true;
             }
 
-            //snap the card to the card position plane
+            //snap the object to the position plane
             gameplayBase.instance.player.pickedObject.transform.position = gameplayBase.instance.player.hit.transform.position;
 
             //set the picked up object back to null
