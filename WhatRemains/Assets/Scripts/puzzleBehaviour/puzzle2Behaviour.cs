@@ -118,7 +118,7 @@ public class puzzle2Behaviour : MonoBehaviour
 
     void spoilMixture()
     {
-        dialogueBase.dialogueScript.setDialogue("Dammit! The potion is screwed up, need to dump and restart", 5f);
+        dialogueBase.dialogueScript.setDialogue("Shoot! The potion is screwed up, need to dump and restart", 5f);
         // play spoil sound effect
         if (!incorrectJarSound.isPlaying)        {
             incorrectJarSound.Play();
