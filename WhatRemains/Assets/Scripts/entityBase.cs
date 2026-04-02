@@ -38,13 +38,21 @@ public class entityBase : MonoBehaviour
 
     [Header("Paths")]
     public SplineContainer[] paths;
+    bool startedPuzzle2 = false;
+    bool startedPuzzle3 = false;
+    bool startedPuzzle4 = false;
 
     [Header("Mess Objects")]
     public GameObject jar;
     bool thrownJar = false;
     Vector3 jarPos;
     public GameObject tarotCard;
+    public Transform tarotTarPos;
     bool placedCard = false;
+    bool holdingCard = false;
+    bool holdingJar = false;
+    bool holdingSkull = false;
+    bool skullMoved = false;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -221,42 +229,67 @@ public class entityBase : MonoBehaviour
                 Debug.Log("Entity is messing with puzzle 2");
                 //FIX
                 //messTime = 7f;
-                GetComponent<SplineAnimate>().Container = paths[1];
-                GetComponent<SplineAnimate>().Play();
-
-                //grab the jar when it reaches it
-                if (GetComponent<SplineAnimate>().NormalizedTime >= 0.9)
+                if (!startedPuzzle2)
                 {
-                    jar.transform.position = entityHand.transform.position;
-                    Debug.Log("grabbed jar");
+                    GetComponent<SplineAnimate>().Container = paths[1];
+                    GetComponent<SplineAnimate>().Play();
+                    startedPuzzle2 = true;
                 }
-                if (GetComponent<SplineAnimate>().NormalizedTime == 1 && thrownJar == false)
+
+                //throw the jar
+                if (GetComponent<SplineAnimate>().NormalizedTime >= 0.97 && thrownJar == false)
                 {
                     jar.transform.position = jarPos;
                     Debug.Log("threw jar");
                     thrownJar = true;
+                    holdingJar = false;
                 }
+                //grab the jar when it reaches it
+                else if (GetComponent<SplineAnimate>().NormalizedTime >= 0.87  && holdingJar == false && thrownJar == false)
+                {
+                    jar.transform.position = entityHand.transform.position;
+                    holdingJar = true;
+                    Debug.Log("grabbed jar");
+                }
+                if (holdingJar && !thrownJar)
+                {
+                    jar.transform.position = entityHand.transform.position;
+                }
+                
                 break;
 
             case 3:
                 //
                 Debug.Log("Entity is messing with puzzle 3");
-
-                GetComponent<SplineAnimate>().Container = paths[5];
-                GetComponent<SplineAnimate>().Play();
-
-                //grab the tarot card when it reaches it
-                if (GetComponent<SplineAnimate>().NormalizedTime >= 0.67)
+                if (!startedPuzzle3)
                 {
-                    tarotCard.transform.position = entityHand.transform.position;
-                    Debug.Log("grabbed jar");
+                    GetComponent<SplineAnimate>().Container = paths[5];
+                    GetComponent<SplineAnimate>().Restart(true);
+                    startedPuzzle3 = true;
                 }
-                if (GetComponent<SplineAnimate>().NormalizedTime == 1 && placedCard == false)
+
+                //place the tarot card
+                if (GetComponent<SplineAnimate>().NormalizedTime >= 1 && placedCard == false)
                 {
-                    tarotCard.transform.position = new Vector3 (6.16f, 0.4f, 23f);
+                    holdingCard = false;
+                    tarotCard.transform.position = tarotTarPos.position;
                     Debug.Log("moved card");
                     placedCard = true;
                 }
+                //grab the tarot card when it reaches it
+                else if (GetComponent<SplineAnimate>().NormalizedTime >= 0.67 && holdingCard == false && placedCard == false)
+                {
+                    tarotCard.transform.position = entityHand.transform.position;
+                    holdingCard = true;
+                    Debug.Log("grabbed card");
+                }
+                
+                if (holdingCard && !placedCard)
+                {
+                    tarotCard.transform.position = entityHand.transform.position;
+                    Debug.Log("holding card");
+                }
+                
                 break;
 
             case 4:
@@ -265,6 +298,12 @@ public class entityBase : MonoBehaviour
 
                 if (gameplayBase.instance.puzzlesCompleted[3] == false)
                 {
+                    if (!startedPuzzle4)
+                    {
+                        GetComponent<SplineAnimate>().Container = paths[6];
+                        GetComponent<SplineAnimate>().Restart(true);
+                        startedPuzzle4 = true;
+                    }
                     messWithPuzz4();
                 }
 
@@ -303,14 +342,18 @@ public class entityBase : MonoBehaviour
 
     public void messWithPuzz4()
     {
+        Debug.Log("Messing with puzzle 4 function");
         for (int i = 0; i < puzzle4Behaviour.puzz4.skullsArr.Length; i++)
         {
             for (int j = 0; j < puzzle4Behaviour.puzz4.skullsArr.Length; j++)
             {
-
-                if (Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position) < 3f)
+                Debug.Log("In position and skull check");
+                Debug.Log("skull and position distance: " + Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position));
+                if (Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position) < 0.3f && skullMoved == false)
                 {
                     puzzle4Behaviour.puzz4.skullsArr[i].transform.position = puzzle4Behaviour.puzz4.skullPlacesArr[Random.Range(0, puzzle4Behaviour.puzz4.skullsArr.Length)].transform.position;
+                    skullMoved = true;
+                    Debug.Log("Moved skulls");
                     messTime = 7f;
                     break;
                 }
