@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using static entityScriptable;
+using UnityEngine.Splines;
 
 /// <summary>
 /// Holds code for:
@@ -30,8 +31,20 @@ public class entityBase : MonoBehaviour
     public bool isBeingIdle;
     public float entityPatience;
 
+    public GameObject entityHand;
+
     [Header("Objects")]
     public playerBase targetPlayer;
+
+    [Header("Paths")]
+    public SplineContainer[] paths;
+
+    [Header("Mess Objects")]
+    public GameObject jar;
+    bool thrownJar = false;
+    Vector3 jarPos;
+    public GameObject tarotCard;
+    bool placedCard = false;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -43,6 +56,7 @@ public class entityBase : MonoBehaviour
         entity = this;
         if (entity == null) { Debug.LogWarning("no entity?? "); }
 
+        jarPos = jar.transform.position;
 
     }
 
@@ -162,7 +176,13 @@ public class entityBase : MonoBehaviour
     {
         //FIX DIRECTION FACING
 
-        transform.Translate((transform.position + ((targetPOS - this.transform.position).normalized) * entitySpeed * Time.fixedDeltaTime));
+        //entity's current position
+        Vector3 currEntity = gameObject.transform.position;
+
+        //move towards the target position
+        gameObject.transform.position = Vector3.MoveTowards(currEntity, targetPOS, (float)0.01);
+
+        //transform.Translate((transform.position + ((targetPOS - this.transform.position).normalized) * entitySpeed * Time.fixedDeltaTime));
 
         // the if reaches player is in collision //take helth funcion
 
@@ -200,12 +220,43 @@ public class entityBase : MonoBehaviour
                 //
                 Debug.Log("Entity is messing with puzzle 2");
                 //FIX
-                messTime = 7f;
+                //messTime = 7f;
+                GetComponent<SplineAnimate>().Container = paths[1];
+                GetComponent<SplineAnimate>().Play();
+
+                //grab the jar when it reaches it
+                if (GetComponent<SplineAnimate>().NormalizedTime >= 0.9)
+                {
+                    jar.transform.position = entityHand.transform.position;
+                    Debug.Log("grabbed jar");
+                }
+                if (GetComponent<SplineAnimate>().NormalizedTime == 1 && thrownJar == false)
+                {
+                    jar.transform.position = jarPos;
+                    Debug.Log("threw jar");
+                    thrownJar = true;
+                }
                 break;
 
             case 3:
                 //
                 Debug.Log("Entity is messing with puzzle 3");
+
+                GetComponent<SplineAnimate>().Container = paths[5];
+                GetComponent<SplineAnimate>().Play();
+
+                //grab the tarot card when it reaches it
+                if (GetComponent<SplineAnimate>().NormalizedTime >= 0.67)
+                {
+                    tarotCard.transform.position = entityHand.transform.position;
+                    Debug.Log("grabbed jar");
+                }
+                if (GetComponent<SplineAnimate>().NormalizedTime == 1 && placedCard == false)
+                {
+                    tarotCard.transform.position = new Vector3 (6.16f, 0.4f, 23f);
+                    Debug.Log("moved card");
+                    placedCard = true;
+                }
                 break;
 
             case 4:
