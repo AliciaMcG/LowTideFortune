@@ -33,6 +33,12 @@ public class entityBase : MonoBehaviour
     [Header("Objects")]
     public playerBase targetPlayer;
 
+    [Header("Room Targets")]
+    public Transform room2Tar1;
+    public Transform room2Tar2;
+    public Transform room3Tar;
+    public Transform room4Tar;
+
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
     {
@@ -162,7 +168,13 @@ public class entityBase : MonoBehaviour
     {
         //FIX DIRECTION FACING
 
-        transform.Translate((transform.position + ((targetPOS - this.transform.position).normalized) * entitySpeed * Time.fixedDeltaTime));
+        //entity's current position
+        Vector3 currEntity = gameObject.transform.position;
+
+        //move towards the target position
+        gameObject.transform.position = Vector3.MoveTowards(currEntity, targetPOS, (float)0.01);
+
+        //transform.Translate((transform.position + ((targetPOS - this.transform.position).normalized) * entitySpeed * Time.fixedDeltaTime));
 
         // the if reaches player is in collision //take helth funcion
 
@@ -200,7 +212,10 @@ public class entityBase : MonoBehaviour
                 //
                 Debug.Log("Entity is messing with puzzle 2");
                 //FIX
-                messTime = 7f;
+                //messTime = 7f;
+                entityMoveTo(room2Tar1.position);
+                entityMoveTo(room2Tar2.position);
+                
                 break;
 
             case 3:
