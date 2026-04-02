@@ -52,6 +52,7 @@ public class entityBase : MonoBehaviour
     bool holdingCard = false;
     bool holdingJar = false;
     bool holdingSkull = false;
+    bool skullMoved = false;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -348,9 +349,10 @@ public class entityBase : MonoBehaviour
             {
                 Debug.Log("In position and skull check");
                 Debug.Log("skull and position distance: " + Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position));
-                if (Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position) < 3f)
+                if (Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position) < 0.3f && skullMoved == false)
                 {
                     puzzle4Behaviour.puzz4.skullsArr[i].transform.position = puzzle4Behaviour.puzz4.skullPlacesArr[Random.Range(0, puzzle4Behaviour.puzz4.skullsArr.Length)].transform.position;
+                    skullMoved = true;
                     Debug.Log("Moved skulls");
                     messTime = 7f;
                     break;
