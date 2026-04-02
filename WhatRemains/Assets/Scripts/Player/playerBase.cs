@@ -87,6 +87,8 @@ public class playerBase : MonoBehaviour
     }
     void Start()
     {
+        currRoom = 1;
+
         velocity.z = 1;
         isSprinting = false;
 

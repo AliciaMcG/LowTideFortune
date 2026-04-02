@@ -19,6 +19,8 @@ public class roomTriggers : MonoBehaviour
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     public int roomNum;
 
+    public static event Action OnCurrRoomChange;
+
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -26,10 +28,12 @@ public class roomTriggers : MonoBehaviour
     ///
     public void OnTriggerEnter(Collider other)
     {
+        if (roomNum != gameplayBase.instance.player.currRoom)
+
         if (roomNum >= 0 && roomNum <= 5)
         {
 
-            if (roomNum == 1)
+            if (roomNum == 1) 
             {
                 // nothing if room 1 entered 
             }
@@ -38,44 +42,30 @@ public class roomTriggers : MonoBehaviour
                 // BTW 0 is for no active puzzle :)
                 if (roomNum == 0)
                 {
-                    gameplayBase.instance.currPuz = 0;
+                    gameplayBase.instance.player.currRoom = 0;
+
+
                 }
                 else if (!gameplayBase.instance.puzzlesCompleted[roomNum - 1])
                 {
-                    gameplayBase.instance.currPuz = roomNum;
+                    gameplayBase.instance.player.currRoom = roomNum;
                 }
                 else
                 {
-                    gameplayBase.instance.currPuz = 0;
+                    gameplayBase.instance.player.currRoom = 0;
                 }
 
             }
-            cpChangeUpdate();
+            OnCurrRoomChange?.Invoke();
         }
 
         //Debug.Log("entered room:" +  roomNum);
-        Debug.Log("current puzzle: " + gameplayBase.instance.currPuz);
+        Debug.Log("current room: " + gameplayBase.instance.player.currRoom);
 
-        //if (other.TryGetComponent<playerBase>(out playerBase player)) {
-        //    if (0 <= roomNum && roomNum >= 7)
-        //    {
-        //        player.currRoom = roomNum;
-
-        //        if (2 <= roomNum && roomNum >= 5)
-        //        {
-        //            gameplayBase.instance.potentialNewPuz = roomNum; //FIX
-        //        }           
-
-
-        //} }
 
     }
 
 
-    public static event Action OnCurrPuzzChange;
-    public void cpChangeUpdate ()
-    {
-        OnCurrPuzzChange?.Invoke();
-    }
+
 
 }

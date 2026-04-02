@@ -26,8 +26,9 @@ public class entityBase : MonoBehaviour
     public int entityState;
     public float entitySpeed;
     public float messTime;
-    public int currTargetPuzzle; //to compare if player actally switched rooms or just triggered the trigger objects in the same room
+
     public bool isBeingIdle;
+    public float entityPatience;
 
     [Header("Objects")]
     public playerBase targetPlayer;
@@ -48,7 +49,6 @@ public class entityBase : MonoBehaviour
     void Start()
     {
         entityState = 0;
-        currTargetPuzzle = 0;
         gameObject.SetActive(false);
 
         entityScriptable.entitysMap = new room[11];
@@ -94,26 +94,29 @@ public class entityBase : MonoBehaviour
     }
 
     private void OnEnable()    {
-        roomTriggers.OnCurrPuzzChange += notifyEnitityOfPuzzChange;
+        roomTriggers.OnCurrRoomChange += notifyEnitityOfRoomChange;
     }
     private void OnDisable()    {
-        roomTriggers.OnCurrPuzzChange -= notifyEnitityOfPuzzChange;
+        roomTriggers.OnCurrRoomChange -= notifyEnitityOfRoomChange;
     }
-    private void notifyEnitityOfPuzzChange()
+    private void notifyEnitityOfRoomChange()
     {
-        if (gameplayBase.instance.currPuz != currTargetPuzzle)
-        {
-            currTargetPuzzle = gameplayBase.instance.currPuz;
-            Debug.Log("Entity knows that player switched to puzzle: " + currTargetPuzzle);
+        
 
-            if (currTargetPuzzle == 0 || currTargetPuzzle == 1)
-            {
-                return;
-            }
-            else if (currTargetPuzzle >= 2 && currTargetPuzzle <= 4) {
-                messTime = 8.5f;
-            }
-        }
+
+        //if (gameplayBase.instance.currPuz != currTargetPuzzle) //OLD
+        //{
+        //    currTargetPuzzle = gameplayBase.instance.currPuz;
+        //    Debug.Log("Entity knows that player switched to puzzle: " + currTargetPuzzle);
+
+        //    if (currTargetPuzzle == 0 || currTargetPuzzle == 1)
+        //    {
+        //        return;
+        //    }
+        //    else if (currTargetPuzzle >= 2 && currTargetPuzzle <= 4) {
+        //        messTime = 8.5f;
+        //    }
+        //}
 
     }
 
@@ -132,22 +135,56 @@ public class entityBase : MonoBehaviour
                 break;
 
             case 2:
-                //entity is messing with puzzles
-                messWithPuzzle();
+                //walk to room
+                //speed up ig FIX
+                entityState = 3; //FIX
                 break;
 
             case 3:
+                //entity is messing with puzzles
+                messWithPuzzle();
+                break;
+            case 4:
                 //enity is chasing player
                 //FIX start chase sounds
                 //entityMoveTo(targetPlayer.GetComponent<RigidBody>().position); 
                 break;
 
+
+            default:
+                Debug.LogError("wrong entity state assignment");
+                break;
+
         }
     }
 
+    private void entityMoveTo(Vector3 targetPOS) //FIX FOR PHYSICAL OBSTACLES
+    {
+        //FIX DIRECTION FACING
+
+        transform.Translate((transform.position + ((targetPOS - this.transform.position).normalized) * entitySpeed * Time.fixedDeltaTime));
+
+        // the if reaches player is in collision //take helth funcion
+
+    }
+
+    public IEnumerator initEntityWait ()
+    {
+        entityPatience = 16f;
+        yield return null;
+
+        while (gameplayBase.instance.currPuz != 0)
+        {
+            entityPatience -= Time.fixedDeltaTime;
+        }
+
+        yield return null;
+    }
+
+
     private void messWithPuzzle()
     {
-        switch (currTargetPuzzle)
+        switch (gameplayBase.instance.currPuz)
         { 
             case 0:
                 //
@@ -188,16 +225,6 @@ public class entityBase : MonoBehaviour
                 break;
 
         }
-    }
-
-    private void entityMoveTo(Vector3 targetPOS) //FIX FOR PHYSICAL OBSTACLES
-    {
-        //FIX DIRECTION FACING
-
-        transform.Translate((transform.position + ((targetPOS - this.transform.position).normalized) * entitySpeed * Time.fixedDeltaTime));
-
-        // the if reaches player is in collision //take helth funcion
-
     }
 
     private void takePlayerHealth(playerBase player) //FIX make event

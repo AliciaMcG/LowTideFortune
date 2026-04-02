@@ -2,34 +2,32 @@ using UnityEngine;
 
 public class snapInteractable : MonoBehaviour,  IInteractable
 {
-    public playerBase playerBaseScriptDT;
-    public playerBase playerBaseScriptVR;
-    public playerBase playerBaseScript;
     
     public void interact(playerBase player)
     {
-        if (playerBase.desktopMode) { playerBaseScript = playerBaseScriptDT; }
-        else { playerBaseScript = playerBaseScriptVR; }
-
         //if an object is held
-        if (playerBaseScript.pickedObject != null)
+        if (gameplayBase.instance.player.pickedObject != null)
         {
             //disconnect it from the hand and re-enable the collider
-            playerBaseScript.pickedObject.SetParent(null);
+            gameplayBase.instance.player.pickedObject.SetParent(null);
 
-            if (playerBaseScript.pickedObject.GetComponent<Collider>() != null)
+            if (gameplayBase.instance.player.pickedObject.GetComponent<Collider>() != null)
             {
-                playerBaseScript.pickedObject.GetComponent<Collider>().enabled = true;
+                gameplayBase.instance.player.pickedObject.GetComponent<Collider>().enabled = true;
             }
 
             //snap the card to the card position plane
-            playerBaseScript.pickedObject.transform.position = playerBaseScript.hit.transform.position;
+            gameplayBase.instance.player.pickedObject.transform.position = gameplayBase.instance.player.hit.transform.position;
 
             //set the picked up object back to null
-            playerBaseScript.pickedObject = null;
+            gameplayBase.instance.player.pickedObject = null;
 
             //no longer holding a snap object
             pointAtTarget.pointingAtTargetPos = false;
         }
+
+        //update curr puzz
+        int newCurrPuzz = (gameplayBase.instance.player.currRoom != 6) ? gameplayBase.instance.player.currRoom : 3;
+        gameplayBase.instance.updateCurrPuzz(newCurrPuzz);
     }
 }

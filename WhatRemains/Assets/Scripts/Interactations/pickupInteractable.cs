@@ -29,6 +29,11 @@ public class pickupInteractable : MonoBehaviour,  IInteractable
         this.GetComponent<Collider>().enabled = false;
 
         Debug.Log("Picked up: " + this.transform.name);
+
+
+        //update curr puzz
+        int newCurrPuzz = (gameplayBase.instance.player.currRoom != 6) ? gameplayBase.instance.player.currRoom : 3;
+        gameplayBase.instance.updateCurrPuzz(newCurrPuzz);
     }
     public void undoPickup(playerBase player)
     {
@@ -39,5 +44,10 @@ public class pickupInteractable : MonoBehaviour,  IInteractable
         player.pickedObject = null;
 
         Debug.Log("Dropped: " + this.transform.name);
+
+
+        //update curr puzz
+        int newCurrPuzz = (gameplayBase.instance.player.currRoom != 6) ? gameplayBase.instance.player.currRoom : 3;
+        gameplayBase.instance.updateCurrPuzz(newCurrPuzz);
     }
 }

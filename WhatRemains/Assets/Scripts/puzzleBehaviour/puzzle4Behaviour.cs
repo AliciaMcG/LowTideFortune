@@ -42,12 +42,5 @@ public class puzzle4Behaviour : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    private void OnTriggerEnter(Collider other)
-    {
-        if (gameplayBase.instance.puzzlesCompleted[3] != true)
-        {
-            gameplayBase.instance.currPuz = 4;
-        }
-        
-    } 
+
 }

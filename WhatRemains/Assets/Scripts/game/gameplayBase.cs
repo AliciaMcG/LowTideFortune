@@ -25,6 +25,9 @@ public class gameplayBase : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
     public static gameplayBase instance;
+    public playerBase player;
+    public playerBase playerDT;
+    public playerBase playerVR;
     
     [Header("Progress Tracking")]
     public bool entityIsSpawned;
@@ -73,6 +76,9 @@ public class gameplayBase : MonoBehaviour
 
     void Start()
     {
+        if (playerBase.desktopMode) player = playerDT;
+        else { player = playerVR;  }
+
         foreach (GameObject candle  in candlesArr) {
             candle.SetActive(false);
         }
@@ -135,6 +141,12 @@ public class gameplayBase : MonoBehaviour
         entityIsSpawned = true;
         unlockDoors(1);
 
+    }
+
+    public void updateCurrPuzz(int newIndex)
+    {
+        currPuz = newIndex;
+        entityBase.entity.initEntityWait();
     }
 
     public void unlockDoors(int doorType)
