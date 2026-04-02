@@ -217,11 +217,6 @@ public class playerBase : MonoBehaviour
         if (sceneManager.gameIsPaused == false)
         {
             cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactDist); //VAR
-            Debug.Log(
-                "Pos: " + playerCam.transform.position +
-                " | Rot (Euler): " + playerCam.transform.eulerAngles +
-                " | Forward: " + playerCam.transform.forward
-            );
             if (cast)
             {
                 Debug.Log("Ray hit: " + hit.collider.name);
