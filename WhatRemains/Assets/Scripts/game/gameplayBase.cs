@@ -43,6 +43,7 @@ public class gameplayBase : MonoBehaviour
 
     public Image[] healthDisplay = new Image[3];
     public Canvas menuCanvas;
+    public GameObject winPanel;
     public Camera vrCam;
     public Camera desktopCam;
     public GameObject vrPlayer;
@@ -94,6 +95,16 @@ public class gameplayBase : MonoBehaviour
 
     void Update()
     {
+        //check if screaming is doe to load the win panel
+        if(entityScream.time >= 6.0f)
+        {
+            //show winning panel
+            sceneManager.gameIsPaused = true;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            winPanel.SetActive(true);
+            menuCanvas.gameObject.SetActive(true);
+        }
     }
 
     private void FixedUpdate()
@@ -117,7 +128,10 @@ public class gameplayBase : MonoBehaviour
 
             //play the candle spawn sound
             candleSpawnSound.Play();
-
+            if (settingsButton.captionsOn)
+            {
+                dialogueBase.dialogueScript.setDialogue("*Spawning Sound*", 3f);
+            }
             //increase the number of puzzles completed
             numPuzzlesCompleted++; 
         }
@@ -129,6 +143,11 @@ public class gameplayBase : MonoBehaviour
         if (!entityScream.isPlaying)
         {
             entityScream.Play();
+            if (settingsButton.captionsOn)
+            {
+                dialogueBase.dialogueScript.setDialogue("*Demonic Screams*", 3f);
+
+            }
         }
         entityParticles.Play();
     }

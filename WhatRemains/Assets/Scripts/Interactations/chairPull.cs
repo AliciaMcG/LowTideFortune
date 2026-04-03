@@ -12,6 +12,10 @@ public class chairPull : MonoBehaviour, IPullable
         if (!pickupSound.isPlaying)
         {
             pickupSound.Play();
+            if (settingsButton.captionsOn)
+            {
+                dialogueBase.dialogueScript.setDialogue("*Pick Up Sound*", 3f);
+            }
         }
 
         //get the chair object

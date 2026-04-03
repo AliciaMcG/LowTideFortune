@@ -77,7 +77,10 @@ public class doorBase : MonoBehaviour, IPullable
             {
                 //play door open sound
                 doorOpenSound.Play();
-
+                if (settingsButton.captionsOn)
+                {
+                    dialogueBase.dialogueScript.setDialogue("*Door Opens*", 3f);
+                }
                 animator.SetTrigger("Open");
                 //Debug.Log("door open"); 
             }
@@ -85,6 +88,10 @@ public class doorBase : MonoBehaviour, IPullable
             {
                 //play door close sound
                 doorCloseSound.Play();
+                if (settingsButton.captionsOn)
+                {
+                    dialogueBase.dialogueScript.setDialogue("*Door Closes*", 3f);
+                }
 
                 animator.SetTrigger("Close");
                 //Debug.Log("door closed"); 

@@ -272,6 +272,10 @@ public class playerBase : MonoBehaviour
                     {
                         placeSound.Play();
                         playerAnimator.SetTrigger("place");
+                        if (settingsButton.captionsOn)
+                        {
+                            dialogueBase.dialogueScript.setDialogue("*Placing Sound*", 3f);
+                        }
                     }
 
                 }
@@ -286,6 +290,10 @@ public class playerBase : MonoBehaviour
                         if (!pickupSound.isPlaying)
                         {
                             pickupSound.Play();
+                            if (settingsButton.captionsOn)
+                            {
+                                dialogueBase.dialogueScript.setDialogue("*Pick Up Sound*", 3f);
+                            }
                             playerAnimator.SetTrigger("pickup");
                         }
 
@@ -312,6 +320,10 @@ public class playerBase : MonoBehaviour
                         if (!placeSound.isPlaying)
                         {
                             placeSound.Play();
+                            if (settingsButton.captionsOn)
+                            {
+                                dialogueBase.dialogueScript.setDialogue("*Placing Sound*", 3f);
+                            }
                             playerAnimator.SetTrigger("place");
                         }
 
@@ -369,6 +381,10 @@ public class playerBase : MonoBehaviour
                 if (!placeSound.isPlaying)
                 {
                     placeSound.Play();
+                    if (settingsButton.captionsOn)
+                    {
+                        dialogueBase.dialogueScript.setDialogue("*Placing Sound*", 3f);
+                    }
                     playerAnimator.SetTrigger("place");
                 }
 
@@ -387,6 +403,10 @@ public class playerBase : MonoBehaviour
                 if (!pickupSound.isPlaying)
                 {
                     pickupSound.Play();
+                    if (settingsButton.captionsOn)
+                    {
+                        dialogueBase.dialogueScript.setDialogue("*Pick Up Sound*", 3f);
+                    }
                     playerAnimator.SetTrigger("pickup");
                 }
 
@@ -404,6 +424,10 @@ public class playerBase : MonoBehaviour
                 if (!placeSound.isPlaying)
                 {
                     placeSound.Play();
+                    if (settingsButton.captionsOn)
+                    {
+                        dialogueBase.dialogueScript.setDialogue("*Placing Sound*", 3f);
+                    }
                     playerAnimator.SetTrigger("place");
                 }
 
@@ -423,6 +447,10 @@ public class playerBase : MonoBehaviour
             if (!cauldronSound.isPlaying)
             {
                 cauldronSound.Play();
+                if (settingsButton.captionsOn)
+                {
+                    dialogueBase.dialogueScript.setDialogue("*Bubbling Sound*", 3f);
+                }
             }
         }
         else
@@ -444,6 +472,10 @@ public class playerBase : MonoBehaviour
             if (!entityNormalSound.isPlaying)
             {
                 entityNormalSound.Play();
+                if (settingsButton.captionsOn)
+                {
+                    dialogueBase.dialogueScript.setDialogue("*Ghost Sounds*", 3f);
+                }
             }
         
             if (entityChasing)
@@ -451,6 +483,10 @@ public class playerBase : MonoBehaviour
                 if (!entityChaseSound.isPlaying)
                 {
                     entityChaseSound.Play();
+                    if (settingsButton.captionsOn)
+                    {
+                        dialogueBase.dialogueScript.setDialogue("*Footsteps Running*", 3f);
+                    }
                 }
             }
             else
