@@ -133,6 +133,13 @@ public class gameplayBase : MonoBehaviour
         if (!entityScream.isPlaying)
         {
             entityScream.Play();
+            if(entityScream.time >= 6.0f)
+            {
+                //show winning panel
+                sceneManager.pause();
+                winPanel.SetActive(true);
+                menuCanvas.gameObject.SetActive(true);
+            }
             if (settingsButton.captionsOn)
             {
                 dialogueBase.dialogueScript.setDialogue("*Demonic Screams*", 3f);
@@ -140,10 +147,6 @@ public class gameplayBase : MonoBehaviour
             }
         }
         entityParticles.Play();
-
-        //show winning panel
-        winPanel.SetActive(true);
-        menuCanvas.gameObject.SetActive(true);
     }
 
     public void spawnEntity()

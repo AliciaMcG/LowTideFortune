@@ -268,70 +268,75 @@ public class entityBase : MonoBehaviour
             case 2:
                 //
                 Debug.Log("Entity is messing with puzzle 2");
+                if (gameplayBase.instance.puzzlesCompleted[1] == false)
+                {
                 //FIX
                 //messTime = 7f;
 
-                entityAgent.SetDestination(puzzle2MessStart.transform.position);
-                if (!startedPuzzle2)
-                {
-                    splineAnimate.Container = paths[0];
-                    splineAnimate.Play();
-                    startedPuzzle2 = true;
-                }
+                    entityAgent.SetDestination(puzzle2MessStart.transform.position);
+                    if (!startedPuzzle2)
+                    {
+                        splineAnimate.Container = paths[0];
+                        splineAnimate.Play();
+                        startedPuzzle2 = true;
+                    }
 
-                //throw the jar
-                if (splineAnimate.NormalizedTime >= 0.97 && thrownJar == false)
-                {
-                    jar.transform.position = jarPos;
-                    Debug.Log("threw jar");
-                    thrownJar = true;
-                    holdingJar = false;
+                    //throw the jar
+                    if (splineAnimate.NormalizedTime >= 0.97 && thrownJar == false)
+                    {
+                        jar.transform.position = jarPos;
+                        Debug.Log("threw jar");
+                        thrownJar = true;
+                        holdingJar = false;
+                    }
+                    //grab the jar when it reaches it
+                    else if (splineAnimate.NormalizedTime >= 0.87  && holdingJar == false && thrownJar == false)
+                    {
+                        jar.transform.position = entityHand.transform.position;
+                        holdingJar = true;
+                        Debug.Log("grabbed jar");
+                    }
+                    if (holdingJar && !thrownJar)
+                    {
+                        jar.transform.position = entityHand.transform.position;
+                    }
                 }
-                //grab the jar when it reaches it
-                else if (splineAnimate.NormalizedTime >= 0.87  && holdingJar == false && thrownJar == false)
-                {
-                    jar.transform.position = entityHand.transform.position;
-                    holdingJar = true;
-                    Debug.Log("grabbed jar");
-                }
-                if (holdingJar && !thrownJar)
-                {
-                    jar.transform.position = entityHand.transform.position;
-                }
-                
                 break;
 
             case 3:
                 //
                 Debug.Log("Entity is messing with puzzle 3");
-                entityAgent.SetDestination(puzzle3MessStart.transform.position);
-                if (!startedPuzzle3)
+                if (gameplayBase.instance.puzzlesCompleted[2] == false)
                 {
-                    splineAnimate.Container = paths[1];
-                    splineAnimate.Restart(true);
-                    startedPuzzle3 = true;
-                }
+                    entityAgent.SetDestination(puzzle3MessStart.transform.position);
+                    if (!startedPuzzle3)
+                    {
+                        splineAnimate.Container = paths[1];
+                        splineAnimate.Restart(true);
+                        startedPuzzle3 = true;
+                    }
 
-                //place the tarot card
-                if (splineAnimate.NormalizedTime >= 1 && placedCard == false)
-                {
-                    holdingCard = false;
-                    tarotCard.transform.position = tarotTarPos.position;
-                    Debug.Log("moved card");
-                    placedCard = true;
-                }
-                //grab the tarot card when it reaches it
-                else if (splineAnimate.NormalizedTime >= 0.67 && holdingCard == false && placedCard == false)
-                {
-                    tarotCard.transform.position = entityHand.transform.position;
-                    holdingCard = true;
-                    Debug.Log("grabbed card");
-                }
-                
-                if (holdingCard && !placedCard)
-                {
-                    tarotCard.transform.position = entityHand.transform.position;
-                    Debug.Log("holding card");
+                    //place the tarot card
+                    if (splineAnimate.NormalizedTime >= 1 && placedCard == false)
+                    {
+                        holdingCard = false;
+                        tarotCard.transform.position = tarotTarPos.position;
+                        Debug.Log("moved card");
+                        placedCard = true;
+                    }
+                    //grab the tarot card when it reaches it
+                    else if (splineAnimate.NormalizedTime >= 0.67 && holdingCard == false && placedCard == false)
+                    {
+                        tarotCard.transform.position = entityHand.transform.position;
+                        holdingCard = true;
+                        Debug.Log("grabbed card");
+                    }
+                    
+                    if (holdingCard && !placedCard)
+                    {
+                        tarotCard.transform.position = entityHand.transform.position;
+                        Debug.Log("holding card");
+                    }
                 }
                 
                 break;
