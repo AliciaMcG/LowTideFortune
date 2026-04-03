@@ -122,13 +122,16 @@ public class puzzle2Behaviour : MonoBehaviour
 
     void spoilMixture()
     {
-        dialogueBase.dialogueScript.setDialogue("Shoot! The potion is screwed up, need to dump and restart", 5f);
         // play spoil sound effect
         if (!incorrectJarSound.isPlaying)        {
             incorrectJarSound.Play();
             if (settingsButton.captionsOn)
             {
-                dialogueBase.dialogueScript.setDialogue("*Buzzing Sound*", 3f);
+                dialogueBase.dialogueScript.setDialogue("*Buzzing Sound* Shoot! The potion is screwed up, need to dump and restart", 5f);
+            }
+            else
+            {
+                dialogueBase.dialogueScript.setDialogue("Shoot! The potion is screwed up, need to dump and restart", 5f);
             }
             Debug.Log("Wrong ingredient");
         }

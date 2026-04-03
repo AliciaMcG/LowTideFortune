@@ -394,55 +394,55 @@ public class entityBase : MonoBehaviour
 
                         Debug.Log("random place: " + randomPlace);
                     }
-                }
                 
-                foreach (var pedestal in openPedestals)
-                {
-                    Debug.Log("Pedestal: " + pedestal.name);
-                }
                 
-                if (holdingSkull && !skullMoved)
-                {
-                    placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
+                    foreach (var pedestal in openPedestals)
+                    {
+                        Debug.Log("Pedestal: " + pedestal.name);
+                    }
+                    
+                    if (holdingSkull && !skullMoved)
+                    {
+                        placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
+                    }
+                    if(splineAnimate.NormalizedTime >= 0.28 && placedSkulls[chosenSkull] == puzzle4Behaviour.puzz4.skullsArr[0] && holdingSkull == false && skullMoved == false)
+                    {
+                        placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
+                        holdingSkull = true;
+                    }
+                    else if(splineAnimate.NormalizedTime >= 0.39 && placedSkulls[chosenSkull] == puzzle4Behaviour.puzz4.skullsArr[1]  && holdingSkull == false && skullMoved == false)
+                    {
+                        placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
+                        holdingSkull = true;
+                    }
+                    else if(splineAnimate.NormalizedTime >= 0.46 && placedSkulls[chosenSkull] == puzzle4Behaviour.puzz4.skullsArr[2]  && holdingSkull == false && skullMoved == false)
+                    {
+                        placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
+                        holdingSkull = true;
+                    }
+                    //put the skull on the pedestal as it walks by
+                    else if(splineAnimate.NormalizedTime >= 0.64 && splineAnimate.NormalizedTime < 0.65 && openPedestals[randomPlace] == puzzle4Behaviour.puzz4.skullPlacesArr[0])
+                    {
+                        placedSkulls[chosenSkull].transform.position = new Vector3 (openPedestals[randomPlace].transform.position.x, openPedestals[randomPlace].transform.position.y + 1, openPedestals[randomPlace].transform.position.z);
+                        skullMoved = true;
+                        holdingSkull = false;
+                        mess4Done = true;
+                    }
+                    else if(splineAnimate.NormalizedTime >= 0.75 && splineAnimate.NormalizedTime < 0.76 && openPedestals[randomPlace] == puzzle4Behaviour.puzz4.skullPlacesArr[1])
+                    {
+                        placedSkulls[chosenSkull].transform.position = new Vector3 (openPedestals[randomPlace].transform.position.x, openPedestals[randomPlace].transform.position.y + 1, openPedestals[randomPlace].transform.position.z);
+                        skullMoved = true;
+                        holdingSkull = false;
+                        mess4Done = true;
+                    }
+                    else if(splineAnimate.NormalizedTime >= 0.84 && splineAnimate.NormalizedTime < 0.85 && openPedestals[randomPlace] == puzzle4Behaviour.puzz4.skullPlacesArr[2])
+                    {
+                        placedSkulls[chosenSkull].transform.position = new Vector3 (openPedestals[randomPlace].transform.position.x, openPedestals[randomPlace].transform.position.y + 1, openPedestals[randomPlace].transform.position.z);
+                        skullMoved = true;
+                        holdingSkull = false;
+                        mess4Done = true;
+                    }
                 }
-                if(splineAnimate.NormalizedTime >= 0.28 && placedSkulls[chosenSkull] == puzzle4Behaviour.puzz4.skullsArr[0] && holdingSkull == false && skullMoved == false)
-                {
-                    placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
-                    holdingSkull = true;
-                }
-                else if(splineAnimate.NormalizedTime >= 0.39 && placedSkulls[chosenSkull] == puzzle4Behaviour.puzz4.skullsArr[1]  && holdingSkull == false && skullMoved == false)
-                {
-                    placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
-                    holdingSkull = true;
-                }
-                else if(splineAnimate.NormalizedTime >= 0.46 && placedSkulls[chosenSkull] == puzzle4Behaviour.puzz4.skullsArr[2]  && holdingSkull == false && skullMoved == false)
-                {
-                    placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
-                    holdingSkull = true;
-                }
-                //put the skull on the pedestal as it walks by
-                else if(splineAnimate.NormalizedTime >= 0.64 && splineAnimate.NormalizedTime < 0.65 && openPedestals[randomPlace] == puzzle4Behaviour.puzz4.skullPlacesArr[0])
-                {
-                    placedSkulls[chosenSkull].transform.position = new Vector3 (openPedestals[randomPlace].transform.position.x, openPedestals[randomPlace].transform.position.y + 1, openPedestals[randomPlace].transform.position.z);
-                    skullMoved = true;
-                    holdingSkull = false;
-                    mess4Done = true;
-                }
-                else if(splineAnimate.NormalizedTime >= 0.75 && splineAnimate.NormalizedTime < 0.76 && openPedestals[randomPlace] == puzzle4Behaviour.puzz4.skullPlacesArr[1])
-                {
-                    placedSkulls[chosenSkull].transform.position = new Vector3 (openPedestals[randomPlace].transform.position.x, openPedestals[randomPlace].transform.position.y + 1, openPedestals[randomPlace].transform.position.z);
-                    skullMoved = true;
-                    holdingSkull = false;
-                    mess4Done = true;
-                }
-                else if(splineAnimate.NormalizedTime >= 0.84 && splineAnimate.NormalizedTime < 0.85 && openPedestals[randomPlace] == puzzle4Behaviour.puzz4.skullPlacesArr[2])
-                {
-                    placedSkulls[chosenSkull].transform.position = new Vector3 (openPedestals[randomPlace].transform.position.x, openPedestals[randomPlace].transform.position.y + 1, openPedestals[randomPlace].transform.position.z);
-                    skullMoved = true;
-                    holdingSkull = false;
-                    mess4Done = true;
-                }
-
                 break;
 
 

@@ -95,6 +95,16 @@ public class gameplayBase : MonoBehaviour
 
     void Update()
     {
+        //check if screaming is doe to load the win panel
+        if(entityScream.time >= 6.0f)
+        {
+            //show winning panel
+            sceneManager.gameIsPaused = true;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            winPanel.SetActive(true);
+            menuCanvas.gameObject.SetActive(true);
+        }
     }
 
     private void FixedUpdate()
@@ -133,13 +143,6 @@ public class gameplayBase : MonoBehaviour
         if (!entityScream.isPlaying)
         {
             entityScream.Play();
-            if(entityScream.time >= 6.0f)
-            {
-                //show winning panel
-                sceneManager.pause();
-                winPanel.SetActive(true);
-                menuCanvas.gameObject.SetActive(true);
-            }
             if (settingsButton.captionsOn)
             {
                 dialogueBase.dialogueScript.setDialogue("*Demonic Screams*", 3f);
