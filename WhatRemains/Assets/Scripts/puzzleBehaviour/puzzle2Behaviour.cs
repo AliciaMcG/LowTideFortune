@@ -109,6 +109,10 @@ public class puzzle2Behaviour : MonoBehaviour
         // play sound effect for correct ingredient
         if (!correctJarSound.isPlaying)        {
             correctJarSound.Play();
+            if (settingsButton.captionsOn)
+            {
+                dialogueBase.dialogueScript.setDialogue("*Ding Sound*", 3f);
+            }
         }
         
         if (currentIngredients.Count == requiredIngredients.Count)        {
@@ -122,6 +126,10 @@ public class puzzle2Behaviour : MonoBehaviour
         // play spoil sound effect
         if (!incorrectJarSound.isPlaying)        {
             incorrectJarSound.Play();
+            if (settingsButton.captionsOn)
+            {
+                dialogueBase.dialogueScript.setDialogue("*Buzzing Sound*", 3f);
+            }
             Debug.Log("Wrong ingredient");
         }
         
@@ -147,6 +155,10 @@ public class puzzle2Behaviour : MonoBehaviour
         //play button click sound
         if (!buttonClickSound.isPlaying)        {
             buttonClickSound.Play();
+            if (settingsButton.captionsOn)
+            {
+                dialogueBase.dialogueScript.setDialogue("*Button Click*", 3f);
+            }
         }
 
         currentIngredients.Clear();

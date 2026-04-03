@@ -42,7 +42,10 @@ public class puzzle5Behaviour : MonoBehaviour
         gameplayBase.instance.candlePlacements[4].SetActive(true);
 
         gameplayBase.instance.candleSpawnSound.Play();
-
+        if (settingsButton.captionsOn)
+        {
+            dialogueBase.dialogueScript.setDialogue("*Spawning Sound*", 3f);
+        }
 
         entityBase.entity.entityState = 3; //chase state
 

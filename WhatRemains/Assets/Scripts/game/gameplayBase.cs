@@ -43,6 +43,7 @@ public class gameplayBase : MonoBehaviour
 
     public Image[] healthDisplay = new Image[3];
     public Canvas menuCanvas;
+    public GameObject winPanel;
     public Camera vrCam;
     public Camera desktopCam;
     public GameObject vrPlayer;
@@ -117,7 +118,10 @@ public class gameplayBase : MonoBehaviour
 
             //play the candle spawn sound
             candleSpawnSound.Play();
-
+            if (settingsButton.captionsOn)
+            {
+                dialogueBase.dialogueScript.setDialogue("*Spawning Sound*", 3f);
+            }
             //increase the number of puzzles completed
             numPuzzlesCompleted++; 
         }
@@ -129,8 +133,17 @@ public class gameplayBase : MonoBehaviour
         if (!entityScream.isPlaying)
         {
             entityScream.Play();
+            if (settingsButton.captionsOn)
+            {
+                dialogueBase.dialogueScript.setDialogue("*Demonic Screams*", 3f);
+
+            }
         }
         entityParticles.Play();
+
+        //show winning panel
+        winPanel.SetActive(true);
+        menuCanvas.gameObject.SetActive(true);
     }
 
     public void spawnEntity()

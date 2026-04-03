@@ -83,6 +83,10 @@ public class gameTimers : MonoBehaviour
                 gameplayBaseObj.unlockDoors(2);
                 diningDoorUnlocked = true;
                 unlockSound.Play();
+                if (settingsButton.captionsOn)
+                {
+                    dialogueBase.dialogueScript.setDialogue("*Door Unlocking*", 3f);
+                }
             }
 
             //open the final room door when all candles have been placed and the player is in the final room
@@ -93,6 +97,10 @@ public class gameTimers : MonoBehaviour
                 if (doorOpenedPlayed == false)
                 {
                     doorOpenSound.Play();
+                    if (settingsButton.captionsOn)
+                    {
+                        dialogueBase.dialogueScript.setDialogue("*Door Opening*", 3f);
+                    }
                     doorOpenedPlayed = true;
                 }
             }

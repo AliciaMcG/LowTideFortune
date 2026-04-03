@@ -14,6 +14,8 @@ public class settingsButton : MonoBehaviour
     public string textSize = "Standard";
 
     public GameObject settingsMenu;
+    public static bool captionsOn;
+    public Toggle captions;
     void Start()
     {
         //mouse
@@ -36,6 +38,13 @@ public class settingsButton : MonoBehaviour
             textSizeOptions.value = 2;
         }
         
+        //captions
+        captionsOn = captions.isOn;
+    }
+
+    public void SetCaptions()
+    {
+        captionsOn = captions.isOn;
     }
 
     //stores any setting changes
