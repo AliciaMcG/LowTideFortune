@@ -20,8 +20,14 @@ public class skullPositionBehaviour : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        //if a card is placed in the right position
-        if (collider.gameObject.name.Contains("owlSkull") && gameObject.name.Contains("owlPos"))
+        //if a skull is placed, restart puzzle 4
+        if (collider.gameObject.name.Contains("Skull") && gameObject.name.Contains("Pos"))
+        {
+            entityBase.puzzle4Changed = true;
+            Debug.Log("Puzzle changed");
+        }
+        //if a skull is placed in the right position
+        if (collider.gameObject.name.Contains("owlSkull"))
         {
             //update the skull positions array
             skullsBehaviour.skullsInPosition[0] = true;
@@ -29,11 +35,14 @@ public class skullPositionBehaviour : MonoBehaviour
             //move the skull above the platform
             collider.gameObject.transform.position = new Vector3 (collider.gameObject.transform.position.x, collider.gameObject.transform.position.y + 0.3f, collider.gameObject.transform.position.z);
 
-            //check if the skulls are in the right place
-            CheckSkulls();
-            if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
+            if(gameObject.name.Contains("owlPos"))
+            {
+                //check if the skulls are in the right place
+                CheckSkulls();
+                if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
+            }
         }
-        if (collider.gameObject.name.Contains("ratSkull") && gameObject.name.Contains("ratPos"))
+        if (collider.gameObject.name.Contains("ratSkull"))
         {
             //update the skull positions array
             skullsBehaviour.skullsInPosition[1] = true;
@@ -41,11 +50,14 @@ public class skullPositionBehaviour : MonoBehaviour
             //move the skull above the platform
             collider.gameObject.transform.position = new Vector3 (collider.gameObject.transform.position.x, collider.gameObject.transform.position.y + 0.1f, collider.gameObject.transform.position.z);
 
-            //check if the skulls are in the right place
-            CheckSkulls();
-            if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
+            if(gameObject.name.Contains("ratPos"))
+            {
+                //check if the skulls are in the right place
+                CheckSkulls();
+                if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
+            }
         }
-        if (collider.gameObject.name.Contains("deerSkull") && gameObject.name.Contains("deerPos"))
+        if (collider.gameObject.name.Contains("deerSkull"))
         {
             //update the skull positions array
             skullsBehaviour.skullsInPosition[2] = true;
@@ -53,9 +65,13 @@ public class skullPositionBehaviour : MonoBehaviour
             //move the skull above the platform
             collider.gameObject.transform.position = new Vector3 (collider.gameObject.transform.position.x, collider.gameObject.transform.position.y + 1.0f, collider.gameObject.transform.position.z);
 
+            if(gameObject.name.Contains("deerPos"))
+            {
+                CheckSkulls();
+                if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
+            }
             //check if the skulls are in the right place
-            CheckSkulls();
-            if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
+            
         }
         
     }

@@ -12,10 +12,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - walls
   - Water
   - UI
-  - 
+  - doors
   - 
   - 
   - 

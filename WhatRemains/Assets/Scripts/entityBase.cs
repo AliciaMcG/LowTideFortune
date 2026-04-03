@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using static entityScriptable;
 using UnityEngine.Splines;
+using UnityEngine.AI;
 
 /// <summary>
 /// Holds code for:
@@ -36,11 +38,22 @@ public class entityBase : MonoBehaviour
     [Header("Objects")]
     public playerBase targetPlayer;
 
+    [Header("Nav Mesh")]
+    UnityEngine.AI.NavMeshAgent entityAgent;
+    
+    public Transform puzzle2MessStart;
+    public Transform puzzle3MessStart;
+    public Transform puzzle4MessStart;
+
+    public Transform[] targets;
+    int randDest = 3;
+
     [Header("Paths")]
     public SplineContainer[] paths;
+    private SplineAnimate splineAnimate;
     bool startedPuzzle2 = false;
     bool startedPuzzle3 = false;
-    bool startedPuzzle4 = false;
+    public static bool puzzle4Changed = true;
 
     [Header("Mess Objects")]
     public GameObject jar;
@@ -53,6 +66,16 @@ public class entityBase : MonoBehaviour
     bool holdingJar = false;
     bool holdingSkull = false;
     bool skullMoved = false;
+    int chosenSkull = -1;
+    GameObject ped1Skull;
+    GameObject ped2Skull;
+    GameObject ped3Skull;
+    int randomPlace = -1;
+    int numSkullsOnPed = 0;
+    bool mess4Done = false;
+    List<GameObject> openPedestals = new List<GameObject>();
+    List<GameObject> placedSkulls = new List<GameObject>();
+  
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -64,7 +87,13 @@ public class entityBase : MonoBehaviour
         entity = this;
         if (entity == null) { Debug.LogWarning("no entity?? "); }
 
+        //set vars
         jarPos = jar.transform.position;
+        splineAnimate = GetComponent<SplineAnimate>();
+        entityAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        //set the entity's first destination
+        entityAgent.SetDestination(targets[randDest].position);
 
     }
 
@@ -154,6 +183,18 @@ public class entityBase : MonoBehaviour
                 //entity is idle
                 //FIX add idle actions
                 //FIX add movement
+
+                if (!entityAgent.pathPending && entityAgent.remainingDistance < 0.5f)
+                {
+                    //pick a random target
+                    randDest = Random.Range(0, targets.Length);
+
+                    //set the destination to the random target
+                    entityAgent.SetDestination(targets[randDest].position);
+
+                    Debug.Log("current destination: " + targets[randDest].name);
+                }
+
                 break;
 
             case 2:
@@ -229,15 +270,17 @@ public class entityBase : MonoBehaviour
                 Debug.Log("Entity is messing with puzzle 2");
                 //FIX
                 //messTime = 7f;
+
+                entityAgent.SetDestination(puzzle2MessStart.transform.position);
                 if (!startedPuzzle2)
                 {
-                    GetComponent<SplineAnimate>().Container = paths[1];
-                    GetComponent<SplineAnimate>().Play();
+                    splineAnimate.Container = paths[0];
+                    splineAnimate.Play();
                     startedPuzzle2 = true;
                 }
 
                 //throw the jar
-                if (GetComponent<SplineAnimate>().NormalizedTime >= 0.97 && thrownJar == false)
+                if (splineAnimate.NormalizedTime >= 0.97 && thrownJar == false)
                 {
                     jar.transform.position = jarPos;
                     Debug.Log("threw jar");
@@ -245,7 +288,7 @@ public class entityBase : MonoBehaviour
                     holdingJar = false;
                 }
                 //grab the jar when it reaches it
-                else if (GetComponent<SplineAnimate>().NormalizedTime >= 0.87  && holdingJar == false && thrownJar == false)
+                else if (splineAnimate.NormalizedTime >= 0.87  && holdingJar == false && thrownJar == false)
                 {
                     jar.transform.position = entityHand.transform.position;
                     holdingJar = true;
@@ -261,15 +304,16 @@ public class entityBase : MonoBehaviour
             case 3:
                 //
                 Debug.Log("Entity is messing with puzzle 3");
+                entityAgent.SetDestination(puzzle3MessStart.transform.position);
                 if (!startedPuzzle3)
                 {
-                    GetComponent<SplineAnimate>().Container = paths[5];
-                    GetComponent<SplineAnimate>().Restart(true);
+                    splineAnimate.Container = paths[1];
+                    splineAnimate.Restart(true);
                     startedPuzzle3 = true;
                 }
 
                 //place the tarot card
-                if (GetComponent<SplineAnimate>().NormalizedTime >= 1 && placedCard == false)
+                if (splineAnimate.NormalizedTime >= 1 && placedCard == false)
                 {
                     holdingCard = false;
                     tarotCard.transform.position = tarotTarPos.position;
@@ -277,7 +321,7 @@ public class entityBase : MonoBehaviour
                     placedCard = true;
                 }
                 //grab the tarot card when it reaches it
-                else if (GetComponent<SplineAnimate>().NormalizedTime >= 0.67 && holdingCard == false && placedCard == false)
+                else if (splineAnimate.NormalizedTime >= 0.67 && holdingCard == false && placedCard == false)
                 {
                     tarotCard.transform.position = entityHand.transform.position;
                     holdingCard = true;
@@ -295,16 +339,103 @@ public class entityBase : MonoBehaviour
             case 4:
                 // Skulls
                 Debug.Log("Entity is messing with puzzle 4");
+                entityAgent.SetDestination(puzzle4MessStart.transform.position);
 
                 if (gameplayBase.instance.puzzlesCompleted[3] == false)
                 {
-                    if (!startedPuzzle4)
+                    if (puzzle4Changed && !mess4Done)
                     {
-                        GetComponent<SplineAnimate>().Container = paths[6];
-                        GetComponent<SplineAnimate>().Restart(true);
-                        startedPuzzle4 = true;
+                        puzzle4Changed = false;
+                        openPedestals.Clear();
+                        placedSkulls.Clear();
+
+                        splineAnimate.Container = paths[2];
+                        splineAnimate.Restart(true);
+
+                        for (int i = 0; i < puzzle4Behaviour.puzz4.skullPlacesArr.Length; i++)
+                        {
+                            for (int j = 0; j < puzzle4Behaviour.puzz4.skullsArr.Length; j++)
+                            {
+                                Debug.Log("In position and skull check");
+                                Debug.Log("skull and position distance: " + Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position));
+                                
+                                if (Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[j].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[i].transform.position) < 0.3f)
+                                {   
+                                    numSkullsOnPed += 1;
+                                    chosenSkull = j;
+                                    messTime = 7f;
+
+                                    //see which skulls are on which pedestals
+                                    placedSkulls.Add(puzzle4Behaviour.puzz4.skullsArr[j]);
+
+                                    break;
+
+                                }
+                                else 
+                                { 
+                                    messTime = 3f; 
+                                }
+                            }
+                            if (numSkullsOnPed == 0)
+                            {
+                                openPedestals.Add(puzzle4Behaviour.puzz4.skullPlacesArr[i]);
+                            }
+                            numSkullsOnPed = 0;
+                        }
+
+                        //only move to a pedestal thats not its own
+                        randomPlace = Random.Range(0, openPedestals.Count);
+                        chosenSkull = Random.Range(0, placedSkulls.Count);
+
+                        Debug.Log("random place: " + randomPlace);
                     }
-                    messWithPuzz4();
+                }
+                
+                foreach (var pedestal in openPedestals)
+                {
+                    Debug.Log("Pedestal: " + pedestal.name);
+                }
+                
+                if (holdingSkull && !skullMoved)
+                {
+                    placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
+                }
+                if(splineAnimate.NormalizedTime >= 0.28 && placedSkulls[chosenSkull] == puzzle4Behaviour.puzz4.skullsArr[0] && holdingSkull == false && skullMoved == false)
+                {
+                    placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
+                    holdingSkull = true;
+                }
+                else if(splineAnimate.NormalizedTime >= 0.39 && placedSkulls[chosenSkull] == puzzle4Behaviour.puzz4.skullsArr[1]  && holdingSkull == false && skullMoved == false)
+                {
+                    placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
+                    holdingSkull = true;
+                }
+                else if(splineAnimate.NormalizedTime >= 0.46 && placedSkulls[chosenSkull] == puzzle4Behaviour.puzz4.skullsArr[2]  && holdingSkull == false && skullMoved == false)
+                {
+                    placedSkulls[chosenSkull].transform.position = entityHand.transform.position;
+                    holdingSkull = true;
+                }
+                //put the skull on the pedestal as it walks by
+                else if(splineAnimate.NormalizedTime >= 0.64 && splineAnimate.NormalizedTime < 0.65 && openPedestals[randomPlace] == puzzle4Behaviour.puzz4.skullPlacesArr[0])
+                {
+                    placedSkulls[chosenSkull].transform.position = new Vector3 (openPedestals[randomPlace].transform.position.x, openPedestals[randomPlace].transform.position.y + 1, openPedestals[randomPlace].transform.position.z);
+                    skullMoved = true;
+                    holdingSkull = false;
+                    mess4Done = true;
+                }
+                else if(splineAnimate.NormalizedTime >= 0.75 && splineAnimate.NormalizedTime < 0.76 && openPedestals[randomPlace] == puzzle4Behaviour.puzz4.skullPlacesArr[1])
+                {
+                    placedSkulls[chosenSkull].transform.position = new Vector3 (openPedestals[randomPlace].transform.position.x, openPedestals[randomPlace].transform.position.y + 1, openPedestals[randomPlace].transform.position.z);
+                    skullMoved = true;
+                    holdingSkull = false;
+                    mess4Done = true;
+                }
+                else if(splineAnimate.NormalizedTime >= 0.84 && splineAnimate.NormalizedTime < 0.85 && openPedestals[randomPlace] == puzzle4Behaviour.puzz4.skullPlacesArr[2])
+                {
+                    placedSkulls[chosenSkull].transform.position = new Vector3 (openPedestals[randomPlace].transform.position.x, openPedestals[randomPlace].transform.position.y + 1, openPedestals[randomPlace].transform.position.z);
+                    skullMoved = true;
+                    holdingSkull = false;
+                    mess4Done = true;
                 }
 
                 break;
@@ -339,7 +470,7 @@ public class entityBase : MonoBehaviour
             }
         }
     }
-
+    /*
     public void messWithPuzz4()
     {
         Debug.Log("Messing with puzzle 4 function");
@@ -351,7 +482,15 @@ public class entityBase : MonoBehaviour
                 Debug.Log("skull and position distance: " + Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position));
                 if (Vector3.Distance(puzzle4Behaviour.puzz4.skullsArr[i].transform.position, puzzle4Behaviour.puzz4.skullPlacesArr[j].transform.position) < 0.3f && skullMoved == false)
                 {
-                    puzzle4Behaviour.puzz4.skullsArr[i].transform.position = puzzle4Behaviour.puzz4.skullPlacesArr[Random.Range(0, puzzle4Behaviour.puzz4.skullsArr.Length)].transform.position;
+                    int randomPlace = Random.Range(0, puzzle4Behaviour.puzz4.skullsArr.Length);
+                    
+                    //only move to a pedestal thats not its own
+                    do
+                    {
+                        puzzle4Behaviour.puzz4.skullsArr[i].transform.position = puzzle4Behaviour.puzz4.skullPlacesArr[randomPlace].transform.position;
+                    }
+                    while (randomPlace == i);
+
                     skullMoved = true;
                     Debug.Log("Moved skulls");
                     messTime = 7f;
@@ -360,8 +499,9 @@ public class entityBase : MonoBehaviour
                 else { messTime = 3f; }
             }
         }
-
+    
     }
+    */
 
     //public IEnumerator actIdle()
     //{
