@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static entityScriptable;
 using UnityEngine.Splines;
+using UnityEngine.AI;
 
 /// <summary>
 /// Holds code for:
@@ -36,6 +37,16 @@ public class entityBase : MonoBehaviour
 
     [Header("Objects")]
     public playerBase targetPlayer;
+
+    [Header("Nav Mesh")]
+    UnityEngine.AI.NavMeshAgent entityAgent;
+    
+    public Transform puzzle2MessStart;
+    public Transform puzzle3MessStart;
+    public Transform puzzle4MessStart;
+
+    public Transform[] targets;
+    int randDest = 3;
 
     [Header("Paths")]
     public SplineContainer[] paths;
@@ -76,8 +87,13 @@ public class entityBase : MonoBehaviour
         entity = this;
         if (entity == null) { Debug.LogWarning("no entity?? "); }
 
+        //set vars
         jarPos = jar.transform.position;
         splineAnimate = GetComponent<SplineAnimate>();
+        entityAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
+        //set the entity's first destination
+        entityAgent.SetDestination(targets[randDest].position);
 
     }
 
@@ -167,6 +183,18 @@ public class entityBase : MonoBehaviour
                 //entity is idle
                 //FIX add idle actions
                 //FIX add movement
+
+                if (!entityAgent.pathPending && entityAgent.remainingDistance < 0.5f)
+                {
+                    //pick a random target
+                    randDest = Random.Range(0, targets.Length);
+
+                    //set the destination to the random target
+                    entityAgent.SetDestination(targets[randDest].position);
+
+                    Debug.Log("current destination: " + targets[randDest].name);
+                }
+
                 break;
 
             case 2:
@@ -242,9 +270,11 @@ public class entityBase : MonoBehaviour
                 Debug.Log("Entity is messing with puzzle 2");
                 //FIX
                 //messTime = 7f;
+
+                entityAgent.SetDestination(puzzle2MessStart.transform.position);
                 if (!startedPuzzle2)
                 {
-                    splineAnimate.Container = paths[1];
+                    splineAnimate.Container = paths[0];
                     splineAnimate.Play();
                     startedPuzzle2 = true;
                 }
@@ -274,9 +304,10 @@ public class entityBase : MonoBehaviour
             case 3:
                 //
                 Debug.Log("Entity is messing with puzzle 3");
+                entityAgent.SetDestination(puzzle3MessStart.transform.position);
                 if (!startedPuzzle3)
                 {
-                    splineAnimate.Container = paths[5];
+                    splineAnimate.Container = paths[1];
                     splineAnimate.Restart(true);
                     startedPuzzle3 = true;
                 }
@@ -308,6 +339,7 @@ public class entityBase : MonoBehaviour
             case 4:
                 // Skulls
                 Debug.Log("Entity is messing with puzzle 4");
+                entityAgent.SetDestination(puzzle4MessStart.transform.position);
 
                 if (gameplayBase.instance.puzzlesCompleted[3] == false)
                 {
@@ -317,7 +349,7 @@ public class entityBase : MonoBehaviour
                         openPedestals.Clear();
                         placedSkulls.Clear();
 
-                        splineAnimate.Container = paths[6];
+                        splineAnimate.Container = paths[2];
                         splineAnimate.Restart(true);
 
                         for (int i = 0; i < puzzle4Behaviour.puzz4.skullPlacesArr.Length; i++)
