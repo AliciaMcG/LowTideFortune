@@ -37,9 +37,9 @@ public class skullPositionBehaviour : MonoBehaviour
 
             if(gameObject.name.Contains("owlPos"))
             {
+                entityBase.entity.entityPatience += 16f;
                 //check if the skulls are in the right place
                 CheckSkulls();
-                if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
             }
         }
         if (collider.gameObject.name.Contains("ratSkull"))
@@ -52,9 +52,9 @@ public class skullPositionBehaviour : MonoBehaviour
 
             if(gameObject.name.Contains("ratPos"))
             {
+                entityBase.entity.entityPatience += 16f;
                 //check if the skulls are in the right place
                 CheckSkulls();
-                if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
             }
         }
         if (collider.gameObject.name.Contains("deerSkull"))
@@ -67,8 +67,8 @@ public class skullPositionBehaviour : MonoBehaviour
 
             if(gameObject.name.Contains("deerPos"))
             {
+                entityBase.entity.entityPatience += 16f;
                 CheckSkulls();
-                if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
             }
             //check if the skulls are in the right place
             

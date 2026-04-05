@@ -30,33 +30,35 @@ public class roomTriggers : MonoBehaviour
     {
         if (roomNum != gameplayBase.instance.player.currRoom)
 
-        if (roomNum >= 0 && roomNum <= 5)
-        {
-
-            if (roomNum == 1) 
+        if (other.GetComponent<playerBase>() != null) { 
+            if (roomNum >= 0 && roomNum <= 5)
             {
-                // nothing if room 1 entered 
-            }
-            else
-            {
-                // BTW 0 is for no active puzzle :)
-                if (roomNum == 0)
-                {
-                    gameplayBase.instance.player.currRoom = 0;
 
-
-                }
-                else if (!gameplayBase.instance.puzzlesCompleted[roomNum - 1])
+                if (roomNum == 1) 
                 {
-                    gameplayBase.instance.player.currRoom = roomNum;
+                    // nothing if room 1 entered 
                 }
                 else
                 {
-                    gameplayBase.instance.player.currRoom = 0;
-                }
+                    // BTW 0 is for no active puzzle :)
+                    if (roomNum == 0)
+                    {
+                        gameplayBase.instance.player.currRoom = 0;
 
+
+                    }
+                    else if (!gameplayBase.instance.puzzlesCompleted[roomNum - 1])
+                    {
+                        gameplayBase.instance.player.currRoom = roomNum;
+                    }
+                    else
+                    {
+                        gameplayBase.instance.player.currRoom = 0;
+                    }
+
+                }
+                OnCurrRoomChange?.Invoke();
             }
-            OnCurrRoomChange?.Invoke();
         }
 
         //Debug.Log("entered room:" +  roomNum);

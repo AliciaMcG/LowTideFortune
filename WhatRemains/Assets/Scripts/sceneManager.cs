@@ -44,13 +44,17 @@ public class sceneManager : MonoBehaviour
         gameIsPaused = false;
 
         gameOver = false;
+
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
 
     void Update()
     {
         if (SceneManager.GetActiveScene().name == "gameplayScene") {
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (Input.GetKeyDown(KeyCode.BackQuote)) {
                 if (gameIsPaused) { resume(); }
                 else { pause(); }
             }

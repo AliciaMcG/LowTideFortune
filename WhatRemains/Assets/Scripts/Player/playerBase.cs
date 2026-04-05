@@ -122,8 +122,8 @@ public class playerBase : MonoBehaviour
         //if in vr mode, move the player using xr controls
         if (playerBase.desktopMode == false)
         {
-            Debug.Log(controller.name);
-            Debug.Log(controller.transform.position);
+            //Debug.Log(controller.name);
+            //Debug.Log(controller.transform.position);
         }
 
         if (pickedObject != null)
@@ -219,7 +219,7 @@ public class playerBase : MonoBehaviour
             cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactDist); //VAR
             if (cast)
             {
-                Debug.Log("Ray hit: " + hit.collider.name);
+                //Debug.Log("Ray hit: " + hit.collider.name);
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {
                     interactable = hit.collider.transform;
@@ -239,8 +239,8 @@ public class playerBase : MonoBehaviour
 
                 // CROSSHAIR RED OR BLACK + DEBUGS
                 playerCam.crosshair.color = interactable != null || pullable != null ? playerCam.cursorScriptable.interactCross : playerCam.cursorScriptable.normalCross;
-                if (pullable != null) { Debug.Log("hit pullable: " + hit.collider.name); }
-                if (interactable != null) { Debug.Log("hit interactable: " + hit.collider.name); }
+                //if (pullable != null) { Debug.Log("hit pullable: " + hit.collider.name); }
+                //if (interactable != null) { Debug.Log("hit interactable: " + hit.collider.name); }
                 //Debug.Log("Ray hit: " + hit.collider.name);
             }
             else

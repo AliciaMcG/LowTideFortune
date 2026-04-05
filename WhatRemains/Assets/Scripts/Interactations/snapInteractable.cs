@@ -27,7 +27,13 @@ public class snapInteractable : MonoBehaviour,  IInteractable
         }
 
         //update curr puzz
-        int newCurrPuzz = (gameplayBase.instance.player.currRoom != 6) ? gameplayBase.instance.player.currRoom : 3;
-        gameplayBase.instance.updateCurrPuzz(newCurrPuzz);
+        if (this.GetComponent<candleID>() == null) {
+            int newCurrPuzz = (gameplayBase.instance.player.currRoom != 6) ? gameplayBase.instance.player.currRoom : 3;
+
+            if (newCurrPuzz != gameplayBase.instance.currPuz)
+            {
+                gameplayBase.instance.updateCurrPuzz(newCurrPuzz);
+            }
+        }
     }
 }

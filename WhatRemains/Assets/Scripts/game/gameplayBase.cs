@@ -133,7 +133,12 @@ public class gameplayBase : MonoBehaviour
                 dialogueBase.dialogueScript.setDialogue("*Spawning Sound*", 3f);
             }
             //increase the number of puzzles completed
-            numPuzzlesCompleted++; 
+            numPuzzlesCompleted++;
+
+
+            entityBase.entity.entityState = 1;
+            entityBase.entity.isWaiting = false;
+            entityBase.entity.entityPatience = 0;
         }
     }
 
@@ -164,8 +169,12 @@ public class gameplayBase : MonoBehaviour
 
     public void updateCurrPuzz(int newIndex)
     {
+        Debug.Log("Curr puz: " + currPuz);
+        if (entityBase.entity.isWaiting == false || newIndex != gameplayBase.instance.currPuz)
+        {
+            StartCoroutine(entityBase.entity.initEntityWait());
+        }
         currPuz = newIndex;
-        entityBase.entity.initEntityWait();
     }
 
     public void unlockDoors(int doorType)

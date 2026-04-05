@@ -96,12 +96,12 @@ public class puzzle2Behaviour : MonoBehaviour
         if (!currentIngredients.Contains(jarID))        {
             currentIngredients.Add(jarID);
 
+            entityBase.entity.entityPatience += 16f;
             updateParticles();
             checkMixture();
             jar.RespawnJar();
 
         }
-        entityBase.entity.messTime = 7f;
     }
 
     void checkMixture()
@@ -122,6 +122,8 @@ public class puzzle2Behaviour : MonoBehaviour
 
     void spoilMixture()
     {
+        entityBase.entity.entityPatience -= 7f;
+
         // play spoil sound effect
         if (!incorrectJarSound.isPlaying)        {
             incorrectJarSound.Play();
@@ -178,7 +180,7 @@ public class puzzle2Behaviour : MonoBehaviour
         cauldronParticles.Clear();
 
         StartCoroutine(ResetParticlesDelay());
-        entityBase.entity.messTime = 12f;
+        entityBase.entity.entityPatience += 6f;
     }
 
     void updateParticles()

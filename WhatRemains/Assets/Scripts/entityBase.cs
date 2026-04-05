@@ -28,7 +28,7 @@ public class entityBase : MonoBehaviour
     [Header("Entity Attributes")]
     public int entityState;
     public float entitySpeed;
-    public float messTime;
+    public bool isWaiting;
 
     public bool isBeingIdle;
     public float entityPatience;
@@ -100,6 +100,7 @@ public class entityBase : MonoBehaviour
     void Start()
     {
         entityState = 0;
+        isWaiting = false;
         gameObject.SetActive(false);
 
         entityScriptable.entitysMap = new room[11];
@@ -121,15 +122,16 @@ public class entityBase : MonoBehaviour
         {
             updateEntityState();
 
-            if (messTime > 0)
-            {
-                if (entityState == 2) { entityState = 1; } //reset back to idle
-                messTime -= Time.fixedDeltaTime;
+            //if (messTime > 0)
+            //{
+            //    if (entityState == 2) { entityState = 1; } //reset back to idle
+            //    messTime -= Time.fixedDeltaTime;
 
-                if (messTime <= 0)            {
-                    entityState = 2;
-                }
-            }
+            //    if (messTime <= 0)
+            //    {
+            //        entityState = 2;
+            //    }
+            //}
         }
     }
 
@@ -151,8 +153,11 @@ public class entityBase : MonoBehaviour
         roomTriggers.OnCurrRoomChange -= notifyEnitityOfRoomChange;
     }
     private void notifyEnitityOfRoomChange()
-    {
-        
+    { 
+        if ( entityPatience > 0     &&  gameplayBase.instance.player.currRoom != gameplayBase.instance.currPuz)
+        {
+            StartCoroutine(entityLoseInterestTimer());
+        }
 
 
         //if (gameplayBase.instance.currPuz != currTargetPuzzle) //OLD
@@ -200,12 +205,14 @@ public class entityBase : MonoBehaviour
             case 2:
                 //walk to room
                 //speed up ig FIX
-                entityState = 3; //FIX
                 break;
 
             case 3:
                 //entity is messing with puzzles
-                messWithPuzzle();
+                if (entityPatience <= 0)
+                {
+                    messWithPuzzle();
+                }
                 break;
             case 4:
                 //enity is chasing player
@@ -239,16 +246,52 @@ public class entityBase : MonoBehaviour
 
     public IEnumerator initEntityWait ()
     {
+        Debug.Log("start entity wait");
+        isWaiting = true;
         entityPatience = 16f;
         yield return null;
 
-        while (gameplayBase.instance.currPuz != 0)
+        while (entityPatience > 0 && gameplayBase.instance.currPuz != 0 && isWaiting)
         {
-            entityPatience -= Time.fixedDeltaTime;
+            if (sceneManager.gameIsPaused == false)
+            {
+                entityPatience -= Time.deltaTime;
+                yield return null;
+            }
+
+        }
+        if (entityPatience <= 0 && isWaiting && gameplayBase.instance.player.currRoom == gameplayBase.instance.currPuz)
+        {
+            entityState = 3;
         }
 
+        isWaiting = false;
         yield return null;
     }
+
+    public IEnumerator entityLoseInterestTimer() { 
+        float timeGoneTimer = 15f;
+        Debug.Log("entity knows player left");
+
+        while (gameplayBase.instance.currPuz != 0 && (entityState == 3 || isWaiting) && timeGoneTimer > 0)
+        {
+            timeGoneTimer -= Time.deltaTime;
+            Debug.Log("time left till reset: " + timeGoneTimer);
+            if (gameplayBase.instance.player.currRoom == gameplayBase.instance.currPuz) {
+                yield break;
+            }
+           
+            yield return null;
+        }
+        if (timeGoneTimer < 0)
+        {
+            entityState = 1;
+            isWaiting = false;
+        }
+
+        yield break;
+    }
+ 
 
 
     private void messWithPuzzle()
@@ -368,7 +411,7 @@ public class entityBase : MonoBehaviour
                                 {   
                                     numSkullsOnPed += 1;
                                     chosenSkull = j;
-                                    messTime = 7f;
+                                    //entityPatience = 7f;
 
                                     //see which skulls are on which pedestals
                                     placedSkulls.Add(puzzle4Behaviour.puzz4.skullsArr[j]);
@@ -377,8 +420,8 @@ public class entityBase : MonoBehaviour
 
                                 }
                                 else 
-                                { 
-                                    messTime = 3f; 
+                                {
+                                    //entityPatience = 3f; 
                                 }
                             }
                             if (numSkullsOnPed == 0)
@@ -451,6 +494,7 @@ public class entityBase : MonoBehaviour
                 break;
 
         }
+        entityPatience = 11f;
     }
 
     private void takePlayerHealth(playerBase player) //FIX make event
@@ -475,6 +519,7 @@ public class entityBase : MonoBehaviour
             }
         }
     }
+
     /*
     public void messWithPuzz4()
     {
