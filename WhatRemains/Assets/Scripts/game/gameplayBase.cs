@@ -38,10 +38,10 @@ public class gameplayBase : MonoBehaviour
     public int potentialNewPuz;
 
     [Header("UI")]
-    public Sprite healthTrue;
-    public Sprite healthFalse;
+    //public Sprite healthTrue;
+    //public Sprite healthFalse;
 
-    public Image[] healthDisplay = new Image[3];
+    //public Image[] healthDisplay = new Image[3];
     public Canvas menuCanvas;
     public GameObject winPanel;
     public Camera vrCam;

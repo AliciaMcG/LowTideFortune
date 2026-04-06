@@ -32,7 +32,7 @@ public class entityBase : MonoBehaviour
 
     public bool isBeingIdle;
     public float entityPatience;
-
+    //public Collider3D entityCollider;
     public GameObject entityHand;
 
     [Header("Objects")]
@@ -45,6 +45,8 @@ public class entityBase : MonoBehaviour
     public Transform puzzle3MessStart;
     public Transform puzzle4MessStart;
 
+    float chaseUpdateTimer = 0f;
+    float chaseUpdateRate = 0.2f;
     public Transform[] targets;
     int randDest = 3;
 
@@ -138,14 +140,16 @@ public class entityBase : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-
-    private void OnCollisionEnter(Collision collision)
+/*
+    private void OnTriggerEnter(Collider collision)
     {
-        if (collision.transform.TryGetComponent(out playerBase player) && entityState == 3) {
-            takePlayerHealth(player);
+        if (collision.transform.GetComponent<CharacterController>() != null && entityState == 4) {
+            takePlayerHealth(gameplayBase.instance.player);
+            Debug.Log("collision object:" + collision);
         }
+        
     }
-
+*/
     private void OnEnable()    {
         roomTriggers.OnCurrRoomChange += notifyEnitityOfRoomChange;
     }
@@ -188,7 +192,8 @@ public class entityBase : MonoBehaviour
                 //entity is idle
                 //FIX add idle actions
                 //FIX add movement
-
+                entityAgent.acceleration = 10f;
+                entityAgent.speed = 3.5f;
                 if (!entityAgent.pathPending && entityAgent.remainingDistance < 0.5f)
                 {
                     //pick a random target
@@ -209,6 +214,8 @@ public class entityBase : MonoBehaviour
 
             case 3:
                 //entity is messing with puzzles
+                entityAgent.acceleration = 10f;
+                entityAgent.speed = 3.5f;
                 if (entityPatience <= 0)
                 {
                     messWithPuzzle();
@@ -216,6 +223,18 @@ public class entityBase : MonoBehaviour
                 break;
             case 4:
                 //enity is chasing player
+                //entityAgent.isStopped = false;
+                entityAgent.speed = 50f;
+                entityAgent.acceleration = 100f;
+                chaseUpdateTimer += Time.deltaTime;
+
+                if (chaseUpdateTimer >= chaseUpdateRate)
+                {
+                    chaseUpdateTimer = 0f;
+                    entityAgent.SetDestination(gameplayBase.instance.player.transform.position);
+                }
+                //entityAgent.SetDestination(gameplayBase.instance.player.transform.position);
+                Debug.Log("Agent destination: " + entityAgent.destination);
                 //FIX start chase sounds
                 //entityMoveTo(targetPlayer.GetComponent<RigidBody>().position); 
                 break;
@@ -496,12 +515,12 @@ public class entityBase : MonoBehaviour
         }
         entityPatience = 11f;
     }
-
+/*
     private void takePlayerHealth(playerBase player) //FIX make event
     {
-        player.playerHealth--;
+        gameplayBase.instance.player.playerHealth--;
 
-        if (player.playerHealth <= 0)
+        if (gameplayBase.instance.player.playerHealth <= 0)
         {
             sceneManager.gameOver = true;
         }
@@ -509,17 +528,17 @@ public class entityBase : MonoBehaviour
         //Set display
         for (int i = 0; i < gameplayBase.instance.healthDisplay.Length; i++)
         {
-            if (i <= player.playerHealth)
+            if (i <= gameplayBase.instance.player.playerHealth)
             {
                 gameplayBase.instance.healthDisplay[i].sprite = gameplayBase.instance.healthTrue;
             }
-            else if (i > player.playerHealth)
+            else if (i > gameplayBase.instance.player.playerHealth)
             {
                 gameplayBase.instance.healthDisplay[i].sprite = gameplayBase.instance.healthFalse;
             }
         }
     }
-
+*/
     /*
     public void messWithPuzz4()
     {
