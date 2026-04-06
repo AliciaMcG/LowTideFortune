@@ -46,8 +46,7 @@ public class sceneManager : MonoBehaviour
         gameOver = false;
 
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        
     }
 
 
