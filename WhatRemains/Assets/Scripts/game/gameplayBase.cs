@@ -91,6 +91,9 @@ public class gameplayBase : MonoBehaviour
 
         entityIsSpawned = false;
         numPuzzlesCompleted = 0;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
