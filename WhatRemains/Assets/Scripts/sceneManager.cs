@@ -20,8 +20,6 @@ public class sceneManager : MonoBehaviour
     public GameObject mainMenuPanel;
     public GameObject instructionsPanel;
     public GameObject gamemodePanel;
-    public static bool gameOver; //FIX (is necessary?? Set up ui??)
-    //public int lastCheckpoint; //FIX (add chckpoints)
 
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
@@ -42,8 +40,6 @@ public class sceneManager : MonoBehaviour
         }
         //Time.timeScale = 1.0f;
         gameIsPaused = false;
-
-        gameOver = false;
     }
 
 
@@ -79,7 +75,6 @@ public class sceneManager : MonoBehaviour
     ///////// GAMEPLAY ////////////
     public void return2main()
     {
-        //fix (do save?? or last checkpoint??)
         SceneManager.LoadSceneAsync("mainMenuScene");
     }
 
@@ -99,7 +94,6 @@ public class sceneManager : MonoBehaviour
         pauseMenuUI.SetActive(false);
         //Time.timeScale = 1.0f;
         gameIsPaused = false;
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }

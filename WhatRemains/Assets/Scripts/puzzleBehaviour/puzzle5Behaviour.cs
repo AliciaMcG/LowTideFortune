@@ -47,7 +47,7 @@ public class puzzle5Behaviour : MonoBehaviour
             dialogueBase.dialogueScript.setDialogue("*Spawning Sound*", 3f);
         }
         */
-        entityBase.entity.entityState = 3; //chase state
+        entityBase.entity.entityState = 4; //chase state
 
         gameplayBase.instance.unlockDoors(3);
 

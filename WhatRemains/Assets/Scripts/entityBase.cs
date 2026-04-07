@@ -27,7 +27,6 @@ public class entityBase : MonoBehaviour
 
     [Header("Entity Attributes")]
     public int entityState;
-    public float entitySpeed;
     public float messTime;
 
     public bool isBeingIdle;
@@ -35,8 +34,12 @@ public class entityBase : MonoBehaviour
 
     public GameObject entityHand;
 
-    [Header("Objects")]
-    public playerBase targetPlayer;
+    float chasingTimer = 0f;
+    float chaseUpdateTimer = 0f;
+    float chaseUpdateRate = 0.2f;
+
+    [Header("Player Health")]
+    public GameObject losePanel;
 
     [Header("Nav Mesh")]
     UnityEngine.AI.NavMeshAgent entityAgent;
@@ -44,6 +47,8 @@ public class entityBase : MonoBehaviour
     public Transform puzzle2MessStart;
     public Transform puzzle3MessStart;
     public Transform puzzle4MessStart;
+
+    bool isChasing;
 
     public Transform[] targets;
     int randDest = 3;
@@ -94,6 +99,7 @@ public class entityBase : MonoBehaviour
 
         //set the entity's first destination
         entityAgent.SetDestination(targets[randDest].position);
+        isChasing = false;
 
     }
 
@@ -123,11 +129,10 @@ public class entityBase : MonoBehaviour
 
             if (messTime > 0)
             {
-                if (entityState == 2) { entityState = 1; } //reset back to idle
                 messTime -= Time.fixedDeltaTime;
 
                 if (messTime <= 0)            {
-                    entityState = 2;
+                    entityState = 3;
                 }
             }
         }
@@ -137,9 +142,10 @@ public class entityBase : MonoBehaviour
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.transform.TryGetComponent(out playerBase player) && entityState == 3) {
+        if (other.TryGetComponent(out playerBase player))
+        {
             takePlayerHealth(player);
         }
     }
@@ -181,9 +187,9 @@ public class entityBase : MonoBehaviour
 
             case 1:
                 //entity is idle
-                //FIX add idle actions
-                //FIX add movement
-
+                entityAgent.speed = 3.5f;
+                entityAgent.acceleration = 1f;
+                
                 if (!entityAgent.pathPending && entityAgent.remainingDistance < 0.5f)
                 {
                     //pick a random target
@@ -198,43 +204,44 @@ public class entityBase : MonoBehaviour
                 break;
 
             case 2:
-                //walk to room
-                //speed up ig FIX
-                entityState = 3; //FIX
+                //entity chases player
+                entityAgent.speed = 50f;
+                entityAgent.acceleration = 100f;
+
+                chasingTimer += Time.deltaTime;
+
+                //chase for ten seconds
+                if (chasingTimer <= 10f)
+                {
+                    chaseUpdateTimer += Time.deltaTime;
+
+                    //update chase destination every 0.2 seconds
+                    if (chaseUpdateTimer >= chaseUpdateRate)
+                    {
+                        entityAgent.SetDestination(gameplayBase.instance.player.transform.position);
+                        chaseUpdateTimer = 0f;
+                    }
+                }
+                else
+                {
+                    chasingTimer = 0f;
+                    entityState = 1;
+                }
                 break;
 
             case 3:
                 //entity is messing with puzzles
+                entityAgent.speed = 3.5f;
+                entityAgent.acceleration = 1f;
+                
                 messWithPuzzle();
                 break;
-            case 4:
-                //enity is chasing player
-                //FIX start chase sounds
-                //entityMoveTo(targetPlayer.GetComponent<RigidBody>().position); 
-                break;
-
 
             default:
                 Debug.LogError("wrong entity state assignment");
                 break;
 
         }
-    }
-
-    private void entityMoveTo(Vector3 targetPOS) //FIX FOR PHYSICAL OBSTACLES
-    {
-        //FIX DIRECTION FACING
-
-        //entity's current position
-        Vector3 currEntity = gameObject.transform.position;
-
-        //move towards the target position
-        gameObject.transform.position = Vector3.MoveTowards(currEntity, targetPOS, (float)0.01);
-
-        //transform.Translate((transform.position + ((targetPOS - this.transform.position).normalized) * entitySpeed * Time.fixedDeltaTime));
-
-        // the if reaches player is in collision //take helth funcion
-
     }
 
     public IEnumerator initEntityWait ()
@@ -300,6 +307,12 @@ public class entityBase : MonoBehaviour
                     {
                         jar.transform.position = entityHand.transform.position;
                     }
+
+                    //reset back to idle after messing
+                    if (thrownJar == true)
+                    {
+                        entityState = 1;
+                    }
                 }
                 break;
 
@@ -336,6 +349,12 @@ public class entityBase : MonoBehaviour
                     {
                         tarotCard.transform.position = entityHand.transform.position;
                         Debug.Log("holding card");
+                    }
+
+                    //reset back to idle after messing
+                    if (placedCard == true)
+                    {
+                        entityState = 1;
                     }
                 }
                 
@@ -442,6 +461,12 @@ public class entityBase : MonoBehaviour
                         holdingSkull = false;
                         mess4Done = true;
                     }
+
+                    //reset back to idle after messing
+                    if (mess4Done == true)
+                    {
+                        entityState = 1;
+                    }
                 }
                 break;
 
@@ -459,7 +484,10 @@ public class entityBase : MonoBehaviour
 
         if (player.playerHealth <= 0)
         {
-            sceneManager.gameOver = true;
+            sceneManager.gameIsPaused = true;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            losePanel.SetActive(true);
         }
 
         //Set display
@@ -474,6 +502,13 @@ public class entityBase : MonoBehaviour
                 gameplayBase.instance.healthDisplay[i].sprite = gameplayBase.instance.healthFalse;
             }
         }
+
+
+    }
+
+    public void InitChase()
+    {
+        entityState = 2;
     }
     /*
     public void messWithPuzz4()

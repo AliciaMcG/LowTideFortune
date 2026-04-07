@@ -57,6 +57,7 @@ public class gameplayBase : MonoBehaviour
     public AudioSource candleSpawnSound;
     public AudioSource entityScream;
     public ParticleSystem entityParticles;
+    public entityBase entity;
 
     public static event Action<int> OnUnlockDoors;
     public static event Action OnChaseStarted;
@@ -95,7 +96,7 @@ public class gameplayBase : MonoBehaviour
 
     void Update()
     {
-        //check if screaming is doe to load the win panel
+        //check if screaming is done to load the win panel
         if(entityScream.time >= 6.0f)
         {
             //show winning panel
@@ -115,7 +116,7 @@ public class gameplayBase : MonoBehaviour
 
     ///////////////////////////////////////////////////////////      FUNCTIONS      ////////////////////////////////////////////////////////////////////////////////
     ///
-    public void completePuzzle(int currPuzInt)    // skulls are in the correct placement
+    public void completePuzzle(int currPuzInt)    
     {
         int correctedIndex = currPuzInt - 1;
         if (correctedIndex >= 0 && correctedIndex <= 4)
@@ -134,12 +135,18 @@ public class gameplayBase : MonoBehaviour
             }
             //increase the number of puzzles completed
             numPuzzlesCompleted++; 
+
+            if (correctedIndex != 0)
+            {
+                //switch the entity state to chase
+                entity.InitChase();
+            }
         }
     }
 
     public void completeGame()
     {
-        //entity screams //FIX
+        //entity screams 
         if (!entityScream.isPlaying)
         {
             entityScream.Play();
