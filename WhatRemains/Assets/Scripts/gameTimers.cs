@@ -32,6 +32,10 @@ public class gameTimers : MonoBehaviour
     public AudioSource doorOpenSound;
     bool doorOpenedPlayed;
 
+    public UnityEngine.AI.NavMeshObstacle safetyRoom1Blocker;
+    public UnityEngine.AI.NavMeshObstacle safetyRoom2Blocker;
+    public UnityEngine.AI.NavMeshObstacle safetyRoom3Blocker;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -108,15 +112,15 @@ public class gameTimers : MonoBehaviour
             //dissolve safety rooms
             if (gameplayBaseObj.numPuzzlesCompleted == 2)
             {
-                //dissolve room 1
+                safetyRoom1Blocker.enabled = false;
             }
             if (gameplayBaseObj.numPuzzlesCompleted == 3)
             {
-                //dissolve room 2
+                safetyRoom2Blocker.enabled = false;
             }
             if (gameplayBaseObj.numPuzzlesCompleted == 4)
             {
-                //dissolve room 3
+                safetyRoom3Blocker.enabled = false;
             }
 
         }
