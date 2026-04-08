@@ -11,7 +11,7 @@ using UnityEngine;
 public class puzzle5Behaviour : MonoBehaviour
 {
     ///////////////////////////////////////////////////////////      VARS      ////////////////////////////////////////////////////////////////////////////////
-
+    public gameTimers gameTimerScript;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -20,7 +20,7 @@ public class puzzle5Behaviour : MonoBehaviour
 
     void Start()
     {
-        gameplayBase.OnChaseStarted += activatePuzz5;
+
     }
 
     void Update()
@@ -40,14 +40,13 @@ public class puzzle5Behaviour : MonoBehaviour
     {
         gameplayBase.instance.candlesArr[4].SetActive(true);
         gameplayBase.instance.candlePlacements[4].SetActive(true);
-        /*
-        gameplayBase.instance.candleSpawnSound.Play();
+        
+        gameTimerScript.unlockSound.Play();
         if (settingsButton.captionsOn)
         {
-            dialogueBase.dialogueScript.setDialogue("*Spawning Sound*", 3f);
+            dialogueBase.dialogueScript.setDialogue("*Door Unlocks*", 3f);
         }
-        */
-        entityBase.entity.entityState = 4; //chase state
+        
 
         gameplayBase.instance.unlockDoors(3);
 

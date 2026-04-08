@@ -62,7 +62,7 @@ public class playerBase : MonoBehaviour
 
     public Transform entityPos; 
     public Transform cauldronPos; 
-    public bool entityChasing;
+    public static bool entityChasing;
 
     //game mode selected
     [Header("Gamemode Selection")]
@@ -122,8 +122,8 @@ public class playerBase : MonoBehaviour
         //if in vr mode, move the player using xr controls
         if (playerBase.desktopMode == false)
         {
-            Debug.Log(controller.name);
-            Debug.Log(controller.transform.position);
+            //Debug.Log(controller.name);
+            //Debug.Log(controller.transform.position);
         }
 
         if (pickedObject != null)
@@ -219,7 +219,7 @@ public class playerBase : MonoBehaviour
             cast = Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, interactDist); //VAR
             if (cast)
             {
-                Debug.Log("Ray hit: " + hit.collider.name);
+                //Debug.Log("Ray hit: " + hit.collider.name);
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {
                     interactable = hit.collider.transform;
@@ -239,8 +239,14 @@ public class playerBase : MonoBehaviour
 
                 // CROSSHAIR RED OR BLACK + DEBUGS
                 playerCam.crosshair.color = interactable != null || pullable != null ? playerCam.cursorScriptable.interactCross : playerCam.cursorScriptable.normalCross;
-                if (pullable != null) { Debug.Log("hit pullable: " + hit.collider.name); }
-                if (interactable != null) { Debug.Log("hit interactable: " + hit.collider.name); }
+                if (pullable != null) 
+                { 
+                    //Debug.Log("hit pullable: " + hit.collider.name); 
+                }
+                if (interactable != null) 
+                { 
+                    //Debug.Log("hit interactable: " + hit.collider.name); 
+                }
                 //Debug.Log("Ray hit: " + hit.collider.name);
             }
             else
@@ -261,7 +267,7 @@ public class playerBase : MonoBehaviour
 
                 if (interactable == null && pickedObject == null)
                 {
-                    Debug.Log("nothing interactable");
+                    //Debug.Log("nothing interactable");
                 }
                 //if nothing to pickup or interact but still drop/place
                 else if (interactable == null && pickedObject != null)
@@ -328,7 +334,10 @@ public class playerBase : MonoBehaviour
                         }
 
                     }
-                    else { Debug.Log("Whelp, check OnInteract"); }
+                    else 
+                    { 
+                        //Debug.Log("Whelp, check OnInteract"); 
+                    }
                 }
             }     
         }  
@@ -343,7 +352,10 @@ public class playerBase : MonoBehaviour
                     pullable.GetComponent<IPullable>().pull(this);
                     playerAnimator.SetTrigger("pickup");
                 }
-                else { Debug.Log("Not an openable"); }
+                else 
+                { 
+                    //Debug.Log("Not an openable"); 
+                }
 
             }
         }
@@ -477,7 +489,10 @@ public class playerBase : MonoBehaviour
                     dialogueBase.dialogueScript.setDialogue("*Ghost Sounds*", 3f);
                 }
             }
-        
+        }
+        if (distance <= 30.0)
+
+        {
             if (entityChasing)
             {
                 if (!entityChaseSound.isPlaying)

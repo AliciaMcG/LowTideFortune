@@ -74,10 +74,10 @@ public class bookInteract : MonoBehaviour
     */
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Something entered book trigger");
+        //Debug.Log("Something entered book trigger");
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player entered book range");
+            //Debug.Log("Player entered book range");
             playerInRange = true;
         }
     }
@@ -86,7 +86,7 @@ public class bookInteract : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player left book range");
+            //Debug.Log("Player left book range");
             playerInRange = false;
         }
     }

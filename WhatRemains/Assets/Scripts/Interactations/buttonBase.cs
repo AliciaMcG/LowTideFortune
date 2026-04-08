@@ -67,9 +67,12 @@ public class buttonBase : MonoBehaviour, IInteractable
         if (puzzle2Behaviour.puzz2.currentIngredients != null)
         {
             puzzle2Behaviour.puzz2.dumpMixture();
-            Debug.Log("Dumped mixture");
+            //Debug.Log("Dumped mixture");
         }
-        else { Debug.Log("Nothing to dump"); }
+        else 
+        { 
+            //Debug.Log("Nothing to dump"); 
+        }
 
             isPressed = true;
         isAnimating = true;

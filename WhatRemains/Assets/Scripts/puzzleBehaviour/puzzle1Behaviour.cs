@@ -15,7 +15,7 @@ public class puzzle1Behaviour : MonoBehaviour
     public GameObject symbol;
 
     [Header("Measurements")]
-    public float stareTime = 4f;
+    public float stareTime = 1f;
     public float maxDist = 12f;
     public float dist;
     public float stareTimer = 0;
@@ -67,7 +67,7 @@ public class puzzle1Behaviour : MonoBehaviour
                 if (stareTimer >= stareTime)
                 {
                     gameplayBase.instance.completePuzzle(1);
-                    Debug.Log("1 is done");
+                    //Debug.Log("1 is done");
                 }
             }
             else { stareTimer = 0; }

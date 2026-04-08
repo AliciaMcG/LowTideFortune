@@ -17,7 +17,7 @@ public class finalRoomTrigger : MonoBehaviour
         if (collider.gameObject.CompareTag("Player"))
         {
             playerEnteredFinalSR = true;
-            Debug.Log("Entered final room");
+            //Debug.Log("Entered final room");
         }
     }
 

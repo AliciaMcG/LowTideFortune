@@ -98,7 +98,7 @@ public class dialogueBase : MonoBehaviour
         }
 
         string sizeSetting = PlayerPrefs.GetString("TextSize", "Standard");
-        Debug.Log("Current saved text setting: " + sizeSetting);
+        //Debug.Log("Current saved text setting: " + sizeSetting);
 
         if (sizeSetting == "Large")
         {

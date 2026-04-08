@@ -67,7 +67,7 @@ public class puzzle2Behaviour : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         addIngredient(other.gameObject);
-        Debug.Log("cauldron object" +  other);
+        //Debug.Log("cauldron object" +  other);
     }
     public void addIngredient(GameObject ingredient)
     {
@@ -80,7 +80,7 @@ public class puzzle2Behaviour : MonoBehaviour
 
         // compare jar type to required jar types
         int jarID = jar.id;
-        Debug.Log("jar id " + jarID);
+        //Debug.Log("jar id " + jarID);
         if (jarID == 4)
         {
             spoilMixture();
@@ -101,7 +101,6 @@ public class puzzle2Behaviour : MonoBehaviour
             jar.RespawnJar();
 
         }
-        entityBase.entity.messTime = 7f;
     }
 
     void checkMixture()
@@ -133,7 +132,7 @@ public class puzzle2Behaviour : MonoBehaviour
             {
                 dialogueBase.dialogueScript.setDialogue("Shoot! The potion is screwed up, need to dump and restart", 5f);
             }
-            Debug.Log("Wrong ingredient");
+            //Debug.Log("Wrong ingredient");
         }
         
         isSpoiled = true;
@@ -178,7 +177,6 @@ public class puzzle2Behaviour : MonoBehaviour
         cauldronParticles.Clear();
 
         StartCoroutine(ResetParticlesDelay());
-        entityBase.entity.messTime = 12f;
     }
 
     void updateParticles()

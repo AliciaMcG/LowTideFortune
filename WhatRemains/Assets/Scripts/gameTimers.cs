@@ -90,7 +90,7 @@ public class gameTimers : MonoBehaviour
             }
 
             //open the final room door when all candles have been placed and the player is in the final room
-            if (gameplayBaseObj.numPuzzlesCompleted == 4 && finalRoomTrigger.playerEnteredFinalSR == true)
+            if (gameplayBaseObj.numPuzzlesCompleted >= 4 && finalRoomTrigger.playerEnteredFinalSR == true)
             {
                 gameplayBaseObj.unlockDoors(3);
                 door.SetTrigger("Open");

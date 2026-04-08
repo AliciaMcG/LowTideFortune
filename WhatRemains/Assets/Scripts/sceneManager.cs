@@ -68,7 +68,7 @@ public class sceneManager : MonoBehaviour
 
     public void quitGame()
     {
-        Debug.Log("Player quit game :(");
+        //Debug.Log("Player quit game :(");
         Application.Quit();
     }
 
@@ -84,7 +84,6 @@ public class sceneManager : MonoBehaviour
         pauseMenuUI.SetActive(true);
         //Time.timeScale = 0.0f;
         gameIsPaused = true;
-        //FIX - PAUSE ENTITY MOVEMENT
 
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;

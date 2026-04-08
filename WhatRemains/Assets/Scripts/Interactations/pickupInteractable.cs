@@ -28,7 +28,7 @@ public class pickupInteractable : MonoBehaviour,  IInteractable
         this.GetComponent<Rigidbody>().isKinematic = true;
         this.GetComponent<Collider>().enabled = false;
 
-        Debug.Log("Picked up: " + this.transform.name);
+        //Debug.Log("Picked up: " + this.transform.name);
 
 
         //update curr puzz
@@ -43,7 +43,7 @@ public class pickupInteractable : MonoBehaviour,  IInteractable
 
         player.pickedObject = null;
 
-        Debug.Log("Dropped: " + this.transform.name);
+        //Debug.Log("Dropped: " + this.transform.name);
 
 
         //update curr puzz

@@ -119,7 +119,7 @@ public class gameplayBase : MonoBehaviour
     public void completePuzzle(int currPuzInt)    
     {
         int correctedIndex = currPuzInt - 1;
-        if (correctedIndex >= 0 && correctedIndex <= 4)
+        if (correctedIndex >= 0 && correctedIndex <= 4 && puzzlesCompleted[correctedIndex] == false)
         {
             puzzlesCompleted[correctedIndex] = true;
 
@@ -161,8 +161,8 @@ public class gameplayBase : MonoBehaviour
 
     public void spawnEntity()
     {
-        entityBase.entity.gameObject.SetActive(true); //activates entity object
-        entityBase.entity.entityState = 1;
+        entity.gameObject.SetActive(true); //activates entity object
+        entity.entityState = 1;
         dialogueBase.dialogueScript.setDialogue("Wh-what is THAT???", 3f);
         entityIsSpawned = true;
         unlockDoors(1);
@@ -171,18 +171,18 @@ public class gameplayBase : MonoBehaviour
 
     public void updateCurrPuzz(int newIndex)
     {
+        Debug.Log("Curr puz: " + currPuz);
         currPuz = newIndex;
-        entityBase.entity.initEntityWait();
+
+        if (gameplayBase.instance.currPuz != 1)
+        {
+            StartCoroutine(entityBase.entity.initEntityWait());
+        }
     }
 
     public void unlockDoors(int doorType)
     {
         OnUnlockDoors?.Invoke(doorType);
-    }
-
-    public void startChase()
-    {
-        OnChaseStarted?.Invoke();
     }
 
     public void setVrMode()

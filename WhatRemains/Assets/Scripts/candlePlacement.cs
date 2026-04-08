@@ -17,8 +17,8 @@ public class candlePlacement : MonoBehaviour
         }
 
         int candle = other.GetComponent<candleID>().candlesID;
-        UnityEngine.Debug.Log("candleID" + candle);
-        UnityEngine.Debug.Log("placementID" + placementID);
+        //UnityEngine.Debug.Log("candleID" + candle);
+        //UnityEngine.Debug.Log("placementID" + placementID);
 
         if (other == null)
         {

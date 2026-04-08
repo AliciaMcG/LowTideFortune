@@ -24,7 +24,7 @@ public class skullPositionBehaviour : MonoBehaviour
         if (collider.gameObject.name.Contains("Skull") && gameObject.name.Contains("Pos"))
         {
             entityBase.puzzle4Changed = true;
-            Debug.Log("Puzzle changed");
+            //Debug.Log("Puzzle changed");
         }
         //if a skull is placed in the right position
         if (collider.gameObject.name.Contains("owlSkull"))
@@ -39,7 +39,6 @@ public class skullPositionBehaviour : MonoBehaviour
             {
                 //check if the skulls are in the right place
                 CheckSkulls();
-                if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
             }
         }
         if (collider.gameObject.name.Contains("ratSkull"))
@@ -54,7 +53,6 @@ public class skullPositionBehaviour : MonoBehaviour
             {
                 //check if the skulls are in the right place
                 CheckSkulls();
-                if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
             }
         }
         if (collider.gameObject.name.Contains("deerSkull"))
@@ -68,7 +66,6 @@ public class skullPositionBehaviour : MonoBehaviour
             if(gameObject.name.Contains("deerPos"))
             {
                 CheckSkulls();
-                if (gameplayBase.instance.puzzlesCompleted[3] != true) { entityBase.entity.messTime = 6f; } //VAR // make reusabe function //FIX
             }
             //check if the skulls are in the right place
             
@@ -87,7 +84,7 @@ public class skullPositionBehaviour : MonoBehaviour
             {
                 numSkulls++;
             }
-            Debug.Log("numSkulls:" + numSkulls);
+            //Debug.Log("numSkulls:" + numSkulls);
         }
 
         //spawn candle if they are and set puzzle to complete
