@@ -118,17 +118,34 @@ public class entityBase : MonoBehaviour
 
     void Update()
     {
-        /*
+        
         if (sceneManager.gameIsPaused)
         {
-            entityAgent.isStopped = true;
-            splineAnimate.Pause();
+            if (!entityAgent.isStopped)
+            {
+                entityAgent.isStopped = true;
+                entityAgent.velocity = Vector3.zero;
+            }
+
+            if (splineAnimate != null && splineAnimate.enabled)
+            {
+                splineAnimate.Pause();
+                splineAnimate.enabled = false;
+            }
         }
         else
         {
-            entityAgent.isStopped = false;
+            if (entityAgent.isStopped)
+            {
+                entityAgent.isStopped = false;
+            }
+
+            if (splineAnimate != null && !splineAnimate.enabled)
+            {
+                splineAnimate.enabled = true;
+            }
         }
-        */
+        
 
     }
 
@@ -232,6 +249,7 @@ public class entityBase : MonoBehaviour
                 
                 if (entityPatience <= 0)
                 {
+                    splineAnimate.enabled = true;
                     messWithPuzzle();
                 }
 
@@ -578,6 +596,22 @@ public class entityBase : MonoBehaviour
 
     public void InitChase()
     {
+        //stop spline animation
+        if (splineAnimate != null)
+        {
+            splineAnimate.Pause();              
+            splineAnimate.enabled = false;      
+        }
+
+        //reset puzzle flags
+        startedPuzzle2 = false;
+        startedPuzzle3 = false;
+
         entityState = 2;
+
+        //force nav mesh to entity's current position
+        entityAgent.isStopped = false;
+        entityAgent.ResetPath();
+        entityAgent.Warp(transform.position);
     }
 }

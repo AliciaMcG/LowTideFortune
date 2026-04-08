@@ -60,7 +60,7 @@ public class puzzle1Behaviour : MonoBehaviour
         
         if (Physics.Raycast(ray, out hit, maxDist))
         {
-            if (hit.collider.gameObject == symbol)
+            if (hit.collider.gameObject == symbol && sceneManager.gameIsPaused == false)
             {
                 stareTimer += Time.deltaTime;
 
