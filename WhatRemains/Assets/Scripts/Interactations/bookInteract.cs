@@ -1,11 +1,13 @@
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class bookInteract : MonoBehaviour
 {
     public GameObject bookUIPanel;
     private bool playerInRange;
+    public InputActionReference openBook;
 
     public MonoBehaviour playerMovement;
     public camMover mouseLookScript;
@@ -18,7 +20,7 @@ public class bookInteract : MonoBehaviour
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.Q))
+        if (playerInRange && Input.GetKeyDown(KeyCode.Q) || openBook.action.WasPressedThisFrame() )
         {
             bool isOpening = !bookUIPanel.activeSelf;
             ToggleBookMode(isOpening);

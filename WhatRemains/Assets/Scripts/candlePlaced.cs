@@ -15,6 +15,7 @@ public class candlePlaced : MonoBehaviour
         {
             //increase the number of candles placed
             numCandlesPlaced++;
+            Debug.Log("Num candles placed: " + numCandlesPlaced);
 
             //untag the candle so the player cant pick it up again
             other.tag = "Untagged";

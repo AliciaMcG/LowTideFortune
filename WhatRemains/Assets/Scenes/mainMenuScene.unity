@@ -1678,6 +1678,7 @@ MonoBehaviour:
   mainMenuPanel: {fileID: 1972266585}
   instructionsPanel: {fileID: 1523921597}
   gamemodePanel: {fileID: 2071661667}
+  toggleMenu: {fileID: 0}
 --- !u!114 &353498140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7634,8 +7635,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "VR\t\t\t\n     \nTrigger = Interact, Pull\nLeft Joystick = Move\nPrimary
-    Right = Sprint\nPrimary Left = Jump\n\nSecondary Right = Access Menus\nSecondary
+  m_text: "VR\t\t\t\n     \nLeft Trigger = Interact, Pull\nLeft Joystick = Move\nRight
+    Trigger = Sprint\nPrimary Right = Jump\n\nSecondary Right = Access Menus\nSecondary
     Left = Open Book (You'll see)\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

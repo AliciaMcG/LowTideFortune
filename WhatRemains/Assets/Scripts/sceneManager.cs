@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Holds code for:
@@ -20,6 +21,8 @@ public class sceneManager : MonoBehaviour
     public GameObject mainMenuPanel;
     public GameObject instructionsPanel;
     public GameObject gamemodePanel;
+
+    public InputActionReference toggleMenu;
 
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +49,7 @@ public class sceneManager : MonoBehaviour
     void Update()
     {
         if (SceneManager.GetActiveScene().name == "gameplayScene") {
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (Input.GetKeyDown(KeyCode.Escape) || toggleMenu.action.WasPressedThisFrame()) {
                 if (gameIsPaused) { resume(); }
                 else { pause(); }
             }

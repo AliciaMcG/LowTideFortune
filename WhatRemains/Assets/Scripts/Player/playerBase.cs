@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
 
 /// <summary>
 /// Holds code for:
@@ -67,6 +68,11 @@ public class playerBase : MonoBehaviour
     //game mode selected
     [Header("Gamemode Selection")]
     public static bool desktopMode;
+
+    [Header("XR Inputs")]
+    public InputActionReference sprint;
+    public InputActionReference jump;
+    public ContinuousMoveProvider moveProvider;
     
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -100,8 +106,20 @@ public class playerBase : MonoBehaviour
     {
         castPlayerRay();
         //play certain sounds depending on the players distance from different objects
-        checkEntityDistance(); //FIX make event?
-        checkCauldronDistance();        
+        checkEntityDistance(); 
+        checkCauldronDistance();   
+        if (sprint.action.IsPressed())
+        {
+            moveProvider.moveSpeed = 28f;
+        }
+        else
+        {
+            moveProvider.moveSpeed = 13f;
+        } 
+        if (jump.action.WasPressedThisFrame() && controller.isGrounded)
+        {
+            velocity.y = playerScriptable.jumpForce;
+        }
     }
 
     private void FixedUpdate()
@@ -109,11 +127,7 @@ public class playerBase : MonoBehaviour
         //if the game's not paused
         if (sceneManager.gameIsPaused == false)
         {
-            //if in desktop mode, move the player manually
-            if (playerBase.desktopMode == true)
-            {
-                movePlayer();
-            }
+            movePlayer();
         }
     }
 
@@ -383,8 +397,8 @@ public class playerBase : MonoBehaviour
             }
             else if (vrInteractable.GetComponent<bookInteract>() != null)
             {
-                vrInteractable.GetComponent<bookInteract>().ToggleBookMode(true);
-            }
+                vrInteractable.GetComponent<bookInteract>().bookUIPanel.SetActive(!vrInteractable.GetComponent<bookInteract>().bookUIPanel.activeSelf);
+            } 
             //snapping objects (tarot cards, skulls)
             else if (vrInteractable.GetComponent<snapInteractable>() != null)
             {
@@ -400,7 +414,7 @@ public class playerBase : MonoBehaviour
                     playerAnimator.SetTrigger("place");
                 }
 
-            }    
+            }   
         }
     }
 

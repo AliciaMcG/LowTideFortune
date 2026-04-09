@@ -60,7 +60,6 @@ public class gameplayBase : MonoBehaviour
     public entityBase entity;
 
     public static event Action<int> OnUnlockDoors;
-    public static event Action OnChaseStarted;
 
     ///////////////////////////////////////////////////////////      LOOPSS      ////////////////////////////////////////////////////////////////////////////////
     private void Awake()
@@ -96,6 +95,7 @@ public class gameplayBase : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Entity scream time: " + entityScream.time);
         //check if screaming is done to load the win panel
         if(entityScream.time >= 6.0f)
         {
