@@ -99,7 +99,7 @@ public class doorBase : MonoBehaviour, IPullable
         }
         else
         {
-            dialogueBase.dialogueScript.setDialogue("Can't seem to be able the door right now? I guess I'll look around", 8f);
+            dialogueBase.dialogueScript.setDialogue("Can't seem to be able to open the door right now? I guess I'll look around", 8f);
         }
     }
 
